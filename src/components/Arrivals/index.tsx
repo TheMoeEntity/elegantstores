@@ -1,8 +1,47 @@
-import React from 'react'
+'use client'
+import React, { useEffect, useRef, useState } from 'react'
 import FeaturedCard from '../Cards/Featured'
 import jacket from '../../../public/images/jacket.png'
+import { useClientMediaQuery } from '@/src/Helpers/Hooks'
 
 const Arrivals = () => {
+    const isMD = useClientMediaQuery('(min-width: 768px)');
+    const container = useRef<HTMLDivElement>(null)
+    const [index, setIndex] = useState<number>(0)
+    const scroll = (by: number) => {
+        if (container.current) {
+            container.current.scrollBy({
+                top: 0,
+                left: by,
+                behavior: 'smooth'
+            })
+        }
+        setIndex(Math.sign(by) == -1 ?
+            index === 0 ? 0 : index - 1 :
+            index === 6 ? 6 : index + 1)
+
+    }
+    const scrollAction = () => {
+        if (container.current) {
+            if (container.current.scrollLeft <= 249) {
+                setIndex(0)
+            } else if (container.current.scrollLeft >= 250 && container.current.scrollLeft <= 849){
+                setIndex(3)
+            } else if (container.current.scrollLeft >= 850) {
+                setIndex(6)
+            }
+        }
+    }
+    useEffect(() => {
+        if (container.current) {
+            container.current.addEventListener('scroll', () => {
+                if (isMD === true) {
+                    scrollAction()
+                }
+            })
+        }
+    }, [container.current])
+
     return (
         <section>
             <section className="bg-white">
@@ -71,24 +110,30 @@ const Arrivals = () => {
                 <div className='flex justify-between py-7 items-center px-5'>
                     <strong className='font-[500] text-4xl '>Just in</strong>
                     <div className='flex gap-3 justify-between items-center'>
-                        <div className='h-3 w-3 rounded-full bg-gray-900'></div>
-                        <div className='h-2 w-2 rounded-full bg-gray-600'></div>
-                        <div className='h-2 w-2 rounded-full bg-gray-600'></div>
+                        <div className={`${(index === 0 || index === 1 || index === 2) ? 'w-3 h-3 bg-gray-900' : 'w-2 h-2 bg-gray-400'} transition-all ease-in duration-200  rounded-full`}></div>
+                        <div className={`${(index === 3 || index === 4 || index === 5) ? ' w-3 h-3 bg-gray-900' : 'w-2 h-2 bg-gray-400'} transition-all ease-in duration-200  rounded-full `}></div>
+                        <div className={`${index === 6 ? 'w-3 h-3 bg-gray-900' : 'w-2 h-2 bg-gray-400'} transition-all ease-in duration-200  rounded-full`}></div>
                     </div>
                 </div>
                 <div
+                    onScroll={() => scrollAction}
+                    ref={container}
                     className="flex overflow-x-scroll no-scrollbar pb-10 no-scrollbar"
                 >
                     <div
                         className="flex gap-5 flex-nowrap lg:ml-[120px] md:ml-0 ml-5 mr-10 whitespace-nowrap"
                     >
                         {
-                            [...Array(4)].map((_x, i) => (
+                            [...Array(7)].map((_x, i) => (
                                 <FeaturedCard img={jacket} key={i} title='Some good shit' price={45.90} />
 
                             ))
                         }
                     </div>
+                </div>
+                <div className='flex justify-end pr-5 py-7 gap-3 md:hidden'>
+                    <button onClick={() => scroll(-250)}><i className='fa-solid fa-angle-left text-3xl text-gray-400'></i></button>
+                    <button onClick={() => scroll(250)}><i className='fa-solid fa-angle-right text-3xl'></i></button>
                 </div>
             </div>
         </section>

@@ -1,22 +1,25 @@
-import Image from 'next/image'
-import catimg4 from '../../../public/images/best.png'
+import Image, { StaticImageData } from 'next/image'
+// import catimg4 from '../../../public/images/best.png'
 
 const Best = ({
     title,
     price,
+    img
 }: {
     title: string;
     price: number;
+    img: string
 }) => {
     return (
-        <div className='flex md:min-h-fit flex-col gap-3 h-fit min-w-full md:min-w-[10%] lg:basis-[23%]'>
-            <div className='w-full my-5'>
+        <div className='flex md:min-h-fit flex-col gap-3 h-fit min-w-full md:min-w-[10%] md:basis-[30%] lg:basis-[23%]'>
+            <div className='w-full my-5 relative min-h-[410px] max-h-[auto]'>
                 <Image
-                    src={catimg4}
+                    src={img}
                     alt='Best sellers'
                     quality={100}
                     sizes='100vw'
-                    className='object-cover w-full h-auto'
+                    fill
+                    className='object-contain'
                 />
             </div>
             <div>

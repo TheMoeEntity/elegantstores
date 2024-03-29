@@ -34,3 +34,9 @@ export type FAQType = {
     isActive: boolean
     reply: string|TrustedHTML
 }
+export type productType = {
+    title: string;
+    id: number;
+    image: string;
+    price: number;
+};
