@@ -38,7 +38,7 @@ a:hover {
 .scrollTop {
   width: 40px;
   height: 40px;
-  background-color: #ffff;
+  background-color: #171D28;
   position: fixed;
   bottom: -20px;
   opacity: 0;
@@ -49,14 +49,14 @@ a:hover {
   align-items: center;
   cursor: pointer;
   transition: 0.4s;
-  color: #0053cc;
-  border: 2px solid #0053cc;
+  color: #ffff;
+  border: 2px solid #171D28;
   z-index: 1000;
   box-shadow: 3px 2px 9px 2px rgba(0, 0, 0, 0.21);
 }
 
 .highlight {
-  color: #0053cc;
+  color: #171D28;
 }
 
 @layer utilities {
