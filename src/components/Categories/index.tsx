@@ -96,7 +96,7 @@ const Catgories = () => {
                         className=' object-cover w-full h-auto'
                     />
                     <div className="absolute bottom-[40px] left-7 text-white z-10 flex flex-col gap-5">
-                        <span className='text-3xl'>The men's leather</span>
+                        <span className='text-3xl'>The {`men's`} leather</span>
                         <button className='text-sm underline underline-offset-4 md:text-left'>Shopp now! &rarr;</button>
                     </div>
                 </div>
