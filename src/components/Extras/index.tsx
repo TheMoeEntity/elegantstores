@@ -30,13 +30,13 @@ const Extras = () => {
                 <p>Introducing the new winter jackets</p>
             </div>
 
-            <div className='md:w-[90%] w-[95%] mx-auto'>
+            <div className='md:w-[90%]  w-[90%] mx-auto'>
                 <Image
                     src={video}
                     alt="video"
                     quality={100}
                     sizes={'100vw'}
-                    className="object-cover rounded-2xl w-full h-auto"
+                    className="object-cover h-[400px] md:h-auto rounded-2xl w-full"
                 />
             </div>
         </section>
