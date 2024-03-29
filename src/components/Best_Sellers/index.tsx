@@ -1,8 +1,8 @@
 import React from 'react'
 import Best from '../Cards/Best'
-import { productType } from '@/src/Helpers/types'
+import { fakeProductType } from '@/src/Helpers/types'
 
-const Best_Sellers = ({ products }: { products: productType[] }) => {
+const Best_Sellers = ({ products }: { products: fakeProductType[] }) => {
     return (
         <div className='px-5 py-12 flex flex-col gap-10 w-full h-fit md:w-[100%] mx-auto'>
             <div>
@@ -11,7 +11,7 @@ const Best_Sellers = ({ products }: { products: productType[] }) => {
             <div className="flex flex-row md:flex-row gap-5 justify-center flex-wrap mb-7">
                 {
                     (products).slice(0, 8).map((x) => (
-                        <Best img={x.image} key={x.id} title={x.title} price={x.price} />
+                        <Best img={x.images[0]} desc={x.description} key={x.id} title={x.title} price={x.price} />
                     ))
                 }
             </div>

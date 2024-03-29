@@ -4,15 +4,17 @@ import Image, { StaticImageData } from 'next/image'
 const Best = ({
     title,
     price,
-    img
+    img,
+    desc
 }: {
     title: string;
     price: number;
     img: string
+    desc: string
 }) => {
     return (
         <div className='flex md:min-h-fit flex-col gap-3 h-fit min-w-full md:min-w-[10%] md:basis-[30%] lg:basis-[23%]'>
-            <div className='w-full my-5 relative min-h-[410px] max-h-[auto]'>
+            <div className='w-full my-5 relative min-h-[410px] md:min-h-[290px] max-h-[auto]'>
                 <Image
                     src={img}
                     alt='Best sellers'
@@ -28,6 +30,7 @@ const Best = ({
                 ))}
             </div>
             <div className='text-2xl font-semibold'>{title}</div>
+            <div className='text-xs'>{desc}</div>
             <div className='text-xl font-semibold'>${price}</div>
         </div>
     )

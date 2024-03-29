@@ -57,8 +57,8 @@ const Header = () => {
                 </div>
                 <div className='flex gap-4 flex-row items-center'>
                     <div className='md:flex hidden gap-4'>
-                        <i className='fa-solid fa-magnifying-glass'></i>
-                        <i className='fa-solid fa-user'></i>
+                        <i className='fa-solid fa-magnifying-glass text-2xl'></i>
+                        <i className='fa-solid fa-user text-2xl'></i>
                     </div>
                     <i className='fa-solid fa-shopping-bag text-2xl'></i>
                     <b className='font-extrabold h-6 w-6 flex flex-col items-center justify-center rounded-full bg-black text-white text-sm'>2</b>

@@ -8,7 +8,7 @@ import Extras from "../components/Extras";
 
 export default async function Home() {
   const products = await Helpers.getProducts(
-    "https://fakestoreapi.com/products/category/men's%20clothing" ?? []
+    "https://api.escuelajs.co/api/v1/products" ?? []
   );
   return (
     <main className={`${styles.main} min-h-screen max-w-7xl mx-auto`}>

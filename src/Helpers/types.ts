@@ -4,7 +4,7 @@ export type featuresContent = {
     index: number
 
 }
-export interface FeaturesType  {
+export interface FeaturesType {
     icon: StaticImageData;
     title: string;
     text: string
@@ -26,17 +26,21 @@ export interface Countries {
     population: number
     idd: {
         root: string,
-        suffixes:string[]
+        suffixes: string[]
     }
 }
 export type FAQType = {
     text: string
     isActive: boolean
-    reply: string|TrustedHTML
+    reply: string | TrustedHTML
 }
-export type productType = {
+export interface productType  {
     title: string;
     id: number;
     image: string;
     price: number;
 };
+export interface fakeProductType extends productType  {
+    description:string
+    images:string[]
+}
