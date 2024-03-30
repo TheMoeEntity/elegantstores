@@ -70,15 +70,14 @@
   text-decoration: underline;
 }
 
-
 .profile {
   position: absolute;
   width: 270px;
   height: 380px;
   background-color: white;
   right: 0px;
-  transition: 0.6s ease;
-  top: -380px;
+  transition: 0.6s;
+  bottom: -380px;
   z-index: 999;
   box-shadow: 5px 9px 30px 0 rgb(0 0 0 / 20%);
   border-radius: 25px;

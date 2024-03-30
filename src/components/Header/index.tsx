@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
 import Profile from '../Cards/Profile'
+import CartModal from '../Cards/Cart'
 
 const Header = () => {
     const { push } = useRouter()
@@ -10,9 +11,15 @@ const Header = () => {
     const [product, setProduct] = useState<boolean>(false)
     const [company, setCompany] = useState<boolean>(false)
     const [sales, setSales] = useState<boolean>(true)
-    const [profileOpen, setProfileOpen] = useState(false);
+    const [cartOpen, setCartOpen] = useState<boolean>(false);
+    const [profileOpen, setProfileOpen] = useState(true);
     return (
         <header className='flex flex-col relative'>
+            <CartModal
+                forceClose={() => setCartOpen(false)}
+                closeCart={() => setCartOpen(false)}
+                cartOpen={cartOpen}
+            />
             <Profile
                 forceClose={() => setProfileOpen(false)}
                 profileOpen={profileOpen}
@@ -118,14 +125,19 @@ const Header = () => {
                     </div>
                     <button onClick={() => push('/contact')}>Contact us</button>
                 </div>
-                <div className='flex gap-4 flex-row items-center'>
+                <div className='flex gap-3 flex-row items-center'>
                     <div className='flex gap-4'>
-                        <button className='fa-solid fa-magnifying-glass text-2xl md:text-xl'></button>
-                        <button onClick={() => setProfileOpen(!profileOpen)
-                        } className='fa-solid fa-user text-2xl md:text-xl'></button>
+                        <button className='fa-solid fa-magnifying-glass text-xl md:text-xl'></button>
+                        <button onClick={() =>
+                            cartOpen ? setProfileOpen(false) : setProfileOpen(!profileOpen)
+                        } className='fa-solid fa-user text-xl md:text-xl'></button>
                     </div>
-                    <button className='fa-solid fa-shopping-bag text-2xl md:text-xl'></button>
-                    <b className='font-extrabold h-6 w-6 flex flex-col items-center justify-center rounded-full bg-black text-white text-sm'>2</b>
+                    <button
+                        onClick={() =>
+                            profileOpen ? setCartOpen(false) : setCartOpen(!cartOpen)
+                        }
+                    className='fa-solid fa-shopping-bag text-xl md:text-xl'></button>
+                    <b className='font-extrabold h-5 w-5 flex flex-col items-center justify-center rounded-full bg-black text-white text-sm'>2</b>
                 </div>
             </div>
         </header>
