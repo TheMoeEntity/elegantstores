@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import hero from '../../../public/images/furniture-2.jpeg'
 import { fakeProductType } from '@/src/Helpers/types'
-import Best from '../Cards/Best'
+import Link from 'next/link'
 
 const ShopPage = ({ products }: { products: fakeProductType[] }) => {
     return (
@@ -106,8 +106,8 @@ const ShopPage = ({ products }: { products: fakeProductType[] }) => {
                         <div className="flex flex-row gap-2 gap-y-7 md:gap-y-5 md:gap-4 justify-center flex-wrap mb-7">
                             {
                                 (products).slice(0, 8).map((x) => (
-                                    <div key={x.id} className='flex md:min-h-fit flex-col gap-0 h-fit md:min-w-[10%] basis-[47%] md:basis-[30%] lg:basis-[23%]'>
-                                        <div className='w-full mt-0 my-5 relative min-h-[250px] md:min-h-[200px] max-h-[auto]'>
+                                    <div key={x.id} className='flex group overflow-y-hidden pb-4 md:min-h-auto shadow-md rounded-md flex-col gap-y-2 gap-x-0 h-fit md:min-w-[10%] basis-[47%] md:basis-[30%] lg:basis-[23%]'>
+                                        <Link href={'/products/'+x.title} className='w-full mt-0 mb-3 relative min-h-[250px] md:min-h-[200px] max-h-[auto]'>
                                             <Image
                                                 src={x.images[0]}
                                                 alt='Best sellers'
@@ -116,14 +116,17 @@ const ShopPage = ({ products }: { products: fakeProductType[] }) => {
                                                 fill
                                                 className='object-cover'
                                             />
-                                        </div>
-                                        <div>
+                                        </Link>
+                                        <div className='px-3 flex gap-2'>
                                             {[...Array(4)].map((_, i) => (
-                                                <span key={i} className={`fa fa-star mx-1 my-1`}></span>
+                                                <span key={i} className={`fa fa-star`}></span>
                                             ))}
                                         </div>
-                                        <div className=' font-semibold'>{x.title}</div>
-                                        <div className=' font-semibold'>${x.price}</div>
+                                        <div className='px-3 font-semibold'>{x.title}</div>
+                                        <div className='px-3 font-semibold'>${x.price}</div>
+                                        <div className='w-[90%] transition-transform duration-[0.55s] ease mx-auto group-hover:translate-y-0 translate-y-20'>
+                                            <button className='w-full px-3 py-2 bg-black text-white rounded-lg'>Add to cart</button>
+                                        </div>
                                     </div>
                                 ))
                             }

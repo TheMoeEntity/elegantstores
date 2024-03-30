@@ -23,7 +23,7 @@ const FeaturedCard = ({
           priority={true}
           sizes="100vw"
         />
-        <div className={styles.cart}>Add to cart</div>
+        <button className={styles.cart}>Add to cart</button>
         <div className={styles.hot}>NEW</div>
       </div>
       <div className={styles.deets}>

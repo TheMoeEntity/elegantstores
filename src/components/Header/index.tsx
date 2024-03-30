@@ -140,7 +140,7 @@ const Header = () => {
                 <span>30% off storewide - limited time!</span>
                 <button onClick={() => setSales(false)} className='text-2xl'>&times;</button>
             </div>
-            <div className='bg-[#fafafa] flex justify-between lg:justify-around px-7 py-5'>
+            <div className='bg-[#fafafa] flex justify-between lg:justify-around px-7 py-5 shadow-md'>
                 <div className='flex gap-4 items-center'>
                     <button className='md:hidden' onClick={() => setOpen(true)}>
                         <i className='fa-solid fa-bars text-2xl block '></i>
@@ -150,7 +150,7 @@ const Header = () => {
                 <div className='md:flex lg:flex gap-8 hidden items-center'>
                     <button onClick={() => push('/')}>Home</button>
                     <div className='relative group'>
-                        <button>
+                        <button onClick={() => push('/shop')}>
                             Shop <i className='group-hover:rotate-180 transition duration-200 fa-solid fa-angle-down ml-2'></i>
                         </button>
                         <div
