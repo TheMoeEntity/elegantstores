@@ -43,11 +43,11 @@ const Catgories = () => {
             <div>
                 <h2 className='text-4xl font-[500] text-center leading-tight'>Shop by Categories</h2>
             </div>
-            <div className='flex gap-4 md:flex-row w-full md:w-[90%] justify-center mx-auto mb-7 flex-wrap'>
+            <div className='flex gap-y-7 md:gap-4 md:flex-row w-full md:w-[90%] justify-center mx-auto mb-7 flex-wrap'>
                 {
                     assets.map((x, i) => (
                         <div key={i} className='w-full flex md:justify-center gap-7 justify-center flex-[40%] basis-[40%] md:basis-[10%]'>
-                            <div className='gap-4 max:h-[160px]  flex flex-col justify-center md:w-auto md:min-w-[auto] rounded-full'>
+                            <div className='gap-4 max:h-[160px] min-w-[130px]  flex flex-col justify-center md:w-auto md:min-w-[auto] rounded-full'>
                                 <Image
                                     src={x.img}
                                     alt="category"
