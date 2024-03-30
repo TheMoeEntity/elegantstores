@@ -33,11 +33,11 @@ const CartModal = ({ cartOpen, closeCart, forceClose }: { cartOpen: boolean, clo
                                         <Image
                                             src={x.images[0] ?? noimage}
                                             alt="product image"
-                                            layout="fill"
+                                            fill
                                             quality={100}
-
+                                            style={{objectFit:'cover'}}
                                             priority={true}
-                                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                            sizes="100vw"
                                         />
                                     </div>
                                 </div>

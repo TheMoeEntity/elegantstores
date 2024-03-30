@@ -28,10 +28,10 @@ const Profile = ({ profileOpen = false, forceClose }: { profileOpen: boolean, fo
                     <Image
                         src={boy}
                         alt="user image"
-                        layout="fill"
+                        fill
+                        style={{objectFit:'cover'}}
                         quality={100}
-                        priority={true}
-                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        sizes={'100vw'}
                     />
                 </div>
                 <div className={styles.details}>
