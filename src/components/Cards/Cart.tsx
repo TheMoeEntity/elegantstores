@@ -1,15 +1,15 @@
 import styles from "./cart.module.css";
-import Image from "next/image";
+import Image, { StaticImageData } from "next/image";
 import Link from "next/link";
 import noimage from '../../../public/images/noimage.png'
 
 const CartModal = ({ cartOpen, closeCart, forceClose }: { cartOpen: boolean, closeCart: () => void, forceClose: () => void }) => {
-    const cart = [
-        {
-            images: ['/images/boy.jpeg'],
-            name: "Big Hoodie",
-            price: 45400
-        }
+    const cart: { images: StaticImageData, name: string, price: number }[] = [
+        // {
+        //     images: ['/images/boy.jpeg'],
+        //     name: "Big Hoodie",
+        //     price: 45400
+        // } 
     ]
     return (
         <div
@@ -31,11 +31,11 @@ const CartModal = ({ cartOpen, closeCart, forceClose }: { cartOpen: boolean, clo
                                 <div className={styles.image}>
                                     <div>
                                         <Image
-                                            src={x.images[0] ?? noimage}
+                                            src={noimage}
                                             alt="product image"
                                             fill
                                             quality={100}
-                                            style={{objectFit:'cover'}}
+                                            style={{ objectFit: 'cover' }}
                                             priority={true}
                                             sizes="100vw"
                                         />
@@ -67,7 +67,7 @@ const CartModal = ({ cartOpen, closeCart, forceClose }: { cartOpen: boolean, clo
             >
                 <div className={styles.prices}>
                     <h3>Cart total</h3>
-                    <h4>₦{20000}</h4>
+                    <h4>₦{0}</h4>
                 </div>
                 <p>shipping total calculated at checkout</p>
                 <div className={styles.bottomControls}>

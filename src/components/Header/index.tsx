@@ -136,8 +136,8 @@ const Header = () => {
                         onClick={() =>
                             profileOpen ? setCartOpen(false) : setCartOpen(!cartOpen)
                         }
-                    className='fa-solid fa-shopping-bag text-xl md:text-xl'></button>
-                    <b className='font-extrabold h-5 w-5 flex flex-col items-center justify-center rounded-full bg-black text-white text-sm'>2</b>
+                        className='fa-solid fa-shopping-bag text-xl md:text-xl'></button>
+                    <b className='font-extrabold h-5 w-5 flex flex-col items-center justify-center rounded-full bg-black text-white text-xs'>0</b>
                 </div>
             </div>
         </header>

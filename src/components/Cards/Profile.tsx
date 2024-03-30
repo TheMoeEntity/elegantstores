@@ -1,8 +1,8 @@
 import styles from "./cards.module.css";
 import Image from "next/image";
 import Link from "next/link";
-import boy from "../../../public/images/boy.jpeg";
-import {useState } from "react";
+import boy from "../../../public/images/noimage.png";
+import { useState } from "react";
 
 
 const Profile = ({ profileOpen = false, forceClose }: { profileOpen: boolean, forceClose: () => void }) => {
@@ -19,7 +19,7 @@ const Profile = ({ profileOpen = false, forceClose }: { profileOpen: boolean, fo
     return (
         <div
             style={{
-                top: profileOpen===true ? "130px" : "-380px", 
+                top: profileOpen === true ? "130px" : "-380px",
             }}
             className={styles.profile}
         >
@@ -29,7 +29,7 @@ const Profile = ({ profileOpen = false, forceClose }: { profileOpen: boolean, fo
                         src={boy}
                         alt="user image"
                         fill
-                        style={{objectFit:'cover'}}
+                        style={{ objectFit: 'cover' }}
                         quality={100}
                         sizes={'100vw'}
                     />
@@ -38,7 +38,7 @@ const Profile = ({ profileOpen = false, forceClose }: { profileOpen: boolean, fo
                     <div>
                         <b>{user ?? "Username"}</b>
                     </div>
-                    <div>Lagos, Nigeria</div>
+                    <div>location</div>
                 </div>
             </div>
             <div className="">

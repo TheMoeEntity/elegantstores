@@ -3,8 +3,9 @@ import React, { useEffect, useRef, useState } from 'react'
 import FeaturedCard from '../Cards/Featured'
 import jacket from '../../../public/images/jacket.png'
 import { useClientMediaQuery } from '@/src/Helpers/Hooks'
+import { productType } from '@/src/Helpers/types'
 
-const Arrivals = () => {
+const Arrivals = ({ justIn }: { justIn: productType[] }) => {
     const isMD = useClientMediaQuery('(min-width: 768px)');
     const container = useRef<HTMLDivElement>(null)
     const [index, setIndex] = useState<number>(0)
@@ -25,7 +26,7 @@ const Arrivals = () => {
         if (container.current) {
             if (container.current.scrollLeft <= 249) {
                 setIndex(0)
-            } else if (container.current.scrollLeft >= 250 && container.current.scrollLeft <= 849){
+            } else if (container.current.scrollLeft >= 250 && container.current.scrollLeft <= 849) {
                 setIndex(3)
             } else if (container.current.scrollLeft >= 850) {
                 setIndex(6)
@@ -118,14 +119,14 @@ const Arrivals = () => {
                 <div
                     onScroll={() => scrollAction}
                     ref={container}
-                    className="flex overflow-x-scroll no-scrollbar pb-10 no-scrollbar"
+                    className="flex overflow-hidden md:overflow-x-scroll no-scrollbar pb-10 no-scrollbar"
                 >
                     <div
                         className="flex gap-5 flex-nowrap lg:ml-[120px] md:ml-0 ml-5 mr-10 whitespace-nowrap"
                     >
                         {
-                            [...Array(7)].map((_x, i) => (
-                                <FeaturedCard img={jacket} key={i} title='Some good shit' price={45.90} />
+                            [...justIn.slice(0, 7)].map((x, i) => (
+                                <FeaturedCard img={x.image} key={x.id} title={x.title} price={x.price} />
 
                             ))
                         }

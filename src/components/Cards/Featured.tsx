@@ -9,7 +9,7 @@ const FeaturedCard = ({
 }: {
   title: string;
   price: number;
-  img: StaticImageData;
+  img: string;
 }) => {
   return (
     <div className={styles.featured}>
@@ -32,7 +32,9 @@ const FeaturedCard = ({
             <span key={i} className={`fa fa-star mx-1 my-1`}></span>
           ))}
         </div>
-        <div>{title}</div>
+        <div className="w-full flex-col flex-wrap">
+          <p className="text-sm font-bold">{title}</p>
+        </div>
         <div>${price}</div>
       </div>
     </div>

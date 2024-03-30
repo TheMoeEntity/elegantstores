@@ -73,7 +73,7 @@ const Extras = ({ insta }: { insta: string[] }) => {
                     </button>
                 </div>
             </div>
-            <div className='w-[90%] flex-wrap mx-auto flex flex-col md:flex-row justify-between mb-16'>
+            <div className='w-[90%] flex-wrap mx-auto flex gap-y-7 flex-col md:flex-row justify-between mb-16'>
                 {
                     articleData.map((article, index) => (
                         <Articles key={index} title={article.title} desc={article.desc} img={article.img} date={article.date} />
