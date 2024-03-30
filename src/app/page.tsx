@@ -8,15 +8,16 @@ import Extras from "../components/Extras";
 
 export default async function Home() {
   const products = await Helpers.getProducts(
-    "https://api.escuelajs.co/api/v1/products" ?? []
+    "https://api.escuelajs.co/api/v1/categories/2/products" ?? []
   );
+  const insta = await Helpers.formatProducts() ?? []
   return (
     <main className={`${styles.main} min-h-screen max-w-7xl mx-auto`}>
       <Hero />
       <Arrivals />
       <Catgories />
       <Best_Sellers products={products} />
-      <Extras />
+      <Extras insta={insta} />
     </main>
   );
 }

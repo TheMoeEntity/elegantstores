@@ -44,3 +44,9 @@ export interface fakeProductType extends productType  {
     description:string
     images:string[]
 }
+export interface IArticle {
+    title:string
+    desc:string
+    date:string
+    img:StaticImageData
+}

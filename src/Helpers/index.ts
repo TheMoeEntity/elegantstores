@@ -1,4 +1,10 @@
+import { fakeProductType } from "./types";
+
 export class Helpers {
+    static async formatProducts() {
+        const insta = await this.getProducts('https://api.escuelajs.co/api/v1/products/?categoryId=1') as fakeProductType[]
+        return insta.map(prod => prod.images[0])
+    }
     static async getProducts(url: string) {
         const products = await fetch(url)
             .then(async (res) => {
