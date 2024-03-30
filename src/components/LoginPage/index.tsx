@@ -18,7 +18,7 @@ const LoginPage = () => {
                 <div className='flex flex-col gap-5 w-full'>
                     <h1 className='text-4xl text-black md:text-[52px] w-full leading-tight'>Sign in</h1>
                     <div className='leading-loose '>
-                        Don't have an account yet <Link href={'/signup'} className='text-[#377DFF]'>Sign up</Link>
+                        {`Don't`} have an account yet <Link href={'/signup'} className='text-[#377DFF]'>Sign up</Link>
                     </div>
                     <form className="mt-5 flex md:w-[90%] flex-col gap-[20px] pb-12">
                         <div className="">
