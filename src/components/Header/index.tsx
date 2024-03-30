@@ -12,7 +12,7 @@ const Header = () => {
     const [company, setCompany] = useState<boolean>(false)
     const [sales, setSales] = useState<boolean>(true)
     const [cartOpen, setCartOpen] = useState<boolean>(false);
-    const [profileOpen, setProfileOpen] = useState(true);
+    const [profileOpen, setProfileOpen] = useState(false);
     return (
         <header className='flex flex-col relative'>
             <CartModal

@@ -4,8 +4,8 @@ import dynamic from "next/dynamic";
 import Script from "next/script";
 import { useScrollTop } from "../Helpers/Hooks";
 import { scrollTopView } from "../Helpers/Views";
-const Footer = dynamic(() => import("../components/Footer"), { ssr: false });
-const Header = dynamic(() => import("../components/Header"));
+const Footer = dynamic(() => import("../components/Footer"), { ssr: true });
+import Header from "../components/Header"
 
 
 const Template = ({ children }: { children: ReactNode }) => {
