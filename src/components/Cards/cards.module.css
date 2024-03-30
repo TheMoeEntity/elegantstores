@@ -2,11 +2,13 @@
   width: 230px;
   height: auto;
 }
+
 .featured .img {
   width: 100%;
   height: 250px;
   position: relative;
 }
+
 .featured .img .cart {
   background-color: black;
   color: white;
@@ -20,6 +22,7 @@
   text-align: center;
   border-radius: 5px;
 }
+
 .featured .img .hot {
   z-index: 2;
   position: absolute;
@@ -30,6 +33,7 @@
   color: black;
   font-weight: bolder;
 }
+
 .featured .deets {
   display: flex;
   flex-flow: column wrap;
@@ -37,19 +41,23 @@
   border-left: 0.5px solid #ccc;
   padding: 15px;
 }
-.featured .deets > div {
+
+.featured .deets>div {
   margin: 5px 0;
 }
+
 .articles {
   min-width: 300px;
   max-width: 350px !important;
   height: auto;
 }
+
 .articles .img {
   width: 100%;
   height: 250px;
   position: relative;
 }
+
 .articles .deets {
   display: flex;
   flex-flow: column wrap;
@@ -57,6 +65,81 @@
   border-left: 0.5px solid #ccc;
   padding: 15px;
 }
+
 .articles .deets a {
   text-decoration: underline;
+}
+
+
+.profile {
+  position: absolute;
+  width: 270px;
+  height: 380px;
+  background-color: white;
+  right: 0px;
+  transition: 0.6s ease;
+  top: -380px;
+  z-index: 999;
+  box-shadow: 5px 9px 30px 0 rgb(0 0 0 / 20%);
+  border-radius: 25px;
+  overflow: scroll;
+  padding: 0;
+  margin: 0;
+  padding: 30px 25px;
+}
+
+.profile img {
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.userheader {
+  width: 100%;
+  min-height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-flow: row wrap;
+  border-bottom: 1px solid #cccc;
+  padding-bottom: 20px;
+}
+
+.userheader>div:nth-child(1) {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  position: relative;
+}
+
+.userheader>div:nth-child(2) {
+  margin-left: 15px;
+  height: 100%;
+}
+
+.details {
+  height: 50px;
+  display: flex;
+  flex-flow: column;
+  font-weight: 200;
+  font-size: 16px;
+  justify-content: space-between;
+}
+
+.profile ul {
+  margin: 0 20px;
+  padding: 0;
+}
+
+.profile ul li {
+  list-style-type: none;
+  cursor: pointer;
+  margin: 20px 0;
+}
+
+.profile ul li i {
+  margin-right: 15px;
+}
+
+.profile>div:nth-child(2) {
+  border-bottom: 1px solid #cccc;
 }

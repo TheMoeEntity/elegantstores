@@ -34,7 +34,9 @@ html {
 a:hover {
   color: #ffd16a;
 }
-
+.sales {
+  transition: 0.75s ease;
+}
 .scrollTop {
   width: 40px;
   height: 40px;

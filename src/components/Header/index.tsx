@@ -2,14 +2,21 @@
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
+import Profile from '../Cards/Profile'
 
 const Header = () => {
     const { push } = useRouter()
     const [isOpen, setOpen] = useState<boolean>(false)
     const [product, setProduct] = useState<boolean>(false)
     const [company, setCompany] = useState<boolean>(false)
+    const [sales, setSales] = useState<boolean>(true)
+    const [profileOpen, setProfileOpen] = useState(false);
     return (
-        <header className='flex flex-col'>
+        <header className='flex flex-col relative'>
+            <Profile
+                forceClose={() => setProfileOpen(false)}
+                profileOpen={profileOpen}
+            />
             <div className={`md:hidden shadow-2xl w-[70%] h-full fixed duration-500 ease z-[99999999999] bg-white top-0 ${isOpen == !true ? 'left-[-100%]' : 'left-0'}`}>
                 <button onClick={() => setOpen(!isOpen)} className="absolute top-[10px] left-[10px] w-[40px] h-[40px] flex items-center justify-center text-4xl text-[#171D28]" >
                     &times;
@@ -61,18 +68,18 @@ const Header = () => {
                 </div>
 
             </div>
-            <div className='w-full bg-[#377DFF] py-3 text-white gap-4 flex justify-center items-center px-4'>
+            <div className={`transition-all ease-in duration-1000 w-full bg-[#377DFF]  text-white gap-x-4 flex overflow-hidden justify-center items-center px-4 ${sales === true ? 'overflow-auto max-h-fit py-3' : 'max-h-0'} sales`}>
                 <span>30% off storewide - limited time!</span>
-                <span className='text-2xl'>&times;</span>
+                <button onClick={() => setSales(false)} className='text-2xl'>&times;</button>
             </div>
             <div className='bg-[#fafafa] flex justify-between lg:justify-around px-7 py-5'>
                 <div className='flex gap-4 items-center'>
                     <button className='md:hidden' onClick={() => setOpen(true)}>
                         <i className='fa-solid fa-bars text-2xl block '></i>
                     </button>
-                    <b className='font-extrabold'>3legant.</b>
+                    <b className='font-extrabold md:text-3xl'>3legant.</b>
                 </div>
-                <div className='md:flex lg:flex gap-8 hidden'>
+                <div className='md:flex lg:flex gap-8 hidden items-center'>
                     <button onClick={() => push('/')}>Home</button>
                     <div className='relative group'>
                         <button>
@@ -112,11 +119,12 @@ const Header = () => {
                     <button onClick={() => push('/contact')}>Contact us</button>
                 </div>
                 <div className='flex gap-4 flex-row items-center'>
-                    <div className='md:flex hidden gap-4'>
-                        <i className='fa-solid fa-magnifying-glass text-2xl'></i>
-                        <i className='fa-solid fa-user text-2xl'></i>
+                    <div className='flex gap-4'>
+                        <button className='fa-solid fa-magnifying-glass text-2xl md:text-xl'></button>
+                        <button onClick={() => setProfileOpen(!profileOpen)
+                        } className='fa-solid fa-user text-2xl md:text-xl'></button>
                     </div>
-                    <i className='fa-solid fa-shopping-bag text-2xl'></i>
+                    <button className='fa-solid fa-shopping-bag text-2xl md:text-xl'></button>
                     <b className='font-extrabold h-6 w-6 flex flex-col items-center justify-center rounded-full bg-black text-white text-sm'>2</b>
                 </div>
             </div>

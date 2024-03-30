@@ -2,7 +2,24 @@
 const nextConfig = {
     reactStrictMode: true,
     images: {
-        domains: ["fakestoreapi.com", "random.imagecdn.app",'i.imgur.com'],
+        remotePatterns: [
+            {
+                protocol: 'https',
+                hostname: "fakestoreapi.com",
+                pathname: '**'
+            },
+            {
+                protocol: 'https',
+                hostname: "random.imagecdn.app",
+                pathname: '**'
+            }
+            ,
+            {
+                protocol: 'https',
+                hostname: 'i.imgur.com',
+                pathname: '**'
+            }
+        ]
     },
 };
 
