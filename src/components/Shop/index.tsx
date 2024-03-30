@@ -102,12 +102,12 @@ const ShopPage = ({ products }: { products: fakeProductType[] }) => {
                             <i className='fa-solid fa-angle-down ml-3'></i>
                         </div>
                     </div>
-                    <div className='px-5 py-12 flex flex-col gap-10 w-full h-fit md:w-[100%] mx-auto'>
-                        <div className="flex flex-row md:flex-row gap-5 justify-center flex-wrap mb-7">
+                    <div className='md:px-5 py-12 flex flex-col gap-10 w-full h-fit md:w-[100%] mx-auto'>
+                        <div className="flex flex-row gap-2 gap-y-7 md:gap-y-5 md:gap-4 justify-center flex-wrap mb-7">
                             {
                                 (products).slice(0, 8).map((x) => (
-                                    <div key={x.id} className='flex md:min-h-fit flex-col gap-1 h-fit min-w-full md:min-w-[10%] md:basis-[30%] lg:basis-[23%]'>
-                                        <div className='w-full mt-0 my-5 relative min-h-[410px] md:min-h-[200px] max-h-[auto]'>
+                                    <div key={x.id} className='flex md:min-h-fit flex-col gap-0 h-fit md:min-w-[10%] basis-[47%] md:basis-[30%] lg:basis-[23%]'>
+                                        <div className='w-full mt-0 my-5 relative min-h-[250px] md:min-h-[200px] max-h-[auto]'>
                                             <Image
                                                 src={x.images[0]}
                                                 alt='Best sellers'
