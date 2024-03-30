@@ -11,7 +11,7 @@ export default async function Home() {
     "https://api.escuelajs.co/api/v1/categories/2/products" ?? []
   );
   const justIn = await Helpers.getProducts('https://fakestoreapi.com/products') ?? []
-  const insta = await Helpers.formatProducts() ?? []
+  const insta = await Helpers.formatProducts() || []
   return (
     <main className={`${styles.main} min-h-screen max-w-7xl mx-auto`}>
       <Hero />

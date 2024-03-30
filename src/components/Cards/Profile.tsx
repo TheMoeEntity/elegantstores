@@ -20,6 +20,7 @@ const Profile = ({ profileOpen = false, forceClose }: { profileOpen: boolean, fo
         <div
             style={{
                 top: profileOpen === true ? "130px" : "-380px",
+                visibility: !profileOpen ? 'hidden' : 'visible'
             }}
             className={styles.profile}
         >

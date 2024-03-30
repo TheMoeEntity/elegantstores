@@ -15,6 +15,7 @@ const CartModal = ({ cartOpen, closeCart, forceClose }: { cartOpen: boolean, clo
         <div
             style={{
                 top: cartOpen ? "130px" : "-500px",
+                visibility:!cartOpen ? 'hidden':'visible'
             }}
             className={styles.cartModal}
         >
