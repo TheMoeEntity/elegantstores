@@ -1,0 +1,168 @@
+.contact {
+  width: 1600px;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 30px;
+  padding-bottom: 0;
+}
+
+.contact>p {
+  width: 100%;
+  padding: 20px;
+}
+
+.sales {
+  width: 100%;
+  display: flex;
+  flex-flow: row wrap;
+  margin-top: 90px;
+}
+
+.sales>div {
+  flex: 1 1;
+}
+
+.sales>div:nth-child(1) {
+  height: 350px;
+  position: relative;
+}
+
+.sales>div:nth-child(2) {
+  background: #f3f5f7;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 30px;
+}
+
+.sales>div button {
+  border: none;
+  color: black;
+  padding: 5px 0px;
+  background: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 1);
+}
+
+.categories {
+  width: 100%;
+  margin: auto;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  margin: 30px 0;
+}
+
+.categories>div {
+  flex: 33.3333%;
+  margin: 10px 5px;
+  background-color: #f3f5f7;
+  max-width: 330px;
+  min-width: 250px;
+  height: 300px;
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: center;
+  align-items: center;
+  color: black;
+  font-size: medium;
+}
+
+.categories>div i {
+  font-size: 20px;
+}
+
+.maps {
+  width: 100%;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+}
+
+.maps>div {
+  flex: 1 1;
+  margin: 15px 15px;
+}
+
+.maps form {
+  width: 100%;
+}
+
+.maps form .formGroup {
+  width: 100%;
+  margin: 12px 0;
+}
+
+.maps form label {
+  display: block;
+  font-weight: bolder;
+  margin: 10px 0;
+}
+
+.maps form input,
+.maps form textarea {
+  width: 100%;
+  border: 1px solid #dcdcdc;
+  display: block;
+  border-radius: 7px;
+  padding: 10px 14px;
+  background-color: transparent;
+}
+
+.maps form button {
+  background-color: black;
+  color: whitesmoke;
+  border: none;
+  padding: 10px 15px;
+}
+
+.guarantee {
+  width: 100%;
+  margin: auto;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  margin: 0px 0;
+  background-color: #f3f5f7;
+}
+
+.guarantee i {
+  font-size: 27px;
+}
+
+.guarantee>div {
+  flex: 20%;
+  margin: 10px 5px;
+  background-color: #f3f5f7;
+  max-width: 330px;
+  min-width: 250px;
+  height: fit-content;
+  padding: 20px;
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: center;
+  align-items: center;
+  color: black;
+  font-size: medium;
+}
+
+.guarantee>div p {
+  color: gray;
+}
+
+@media screen and (max-width: 498px) {
+  .maps>div {
+    flex: 100%;
+  }
+
+  .sales>div {
+    flex: 100%;
+  }
+
+  .sales>div:nth-child(1) {
+    height: 250px;
+  }
+
+  .contact {
+    padding: 30px 17px;
+  }
+}

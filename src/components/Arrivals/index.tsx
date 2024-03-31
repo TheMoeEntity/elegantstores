@@ -1,7 +1,7 @@
 'use client'
 import React, { useEffect, useRef, useState } from 'react'
 import FeaturedCard from '../Cards/Featured'
-import jacket from '../../../public/images/jacket.png'
+import styles from '../ContactPage/index.module.css'
 import { useClientMediaQuery } from '@/src/Helpers/Hooks'
 import { productType } from '@/src/Helpers/types'
 
@@ -45,6 +45,55 @@ const Arrivals = ({ justIn }: { justIn: productType[] }) => {
 
     return (
         <section>
+            <div className={styles.guarantee}>
+                <div>
+                    <div>
+                        <i className="fa-solid fa-truck"></i>
+                    </div>
+                    <div>
+                        <h5 className="fw-light my-3">Free Shipping</h5>
+                    </div>
+                    <div className="text-center">
+                        <p>Orders above $40.00</p>
+                    </div>
+                </div>
+
+                <div>
+                    <div>
+                        <i className="fa fa-money"></i>
+                    </div>
+                    <div>
+                        <h5 className="fw-light my-3">Money back</h5>
+                    </div>
+                    <div className="text-center">
+                        <p>30 days guarantee</p>
+                    </div>
+                </div>
+
+                <div>
+                    <div>
+                        <i className="fa fa-credit-card" aria-hidden="true"></i>
+                    </div>
+                    <div>
+                        <h5 className="fw-light my-3">Secure Payments</h5>
+                    </div>
+                    <div className="text-center">
+                        <p>Secured by Stripe</p>
+                    </div>
+                </div>
+
+                <div>
+                    <div>
+                        <i className="fa-solid fa-phone"></i>
+                    </div>
+                    <div>
+                        <h5 className="fw-light my-3">24/7 Assitance</h5>
+                    </div>
+                    <div className="text-center">
+                        <p>Phone and email support</p>
+                    </div>
+                </div>
+            </div>
             <section className="bg-white">
                 <div className="py-8 lg:py-16 mx-auto max-w-screen-xl px-4">
                     <h2 className="mb-8 lg:mb-16 text-3xl font-extrabold tracking-tight leading-tight text-center text-gray-600  md:text-4xl">Trending Brands</h2>
