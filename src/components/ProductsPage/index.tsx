@@ -25,7 +25,7 @@ const ProductsPage = ({ justIn }: { justIn: productType[] }) => {
         <span className='fa-angle-right fa'></span><span>Puffers</span>
         <span className='fa-angle-right fa'></span><span className='text-black'>Leather Puffers</span>
       </div>
-      <div className="flex flex-col md:flex-row mt-7 mx-auto w-[90%] mb-8">
+      <div className="flex flex-col lg:flex-row mt-7 mx-auto w-[90%] mb-8">
         <div className='basis-full flex flex-col gap-y-4 md:basis-[50%]'>
           <div className="w-full">
             <Image
@@ -67,7 +67,7 @@ const ProductsPage = ({ justIn }: { justIn: productType[] }) => {
           </div>
         </div>
 
-        <div className='basis-full md:basis-[50%] gap-y-8 py-8 md:py-0 flex flex-col px-2 md:px-5'>
+        <div className='basis-full md:basis-[50%] gap-y-8 py-8 lg:py-0 flex flex-col px-2 md:px-5'>
           <div className='flex gap-x-3 items-center'>
             {[...Array(4)].map((_, i) => (
               <span key={i} className={`fa fa-star`}></span>
@@ -211,7 +211,7 @@ const ProductsPage = ({ justIn }: { justIn: productType[] }) => {
                       alt='profile'
                       quality={100}
                       sizes='100vw'
-                      className='object-cover w-[200%] md:w-[100%] rounded-full h-full'
+                      className='object-cover w-[calc(0.4*167px)] md:w-[calc(0.45*167px)] md:h-[calc(0.45*167px)] lg:w-auto rounded-full h-[calc(0.4*167px)] lg:h-full'
                     />
                   </div>
                   <div className='lg:pl-7'>
@@ -246,9 +246,8 @@ const ProductsPage = ({ justIn }: { justIn: productType[] }) => {
             className="flex gap-5 flex-nowrap lg:ml-[60px] md:ml-0 ml-8 mr-10 whitespace-nowrap"
           >
             {
-              [...justIn.slice(0, 7)].map((x) => (
+              [...justIn.slice(0, 4)].map((x) => (
                 <FeaturedCard img={x.image} key={x.id} title={x.title} price={x.price} />
-
               ))
             }
           </div>
