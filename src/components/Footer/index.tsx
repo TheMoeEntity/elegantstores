@@ -1,4 +1,4 @@
-import React from 'react'
+import Link from 'next/link'
 
 const Footer = () => {
   return (
@@ -24,11 +24,11 @@ const Footer = () => {
           </div>
         </div>
 
-        <span className='text-sm text-gray-700'>Home</span>
-        <span className='text-sm text-gray-700'>Shop</span>
-        <span className='text-sm text-gray-700'>Products</span>
-        <span className='text-sm text-gray-700'>Articles</span>
-        <span className='text-sm text-gray-700'>Contact Us</span>
+        <Link href={'/'} className='text-sm text-gray-700'>Home</Link>
+        <Link href={'/shop'} className='text-sm text-gray-700'>Shop</Link>
+        <Link href={'/shop'} className='text-sm text-gray-700'>Products</Link>
+        <Link href={'/blog'} className='text-sm text-gray-700'>Articles</Link>
+        <Link href={'/contact'} className='text-sm text-gray-700'>Contact Us</Link>
       </div>
 
       <div className='bg-b-[1px] border-gray-600 py-3 flex flex-col gap-5'>
