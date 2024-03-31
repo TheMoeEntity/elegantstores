@@ -1,5 +1,6 @@
 import styles from "./cards.module.css";
 import man5 from "../../public/images/man5.jpeg";
+import Link from "next/link";
 import Image, { StaticImageData } from "next/image";
 
 const FeaturedCard = ({
@@ -13,7 +14,7 @@ const FeaturedCard = ({
 }) => {
   return (
     <div className={styles.featured}>
-      <div className={`${styles.img}`}>
+      <div className={`${styles.img} bg-[#F3F5F7]`}>
         <Image
           alt="Card Picture"
           style={{ objectFit: "cover" }}
@@ -33,10 +34,10 @@ const FeaturedCard = ({
           ))}
         </div>
         <div className="w-full flex-col flex-wrap">
-          <p className="text-sm font-bold">{title}</p>
+          <Link href={'/products/'+title} className="text-sm font-bold">{title}</Link>
         </div>
         <div>${price}</div>
-      </div>
+      </div> 
     </div>
   );
 };

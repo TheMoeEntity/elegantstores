@@ -9,12 +9,14 @@ import Link from 'next/link'
 import { useState } from 'react'
 import FeaturedCard from '../Cards/Featured'
 import { productType } from '@/src/Helpers/types'
+import profile from '../../../public/images/cat4.png'
 
 const ProductsPage = ({ justIn }: { justIn: productType[] }) => {
 
   const [additional, setAdditional] = useState<boolean>(true)
   const [question, setQuestion] = useState<boolean>(false)
-  const [quantity,setQuantity] = useState<number>(1)
+  const [quantity, setQuantity] = useState<number>(1)
+  const [index, setIndex] = useState<number>(0)
 
   return (
     <div className='w-full min-h-screen'>
@@ -114,7 +116,7 @@ const ProductsPage = ({ justIn }: { justIn: productType[] }) => {
 
           <div className='flex gap-x-4 mt-5 w-full'>
             <div className='w-[28%] md:w-[20%] h-auto bg-gray-100 flex items-center rounded-lg justify-evenly'>
-              <button onClick={()=> setQuantity(quantity === 1 ? 1:quantity-1)}>-</button><span className='font-extrabold'>{ quantity}</span><button onClick={()=> setQuantity(quantity+1)}>+</button>
+              <button onClick={() => setQuantity(quantity === 1 ? 1 : quantity - 1)}>-</button><span className='font-extrabold'>{quantity}</span><button onClick={() => setQuantity(quantity + 1)}>+</button>
             </div>
             <button className='border-[1px] border-black rounded-lg w-[70%] py-2 text-black'><i className='fa-solid fa-heart mr-3'></i>Wishlist</button>
           </div>
@@ -149,6 +151,90 @@ const ProductsPage = ({ justIn }: { justIn: productType[] }) => {
         </div>
 
       </div>
+
+      <div className='mx-auto w-[90%] flex flex-col gap-y-5'>
+        <div className='border-b-[1px] border-[#DEE1E6] pb-0.3 mb-[32px] w-full'>
+          <button onClick={() => setIndex(0)} className={`mr-7 ${index == 0 ? 'border-b-[2px] border-black pb-2' : 'text-[#0D141F99]'}  `}>Additional Info</button>
+          <button onClick={() => setIndex(1)} className={`mr-7 ${index == 1 ? 'border-b-[2px] border-black pb-2' : 'text-[#0D141F99]'} `}>Questions</button>
+          <button onClick={() => setIndex(2)} className={`${index == 2 ? 'border-b-[2px] border-black pb-2' : 'text-[#0D141F99]'} `}>Reviews</button>
+        </div>
+        <h1 className='font-semibold text-3xl'>Customer Reviews</h1>
+        <div className='flex gap-x-3 items-center'>
+          {[...Array(4)].map((_, i) => (
+            <span key={i} className={`fa fa-star`}></span>
+          ))}
+          <span className='font-extrabold'>3 reviews</span>
+        </div>
+
+        <div className="w-full">
+          <form className="w-full md:w-[65%] my-5">
+            <h4 className="mb-4">Write a review</h4>
+
+            <div className='flex flex-col md:flex-row gap-4 mb-5 justify-between'>
+              <div className="form-group w-full md:basis-[48%]">
+                <input className="w-full border-[1px] px-4 py-3 rounded-md" type="text" name="name" id="name" placeholder="Name:" />
+              </div>
+
+              <div className="form-group md:basis-[48%]">
+                <input className="w-full border-[1px] px-4 py-3 rounded-md" type="email" name="mail" id="mail" placeholder="Email:" />
+              </div>
+            </div>
+
+
+
+            <textarea className="mb-4 w-full px-4 py-3 border-[1px]" name="comment" id="comment" cols={30} rows={5} placeholder="Comment"></textarea>
+
+            <button className="rounded-md bg-black text-white py-3 px-4" type="submit">Submit review </button>
+          </form>
+        </div>
+
+        <div className='flex justify-between md:flex-row flex-col gap-y-5'>
+          <h2 className='text-3xl font-semibold'>11 Reviews</h2>
+          <div id='service' className={`md:w-[40%] lg:w-[20%]`}>
+            <select
+              className="custom-select outline-none w-full px-2 py-2 text-[black] font-semiold border-[1px] border-[#eef5ff]"
+            >
+              <option>Newest</option>
+              <option>Older</option>
+            </select>
+          </div>
+        </div>
+
+        <div className='flex w-full flex-col'>
+          {
+            [...Array(3)].map((_x, i) => (
+              <div key={i} className='flex border-b-[1px] flex-col pb-5 pt-3 gap-y-7 '>
+                <div className='flex gap-x-3 items-center'>
+                  <div className='items-center'>
+                    <Image
+                      src={profile}
+                      alt='profile'
+                      quality={100}
+                      sizes='100vw'
+                      className='object-cover w-[200%] md:w-[100%] rounded-full h-full'
+                    />
+                  </div>
+                  <div className='lg:pl-7'>
+                    <div>Sofia Havertz</div>
+                    {[...Array(4)].map((_, i) => (
+                      <span key={i} className={`fa fa-star text-[8px] md:text-[13px]`}></span>
+                    ))}
+                  </div>
+
+                </div>
+                <p className='text-gray-500 md:pl-20 lg:pl-36'>
+                  I bought it 3 weeks ago and now come back just to say {`“Awesome Product”`}. I really enjoy it. At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupt et quas molestias excepturi sint non provident.
+                </p>
+              </div>
+            ))
+          }
+        </div>
+        <div className='mx-auto w-fit mt-10'>
+          <button className='rounded-full border-[1px] border-black px-6 py-2 text-xl'>Load more</button>
+        </div>
+      </div>
+
+
       <div className="flex flex-col m-auto no-scrollbar p-auto mt-7 md:w-[90%]">
         <div className='flex justify-between py-7 items-center px-5'>
           <strong className='font-[500] text-4xl'>Products you may like</strong>

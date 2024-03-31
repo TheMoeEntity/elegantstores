@@ -27,7 +27,7 @@ const Header = () => {
             <div className={`md:hidden shadow-2xl w-[80%] h-full fixed duration-500 ease z-[99999999999] bg-white top-0 ${isOpen == !true ? 'left-[-100%]' : 'left-0'} no-scrollbar`}>
                 <div className="w-full flex-col flex justify-between top-[10px] left-[10px] px-5 py-5 items-center text-4xl text-[#171D28] gap-8">
                     <div className='flex justify-between items-center w-full'>
-                        <h1 className='text-2xl font-extrabold'>3Legant.</h1>
+                        <Link href={'/'} className='text-2xl font-extrabold'>3Legant.</Link>
                         <button onClick={() => setOpen(!isOpen)} >
                             &times;
                         </button>
@@ -145,7 +145,7 @@ const Header = () => {
                     <button className='md:hidden' onClick={() => setOpen(true)}>
                         <i className='fa-solid fa-bars text-2xl block '></i>
                     </button>
-                    <b className='font-extrabold md:text-3xl'>3legant.</b>
+                    <Link href={'/'} className='text-2xl font-extrabold'>3Legant.</Link>
                 </div>
                 <div className='md:flex lg:flex gap-8 hidden items-center'>
                     <button onClick={() => push('/')}>Home</button>

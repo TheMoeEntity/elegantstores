@@ -45,6 +45,20 @@ const Profile = ({ profileOpen = false, forceClose }: { profileOpen: boolean, fo
             <div className="">
                 <ul>
                     <li>
+                        <Link href={`/login`}>
+                            <div>
+                                <i className="fas fa-sign-in-alt"></i> Log in
+                            </div>
+                        </Link>
+                    </li>
+                    <li>
+                        <Link href={`/signup`}>
+                            <div>
+                                <i className="fas fa-user-plus"></i>Create account
+                            </div>
+                        </Link>
+                    </li>
+                    <li>
                         <Link href={`/account`}>
                             <div>
                                 <i className="fa-solid fa-user"></i> My Account
@@ -77,11 +91,6 @@ const Profile = ({ profileOpen = false, forceClose }: { profileOpen: boolean, fo
                     <li>
                         <div>
                             <i className="fa-solid fa-circle-half-stroke"></i>Dark mode
-                        </div>
-                    </li>
-                    <li>
-                        <div>
-                            <i className="fa-solid fa-gear"></i>Settings
                         </div>
                     </li>
 
