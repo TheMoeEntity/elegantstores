@@ -13,7 +13,7 @@ const FeaturedCard = ({
 }) => {
   return (
     <div className={styles.featured}>
-      <div className={styles.img}>
+      <div className={`${styles.img}`}>
         <Image
           alt="Card Picture"
           style={{ objectFit: "cover" }}
@@ -24,7 +24,7 @@ const FeaturedCard = ({
           sizes="100vw"
         />
         <button className={styles.cart}>Add to cart</button>
-        <div className={styles.hot}>NEW</div>
+        <div className={`shadow-lg rounded-sm ${styles.hot}`}>NEW</div>
       </div>
       <div className={styles.deets}>
         <div>

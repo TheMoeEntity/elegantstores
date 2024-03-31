@@ -1,16 +1,21 @@
 'use client'
 import Image from 'next/image'
-import React from 'react'
+import React, { useEffect } from 'react'
 import showcase from '../../../public/images/boy.jpeg'
 import stool from '../../../public/images/showcase.png'
 import showcase2 from '../../../public/images/showcase2.webp'
 import showcase4 from '../../../public/images/showcase4.webp'
 import Link from 'next/link'
 import { useState } from 'react'
+import FeaturedCard from '../Cards/Featured'
+import { productType } from '@/src/Helpers/types'
 
-const ProductsPage = () => {
+const ProductsPage = ({ justIn }: { justIn: productType[] }) => {
+
   const [additional, setAdditional] = useState<boolean>(true)
   const [question, setQuestion] = useState<boolean>(false)
+  const [quantity,setQuantity] = useState<number>(1)
+
   return (
     <div className='w-full min-h-screen'>
       <div className="text-gray-500 flex gap-x-3 items-center mt-7 mx-auto w-[90%]">
@@ -67,12 +72,12 @@ const ProductsPage = () => {
             ))}
             <span className='font-extrabold'>3 reviews</span>
           </div>
-          <div><h1 className='font-extrabold text-3xl md:text-5xl'>Tray table</h1></div>
+          <div><h1 className='font-extrabold text-4xl md:text-5xl'>Tray table</h1></div>
           <div className='text-gray-500 pb-5 border-b-[1px] border-slate-200 flex flex-col gap-y-3'>
             <span>Buy one or buy a few and make every space where you sit more convenient. Light and easy to move around with removable tray top, handy for serving snacks.</span>
             <span className='font-extrabold text-3xl md:text-4xl text-black'>$89.99</span> <span>In stock</span>
           </div>
-          <div className='text-gray-500'>
+          <div className='text-gray-500 border-b-[1px] pb-5'>
             Offer expires in:
             <div className='flex flex-wrap gap-y-4 gap-x-4 mt-5'>
               <div className='w-16 px-3 h-16 rounded-md bg-gray-100 flex flex-col items-center justify-center text-black'>
@@ -109,7 +114,7 @@ const ProductsPage = () => {
 
           <div className='flex gap-x-4 mt-5 w-full'>
             <div className='w-[28%] md:w-[20%] h-auto bg-gray-100 flex items-center rounded-lg justify-evenly'>
-              <span>-</span><span className='font-extrabold'>1</span><span>+</span>
+              <button onClick={()=> setQuantity(quantity === 1 ? 1:quantity-1)}>-</button><span className='font-extrabold'>{ quantity}</span><button onClick={()=> setQuantity(quantity+1)}>+</button>
             </div>
             <button className='border-[1px] border-black rounded-lg w-[70%] py-2 text-black'><i className='fa-solid fa-heart mr-3'></i>Wishlist</button>
           </div>
@@ -143,6 +148,25 @@ const ProductsPage = () => {
           </div>
         </div>
 
+      </div>
+      <div className="flex flex-col m-auto no-scrollbar p-auto mt-7 md:w-[90%]">
+        <div className='flex justify-between py-7 items-center px-5'>
+          <strong className='font-[500] text-4xl'>Products you may like</strong>
+        </div>
+        <div
+          className="flex overflow-x-scroll no-scrollbar pb-10 no-scrollbar"
+        >
+          <div
+            className="flex gap-5 flex-nowrap lg:ml-[60px] md:ml-0 ml-8 mr-10 whitespace-nowrap"
+          >
+            {
+              [...justIn.slice(0, 7)].map((x) => (
+                <FeaturedCard img={x.image} key={x.id} title={x.title} price={x.price} />
+
+              ))
+            }
+          </div>
+        </div>
       </div>
     </div>
   )
