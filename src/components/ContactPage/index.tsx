@@ -1,9 +1,17 @@
+'use client'
 import Image from "next/image";
 import styles from "./index.module.css";
 import furniture from "../../../public/images/furniture-2.jpeg";
 import Link from "next/link";
+import { useState } from "react";
+import { faqs } from "@/src/Helpers/constants";
 
 const ContactPage = () => {
+  const [faq, setFaqs] = useState(faqs)
+  const FaqAction = (text: string) => {
+    setFaqs(state =>
+      state.map((item) => item.text === text ? { ...item, isActive: !item.isActive } : { ...item, isActive: false }))
+  }
   return (
     <div className={styles.contact}>
       <div>
@@ -119,6 +127,31 @@ const ContactPage = () => {
             ></iframe>
           </div>
         </div>
+
+        <div className="py-[100px]" id="faq">
+          <h1 className='text-center font-semibold text-4xl leading-[60px] mb-[90px]'>
+            Frequently <br />
+            Asked Questions
+          </h1>
+
+          <div className='mx-auto md:w-[80%] px-3 flex flex-col gap-[20px]'>
+            {
+              faq.map((x, i) => (
+                <div className='w-full' key={i}>
+                  <button
+                    onClick={() => FaqAction(x.text)}
+                    className='bg-[white] shadow-md py-5 px-5 rounded-md flex items-center justify-between w-full'>
+                    <span className='text-left'>{x.text}</span>
+                    <i className={`transition duration-200 fa-solid fa-angle-down ${x.isActive === true ? `rotate-180` : `rotate-0`}`}></i>
+                  </button>
+                  <div dangerouslySetInnerHTML={{ __html: x.reply }} className={`bg-[#f3f4f5] transition-all duration-200 ease rounded-md px-5 overflow-hidden shadow-md ${x.isActive === true ? `overflow-auto py-5 max-h-fit` : `max-h-0`} ${styles.faqButton}`} />
+                </div>
+
+              ))
+            }
+          </div>
+        </div>
+
 
         <div className="mt-12">
           <div className={`${styles.guarantee}`}>

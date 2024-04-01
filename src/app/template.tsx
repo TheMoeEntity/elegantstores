@@ -25,10 +25,10 @@ const Template = ({ children }: { children: ReactNode }) => {
                     src="https://kit.fontawesome.com/4ef8c63dd7.js"
                     crossOrigin="anonymous"
                 />
-                {
-                    scrollTopView(scrollBtn, scrollTop)
-                }
             </motion.div>
+            {
+                scrollTopView(scrollBtn, scrollTop)
+            }
         </>
 
     );

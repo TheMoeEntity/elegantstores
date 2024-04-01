@@ -1,8 +1,12 @@
-import React from 'react'
+import dynamic from "next/dynamic";
+const BlogPostUI = dynamic(() => import("../../../components/BlogPost"));
+
 
 const BlogPost = () => {
   return (
-    <div>BlogPost</div>
+    <main className="max-w-7xl mx-auto">
+      <BlogPostUI />
+    </main>
   )
 }
 

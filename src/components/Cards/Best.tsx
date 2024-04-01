@@ -13,25 +13,25 @@ const Best = ({
     desc: string
 }) => {
     return (
-        <div className='flex md:min-h-fit flex-col gap-3 h-fit min-w-full md:min-w-[10%] md:basis-[30%] lg:basis-[23%]'>
-            <div className='w-full my-5 relative min-h-[410px] md:min-h-[290px] max-h-[auto]'>
+        <div className='flex shadow-md md:min-h-fit flex-col gap-3 h-auto min-w-full md:min-w-[10%] md:basis-[30%] lg:basis-[23%] pb-5 rounded-sm'>
+            <div className='w-full relative min-h-[410px] md:min-h-[290px] max-h-[auto]'>
                 <Image
                     src={img}
                     alt='Best sellers'
                     quality={100}
                     sizes='100vw'
                     fill
-                    className='object-contain'
+                    className='md:object-cover object-contain'
                 />
             </div>
-            <div>
+            <div className='px-4 gap-x-2 flex '>
                 {[...Array(4)].map((_, i) => (
-                    <span key={i} className={`fa fa-star mx-1 my-1`}></span>
+                    <span key={i} className={`fa fa-star`}></span>
                 ))}
             </div>
-            <div className='text-2xl font-semibold'>{title}</div>
-            <div className='text-xs'>{desc}</div>
-            <div className='text-xl font-semibold'>${price}</div>
+            <div className='font-semibold px-4'>{title}</div>
+            {/* <div className='text-xs'>{desc}</div> */}
+            <div className='font-semibold px-4'>${price}</div>
         </div>
     )
 }

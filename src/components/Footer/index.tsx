@@ -42,7 +42,9 @@ const Footer = () => {
         <span className='text-sm text-gray-700'>Shipping Policy</span>
         <span className='text-sm text-gray-700'>Return & Refund</span>
         <span className='text-sm text-gray-700'>Support</span>
-        <span className='text-sm text-gray-700'>FAQs</span>
+        <span className='text-sm text-gray-700'>
+          <Link href={'/contact#faq'} className='text-sm text-gray-700'>FAQs</Link>
+        </span>
       </div>
 
       <div className='bg-b-[1px] border-gray-600 py-3 flex flex-col gap-5 gap-y-7 md:basis-[45%] lg:basis-[30%]'>

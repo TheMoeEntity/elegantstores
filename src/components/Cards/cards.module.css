@@ -122,3 +122,363 @@
 .profile>div:nth-child(2) {
   border-bottom: 1px solid #cccc;
 }
+
+.cart {
+  width: 100%;
+}
+
+.handles {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  width: 100%;
+}
+
+.handles>div {
+  width: fit-content;
+  height: auto;
+  padding-bottom: 10px;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  align-items: center;
+  margin: 20px 15px;
+  color: #b1b5c3;
+  cursor: pointer;
+}
+
+.handles>div.active {
+  border-bottom: 2px solid black;
+  color: black;
+  padding: 15px 10px;
+  padding-top: 0;
+  transition: 0.5s;
+}
+
+.handles>div>div:first-child.active {
+  background-color: black;
+  transition: backgroud-color 0.5s;
+}
+
+.handles>div>div:first-child {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #b1b5c3;
+  color: #ffff;
+  border-radius: 50%;
+  margin: 0 10px;
+  margin-left: 0;
+}
+
+.cartGrid {
+  display: flex;
+  width: 1100px;
+  max-width: 100%;
+  margin: 20px auto;
+  flex-flow: row wrap;
+  justify-content: space-between;
+}
+
+.cartGrid>div {
+  flex: 1 1;
+  margin: 15px 10px;
+  width: 100%;
+}
+
+.cartGrid>div:first-child {
+  flex-grow: 1.7;
+  padding: 15px 20px;
+}
+
+.cartGrid>div:nth-child(2) {
+  border: 1px solid black;
+  padding: 20px;
+  display: flex;
+  height: fit-content;
+  border-radius: 7px;
+  flex-flow: column wrap;
+}
+
+.cartGrid>div:nth-child(2)>div:nth-child(2) {
+  display: flex;
+  flex-flow: column wrap;
+}
+
+.cartGrid>div:nth-child(2)>div:nth-child(3),
+.cartGrid>div:nth-child(2)>div:nth-child(4) {
+  border-bottom: 0.5px solid black;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  padding: 15px;
+}
+
+.cartGrid>div:nth-child(2)>div:nth-child(2)>div {
+  margin: 10px 0;
+  border-radius: 7px;
+  border: 1px solid black;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  padding: 15px;
+}
+
+.cartGrid>div:nth-child(2)>div:nth-child(2)>div.active {
+  background-color: #f3f5f7;
+}
+
+.cartGrid>div button {
+  background-color: black;
+  color: white;
+  width: 100%;
+  padding: 10px;
+  border-radius: 7px;
+  margin-top: 15px;
+}
+
+.cartTitle {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  flex-flow: row wrap;
+}
+
+.cartTitle>div:nth-child(2) {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+}
+
+.cartTitle>div:nth-child(2)>div {
+  margin: 0 25px;
+  font-weight: bolder;
+}
+
+.cartDetail {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  flex-flow: row wrap;
+  align-items: center;
+  border-bottom: 0.5px solid black;
+  padding: 15px 0;
+}
+
+.cartDetail>div:nth-child(1) {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  width: fit-content;
+}
+
+.cartDetail>div:nth-child(1)>div {
+  margin: 0 8px;
+}
+
+.cartDetail>div:nth-child(1)>div:first-child {
+  position: relative;
+  object-fit: contain;
+  width: 70px;
+  margin-left: 0;
+  border-radius: 7px;
+  overflow: hidden;
+  height: 90px;
+}
+
+.cartDetail>div:nth-child(1)>div:nth-child(2) {
+  display: flex;
+  flex-flow: column wrap;
+}
+
+.cartDetail>div:nth-child(2) {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+}
+
+.cartDetail>div:nth-child(2)>div {
+  margin: 0 25px;
+}
+
+.counter {
+  display: flex;
+  flex-flow: row wrap;
+  width: 70px;
+  padding: 5px;
+  justify-content: space-evenly;
+  align-items: center;
+  border: 01px solid black;
+  border-radius: 7px;
+}
+
+.checkoutGrid {
+  display: flex;
+  width: 900px;
+  max-width: 100%;
+  margin: 20px auto;
+  flex-flow: row wrap;
+  justify-content: space-between;
+}
+
+.checkoutGrid>div {
+  flex: 1 1;
+  margin: 15px 6px;
+  width: 100%;
+}
+
+.checkoutGrid>div:nth-child(2) {
+  padding: 15px 20px;
+  border: 0.5px solid black;
+  border-radius: 7px;
+}
+
+.checkoutGrid>div:nth-child(1) {
+  flex-grow: 1.8;
+  padding: 0 20px;
+  display: flex;
+  height: fit-content;
+  flex-flow: column wrap;
+}
+
+.checkoutGrid>div:nth-child(1)>div:first-child {
+  margin-top: 0;
+}
+
+.checkoutGrid>div:nth-child(1)>div {
+  border-radius: 7px;
+  margin: 15px 0;
+  padding: 20px 20px;
+  border: 0.5px solid black;
+}
+
+.checkoutGrid>div:nth-child(1)>div form {
+  width: 100%;
+}
+
+.checkoutGrid>div:nth-child(1)>div form .formGroup {
+  width: 100%;
+  margin: 12px 0;
+}
+
+.twoCol {
+  display: flex;
+  width: 100%;
+  flex-flow: row wrap;
+  justify-content: space-between;
+}
+
+.twoCol>div {
+  flex: 1 / 1;
+  width: 48% !important;
+}
+
+.checkoutGrid>div:nth-child(1)>div form label {
+  display: block;
+  font-weight: bolder;
+  margin: 10px 0;
+}
+
+.checkoutGrid>div:nth-child(1)>div form input,
+.checkoutGrid>div:nth-child(1)>div form textarea {
+  width: 100%;
+  border: 1px solid #dcdcdc;
+  display: block;
+  border-radius: 7px;
+  padding: 5px 10px;
+  background-color: transparent;
+}
+
+.checkoutGrid>div:nth-child(1)>div form button {
+  background-color: black;
+  color: whitesmoke;
+  border: none;
+  padding: 10px 15px;
+}
+
+.receivedOrderContainer {
+  width: 450px;
+  max-width: 95%;
+  padding: 40px;
+  border-radius: 10px;
+  margin: 30px auto;
+  border: 1px solid rgba(179, 179, 179, 0.2);
+  box-shadow: 8px 9px 15px 4px rgba(179, 179, 179, 0.2);
+}
+
+.mainContainer {
+  width: 1100px;
+  max-width: 100%;
+  margin: 0 auto;
+  min-height: 700px;
+}
+
+@media screen and (max-width: 768px) {
+  .grid {
+    margin-left: 10px;
+  }
+
+  .featured h1 {
+    margin-left: 10px;
+  }
+}
+
+@media screen and (max-width: 498px) {
+  .twoCol>div {
+    flex: 100%;
+    width: 100% !important;
+    margin: 10px 0;
+  }
+
+  .sales>div {
+    flex: 100%;
+  }
+
+  .collections {
+    padding: 40px 5px;
+  }
+
+  .collections h2 {
+    padding: 40px 20px;
+  }
+
+  .collectionGrid>div {
+    flex: 100%;
+  }
+
+  .cartGrid>div {
+    flex: 100%;
+  }
+
+  .checkoutGrid>div {
+    flex: 100%;
+    margin: 15px 0;
+  }
+
+  .cartTitle>div:nth-child(2) {
+    display: none;
+  }
+
+  .cartDetail {
+    flex-flow: column wrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+  }
+
+  .cartDetail>div {
+    margin: 15px 0;
+  }
+
+  .cartDetail>div:nth-child(2) {
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: center;
+    margin: 15px 0;
+  }
+
+  .cartDetail>div:nth-child(2)>div {
+    margin: 8px 0;
+  }
+}

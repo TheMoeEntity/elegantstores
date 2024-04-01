@@ -1,8 +1,12 @@
-import React from 'react'
+import dynamic from "next/dynamic";
+const BlogPage = dynamic(() => import("../../components/Blog"));
+
 
 const Blog = () => {
   return (
-    <div>Blog</div>
+    <main className="max-w-7xl mx-auto">
+      <BlogPage />
+    </main>
   )
 }
 
