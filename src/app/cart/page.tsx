@@ -219,8 +219,8 @@ const Cart = () => {
                 {
                     step === 1 && (
                         <motion.div
-                            initial={{ y: step >= 0 ? '50%' : '-50%', opacity: 0 }}
-                            animate={{ y: 0, opacity: 1 }}
+                            initial={{ x: step >= 0 ? '50%' : '-50%', opacity: 0 }}
+                            animate={{ x: 0, opacity: 1 }}
                             transition={{ duration: 0.75, ease: 'anticipate' }}
                             className='flex flex-col gap-x-5 lg:flex-row md:items-center lg:items-start gap-y-7'>
                             <div className='flex-grow-[1.7] md:min-w-[50%] lg:min-w-[60%] gap-y-10 flex flex-col'>
@@ -381,9 +381,9 @@ const Cart = () => {
                 {
                     step === 2 && (
                         <motion.div
-                            initial={{ y: step >= 0 ? '50%' : '-50%', opacity: 0 }}
-                            animate={{ y: 0, opacity: 1 }}
-                            transition={{ duration: 0.35, ease:'backIn', }}
+                            initial={{ x: step >= 0 ? '50%' : '-50%', opacity: 0 }}
+                            animate={{ x: 0, opacity: 1 }}
+                            transition={{ duration: 0.35, ease:'anticipate', }}
                             className='flex flex-col gap-x-5 lg:flex-row md:items-center lg:items-start gap-y-7'>
                             <OrderComplete />
                         </motion.div>
