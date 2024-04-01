@@ -145,10 +145,10 @@ const BlogPost = () => {
           </div>
         </div>
 
-        <div className='flex justify-between h-fit flex-row items-center px-0 w-full md:mt-[158px]'>
-          <h2 className='text-3xl font-[500] md:w-full w-1/4'>You might also like</h2>
+        <div className='flex justify-between h-fit flex-row items-center px-0 w-full md:mt-[158px] mt-12'>
+          <h2 className='md:text-3xl text-2xl font-semibold md:font-[500] md:w-full '>You might also like</h2>
           <div className='flex justify-center w-fit items-center'>
-            <button className='underline whitespace-nowrap underline-offset-4 w-fit text-xl'>
+            <button className='hidden md:block underline whitespace-nowrap underline-offset-4 w-fit text-xl'>
               More articles &rarr;
             </button>
           </div>

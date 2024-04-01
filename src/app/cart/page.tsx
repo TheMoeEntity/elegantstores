@@ -22,7 +22,14 @@ const Cart = () => {
                         </div>
                     </div>
                 </div>
+
+            </div>
+            <div className="w-[90%] mx-auto">
                 
+                <div>
+
+                </div>
+
             </div>
         </main>
     )
