@@ -8,7 +8,7 @@ const OrderComplete = () => {
             </p>
             <i className="fa-solid fa-check-mark" />
             <p className="mt-2">
-                We've recieved your order and will be shipping it to you as soon as
+                We&#39;ve recieved your order and will be shipping it to you as soon as
                 possible.
             </p>
 
