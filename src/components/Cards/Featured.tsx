@@ -34,7 +34,7 @@ const FeaturedCard = ({
           ))}
         </div>
         <div className="w-full flex-col flex-wrap">
-          <Link href={'/products/'+title} className="text-sm font-bold">{title}</Link>
+          <Link href={'/products/' + title} className="text-sm font-bold hover:text-[#377DFF]">{title}</Link>
         </div>
         <div>${price}</div>
       </div> 

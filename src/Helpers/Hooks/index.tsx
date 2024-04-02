@@ -2,9 +2,20 @@
 import { usePathname, } from "next/navigation";
 import { useEffect, useRef } from "react";
 import { MutableRefObject } from "react";
-
 import { useState } from 'react';
+import { useRouter } from 'next/navigation'
 
+export const useHeaderState = () => {
+    const { push } = useRouter()
+    const [isOpen, setOpen] = useState<boolean>(false)
+    const [product, setProduct] = useState<boolean>(false)
+    const [company, setCompany] = useState<boolean>(false)
+    const [sales, setSales] = useState<boolean>(true)
+    const [cartOpen, setCartOpen] = useState<boolean>(false);
+    const [profileOpen, setProfileOpen] = useState(false);
+    const [search, setSearch] = useState(false)
+    return { isOpen, push, search, setSearch, setOpen, product, setProduct, company, setCompany, sales, setSales, cartOpen, setCartOpen, profileOpen, setProfileOpen }
+}
 export function useClientMediaQuery(query: string) {
     const [matches, setMatches] = useState<null | boolean>(null);
 

@@ -1,4 +1,5 @@
 import Image, { StaticImageData } from 'next/image'
+import Link from 'next/link';
 // import catimg4 from '../../../public/images/best.png'
 
 const Best = ({
@@ -29,8 +30,11 @@ const Best = ({
                     <span key={i} className={`fa fa-star`}></span>
                 ))}
             </div>
-            <div className='font-semibold px-4'>{title}</div>
-            {/* <div className='text-xs'>{desc}</div> */}
+            <Link href={'/products/' + title} className='font-semibold px-4'>
+                <span className='hover:text-[#377DFF]'>
+                    {title}
+                </span>
+            </Link>
             <div className='font-semibold px-4'>${price}</div>
         </div>
     )
