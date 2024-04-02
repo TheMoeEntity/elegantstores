@@ -4,13 +4,23 @@ import stool from '../../../public/images/showcase.png'
 import Image from "next/image"
 import { motion } from 'framer-motion'
 import { useState } from "react"
+import TextTransition, { presets } from 'react-text-transition';
 
 const Cart = () => {
     const [quantity, setQuantity] = useState<number>(1)
     const [step, setStep] = useState<number>(0)
     return (
         <main className="max-w-7xl mx-auto bg-[#fafafa]">
-            <h1 className='text-center py-20 text-4xl font-semibold'>Cart</h1>
+            <div className='mx-auto w-1/2 flex items-center justify-center'>
+                <h1 className='text-center py-20 text-4xl font-semibold'>
+                    <TextTransition springConfig={presets.wobbly}>
+                        {
+                            step === 0 ? "Cart" : step === 1 ? "Checkout" : "Complete"
+                        }
+                    </TextTransition>
+                </h1>
+            </div>
+
             <div className='mx-auto lg:w-[60%] md:w-[90%] md:pl-0 pl-5 flex flex-wrap md:overflow-x-visible overflow-x-scroll justify-center  no-scrollbar'>
                 <div className='border-[#DEE1E6] text-xl whitespace-nowrap  pb-0.3 mb-[32px] w-full md:w-fit mx-auto flex '>
                     <div className={`gap-x-3 flex items-center mr-7 text-left px-2 border-b-[2px] pb-2 ${step === 0 ? ' border-black ' : 'text-[#0D141F99] border-transparent'}  w-fit`}>
@@ -383,7 +393,7 @@ const Cart = () => {
                         <motion.div
                             initial={{ x: step >= 0 ? '50%' : '-50%', opacity: 0 }}
                             animate={{ x: 0, opacity: 1 }}
-                            transition={{ duration: 0.35, ease:'anticipate', }}
+                            transition={{ duration: 0.35, ease: 'anticipate', }}
                             className='flex flex-col gap-x-5 lg:flex-row md:items-center lg:items-start gap-y-7'>
                             <OrderComplete />
                         </motion.div>
