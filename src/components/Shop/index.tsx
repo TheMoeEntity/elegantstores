@@ -1,11 +1,17 @@
+'use client'
 import Image from 'next/image'
 import hero from '../../../public/images/furniture-2.jpeg'
 import { fakeProductType } from '@/src/Helpers/types'
 import Link from 'next/link'
+import CategoryModal from '../Cards/CategoryModal'
+import { useState } from 'react'
+
 
 const ShopPage = ({ products }: { products: fakeProductType[] }) => {
+    const [search, setSearch] = useState<boolean>(false)
     return (
-        <section className='min-h-screen'>
+        <section>
+            <CategoryModal search={search} setSearch={() => setSearch(false)} />
             <div className="hero w-full relative h-[300px] md:h-[500px]">
                 <div className='absolute left-0 top-0 z-10 w-full h-full bg-[rgba(0,0,0,0.6)] flex items-center justify-center'></div>
                 <Image
@@ -85,7 +91,9 @@ const ShopPage = ({ products }: { products: fakeProductType[] }) => {
                     <div className='my-8 flex md:hidden justify-between border-b-[1px] border-t-[1px] border-gray-300 py-6 mx-auto w-[90%]'>
                         <div className='text-xl'>
                             <i className='fa-solid fa-filter mr-3'></i>
-                            Filter
+                            <button onClick={()=> setSearch(true)}>
+                                Filter
+                            </button>
                         </div>
 
                         <div>
@@ -107,7 +115,7 @@ const ShopPage = ({ products }: { products: fakeProductType[] }) => {
                             {
                                 (products).slice(0, 8).map((x) => (
                                     <div key={x.id} className='flex group overflow-y-hidden pb-4 md:min-h-auto shadow-md rounded-md flex-col gap-y-2 gap-x-0 h-fit md:min-w-[10%] basis-[47%] md:basis-[30%] lg:basis-[23%]'>
-                                        <Link href={'/products/'+x.title} className='w-full mt-0 mb-3 relative min-h-[250px] md:min-h-[200px] max-h-[auto]'>
+                                        <Link href={'/products/' + x.title} className='w-full mt-0 mb-3 relative min-h-[250px] md:min-h-[200px] max-h-[auto]'>
                                             <Image
                                                 src={x.images[0]}
                                                 alt='Best sellers'
