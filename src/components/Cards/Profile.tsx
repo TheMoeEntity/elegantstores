@@ -1,20 +1,16 @@
+'use client'
 import styles from "./cards.module.css";
 import Image from "next/image";
 import Link from "next/link";
 import boy from "../../../public/images/noimage.png";
 import { useState } from "react";
+import { useClientStore } from "@/src/Helpers/zustand";
 
 
 const Profile = ({ profileOpen = false, forceClose }: { profileOpen: boolean, forceClose: () => void }) => {
 
-
+    const { userData } = useClientStore();
     const [user, setUser] = useState("");
-    let name;
-    // useEffect(() => {
-    //     const userinfo = read_cookie("userInfo");
-    //     name = userinfo.name;
-    //     setUser(name);
-    // }, [user, router]);
 
     return (
         <div

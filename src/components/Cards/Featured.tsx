@@ -1,7 +1,10 @@
+'use client'
 import styles from "./cards.module.css";
-import man5 from "../../public/images/man5.jpeg";
+import man5 from '../../../public/images/noimage.png'
 import Link from "next/link";
 import Image, { StaticImageData } from "next/image";
+import { Helpers } from "@/src/Helpers";
+import { useEffect, useState } from "react";
 
 const FeaturedCard = ({
   title,
@@ -12,13 +15,20 @@ const FeaturedCard = ({
   price: number;
   img: string;
 }) => {
+
+  const [url,setUrl] = useState<StaticImageData|string>(man5)
+  useEffect(()=> {
+    if (Helpers.isValidUrl(img)) {
+      setUrl(img);
+    }
+  },[])
   return (
     <div className={styles.featured}>
       <div className={`${styles.img} bg-[#F3F5F7]`}>
         <Image
           alt="Card Picture"
           style={{ objectFit: "cover" }}
-          src={img}
+          src={url}
           fill
           quality={100}
           priority={true}
@@ -37,7 +47,7 @@ const FeaturedCard = ({
           <Link href={'/products/' + title} className="text-sm font-bold hover:text-[#377DFF]">{title}</Link>
         </div>
         <div>${price}</div>
-      </div> 
+      </div>
     </div>
   );
 };

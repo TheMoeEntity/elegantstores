@@ -5,9 +5,10 @@ import CartModal from '../Cards/Cart'
 import Sidebar from '../Cards/Sidebar'
 import { useHeaderState } from '@/src/Helpers/Hooks'
 import { motion } from 'framer-motion'
-
+import { useClientStore } from '@/src/Helpers/zustand'
 const Header = () => {
-
+    // const { userData } = useClientStore()
+    // console.log(userData)
     const { isOpen, setOpen,
         product, setProduct,
         company, setCompany,

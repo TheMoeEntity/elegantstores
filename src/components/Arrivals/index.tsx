@@ -3,9 +3,28 @@ import React, { useEffect, useRef, useState } from 'react'
 import FeaturedCard from '../Cards/Featured'
 import styles from '../ContactPage/index.module.css'
 import { useClientMediaQuery } from '@/src/Helpers/Hooks'
-import { productType } from '@/src/Helpers/types'
+import { ISession, productType } from '@/src/Helpers/types'
+import { UserMetadata } from '@supabase/supabase-js'
+import Modal from '../Cards/Welcome_Modal'
+import { useSearchParams } from 'next/navigation'
 
-const Arrivals = ({ justIn }: { justIn: productType[] }) => {
+const Arrivals = ({ justIn, signedIn }: { justIn: productType[], signedIn: UserMetadata | null }) => {
+    const [isSignedIn, setSignedIn] = useState(false)
+    const [metaData, setMetaData] = useState<null | UserMetadata>(null)
+    const searchParams = useSearchParams().get('newlogin')
+
+    useEffect(() => {
+        if (signedIn !== null) {
+            if (!searchParams) {
+                setSignedIn(false)
+                return
+            }
+            setSignedIn(true)
+            setMetaData(signedIn)
+
+        }
+    }, [signedIn])
+
     const isMD = useClientMediaQuery('(min-width: 768px)');
     const container = useRef<HTMLDivElement>(null)
     const [index, setIndex] = useState<number>(0)
@@ -45,6 +64,7 @@ const Arrivals = ({ justIn }: { justIn: productType[] }) => {
 
     return (
         <section>
+            <Modal metaData={metaData} showModal={isSignedIn} setShowModal={setSignedIn} />
             <div className={styles.guarantee}>
                 <div>
                     <div>

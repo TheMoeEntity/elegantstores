@@ -1,3 +1,4 @@
+import { UserMetadata } from "@supabase/supabase-js";
 import { StaticImageData } from "next/image";
 
 export type featuresContent = {
@@ -34,19 +35,33 @@ export type FAQType = {
     isActive: boolean
     reply: string | TrustedHTML
 }
-export interface productType  {
+export interface productType {
     title: string;
     id: number;
     image: string;
     price: number;
 };
-export interface fakeProductType extends productType  {
-    description:string
-    images:string[]
+export interface fakeProductType extends productType {
+    description: string
+    images: string[]
 }
 export interface IArticle {
-    title:string
-    desc:string
-    date:string
-    img:StaticImageData
+    title: string
+    desc: string
+    date: string
+    img: StaticImageData
 }
+export interface ISession {
+
+    email: string,
+    email_verified: boolean,
+    fullName: string,
+    phone_verified: boolean,
+    sub: string,
+    userName: string
+
+}
+export interface IStore {
+    userData: UserMetadata|any;
+    setSession: (data: UserMetadata) => void
+};

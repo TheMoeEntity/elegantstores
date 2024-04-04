@@ -6,12 +6,16 @@ import { useScrollTop } from "../Helpers/Hooks";
 import { scrollTopView } from "../Helpers/Views";
 const Footer = dynamic(() => import("../components/Footer"), { ssr: true });
 import Header from "../components/Header"
+import { SnackbarProvider } from "notistack";
 
 const Template = ({ children }: { children: ReactNode }) => {
     const { scrollBtn, scrollTop } = useScrollTop();
 
     return (
-        <>
+        <SnackbarProvider
+            classes={{ containerRoot: "z-alert" }}
+            anchorOrigin={{ horizontal: "left", vertical: "bottom" }}
+        >
             <Header />
             {children}
             <Footer />
@@ -22,7 +26,7 @@ const Template = ({ children }: { children: ReactNode }) => {
             {
                 scrollTopView(scrollBtn, scrollTop)
             }
-        </>
+        </SnackbarProvider>
 
     );
 
