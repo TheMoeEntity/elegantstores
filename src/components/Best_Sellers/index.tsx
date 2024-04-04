@@ -11,7 +11,7 @@ const Best_Sellers = ({ products }: { products: fakeProductType[] }) => {
             <div className="flex flex-row md:flex-row gap-5 justify-center flex-wrap mb-7">
                 {
                     (products).slice(0, 8).map((x) => (
-                        <Best img={x.images[0]} desc={x.description} key={x.id} title={x.title} price={x.price} />
+                        <Best id={x.id} img={x.images[0]} desc={x.description} key={x.id} title={x.title} price={x.price} />
                     ))
                 }
             </div>
