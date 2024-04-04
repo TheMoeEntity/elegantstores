@@ -5,8 +5,10 @@ import { motion } from 'framer-motion'
 import Link from "next/link"
 import { useState } from "react"
 import { UserMetadata } from '@supabase/supabase-js'
+import avatar from '../../../public/images/avatar.png'
 
-const Dashboard = ({ getSession }: { getSession:UserMetadata|null}) => {
+
+const Dashboard = ({ getSession }: { getSession: UserMetadata | null }) => {
     const [step, setStep] = useState(0)
     const [quantity, setQuantity] = useState<number>(1)
     return (
@@ -14,6 +16,20 @@ const Dashboard = ({ getSession }: { getSession:UserMetadata|null}) => {
             <div className='flex basis-[100%] md:basis-[30%] px-5 py-10 h-auto gap-y-9 flex-col bg-[#F3F5F7]'>
                 <div className='text-xl'>
                     <button onClick={() => setStep(0)} className='text-2xl font-semibold'>ACCOUNT</button>
+                </div>
+                <div className="w-24 h-24 relative text-white flex justify-center items-center">
+                    <Image
+                        src={avatar}
+                        alt="avatar"
+                        quality={100}
+                        sizes={'100vw'}
+                        className="object-cover rounded-full w-full h-auto"
+                    />
+                    <button className="absolute flex justify-center items-center z-[99999999999] bg-[#FAFAFA] rounded-full w-10 h-10 -right-1 bottom-0">
+                        <div className="bg-black w-9 h-9 rounded-full flex justify-center items-center">
+                            <i className='fa-solid fa-camera'></i>
+                        </div>
+                    </button>
                 </div>
                 <div>
                     <ul className='text-gray-600 gap-y-5 flex-col flex'>
