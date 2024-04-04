@@ -4,8 +4,9 @@ import Image from "next/image"
 import { motion } from 'framer-motion'
 import Link from "next/link"
 import { useState } from "react"
+import { UserMetadata } from '@supabase/supabase-js'
 
-const Dashboard = () => {
+const Dashboard = ({ getSession }: { getSession:UserMetadata|null}) => {
     const [step, setStep] = useState(0)
     const [quantity, setQuantity] = useState<number>(1)
     return (
@@ -74,11 +75,11 @@ const Dashboard = () => {
                             <form className="mt-5 flex md:w-[90%] flex-col gap-[20px] pr-5 pb-12">
                                 <div className="">
                                     <label htmlFor="" className=" block font-bold mb-2">Your Name</label>
-                                    <input placeholder="Enter full name" type="text" className="py-[10px] bg-transparent px-[10px] w-full border-gray-300 border-b-[1px]" />
+                                    <input placeholder="Enter full name" defaultValue={getSession?.fullName} type="text" className="py-[10px] bg-transparent px-[10px] w-full border-gray-300 border-b-[1px]" />
                                 </div>
                                 <div className="">
                                     <label htmlFor="" className=" block font-bold mb-2">Username</label>
-                                    <input placeholder="Username" type="text" className="py-[10px] bg-transparent px-[10px] w-full border-gray-300 border-b-[1px]" />
+                                    <input placeholder="Username" defaultValue={getSession?.userName} type="text" className="py-[10px] bg-transparent px-[10px] w-full border-gray-300 border-b-[1px]" />
                                 </div>
                                 <div className="">
                                     <label htmlFor="" className=" block font-bold mb-2">Email</label>

@@ -194,8 +194,8 @@ const Arrivals = ({ justIn, signedIn }: { justIn: productType[], signedIn: UserM
                         className="flex gap-5 flex-nowrap lg:ml-[120px] md:ml-0 ml-5 mr-10 whitespace-nowrap"
                     >
                         {
-                            [...justIn.slice(0, 7)].map((x, i) => (
-                                <FeaturedCard img={x.image} key={x.id} title={x.title} price={x.price} />
+                            [...justIn.slice(0, 7)].map((x) => (
+                                <FeaturedCard id={x.id} img={x.image} key={x.id} title={x.title} price={x.price} />
 
                             ))
                         }

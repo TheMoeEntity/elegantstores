@@ -37,10 +37,17 @@ export type FAQType = {
 }
 export interface productType {
     title: string;
-    id: number;
-    image: string;
+    id: string;
     price: number;
-};
+    description: string
+    category: string
+    image: string,
+    rating: {
+        rate: number,
+        count: number
+    }
+}
+
 export interface fakeProductType extends productType {
     description: string
     images: string[]
@@ -62,6 +69,6 @@ export interface ISession {
 
 }
 export interface IStore {
-    userData: UserMetadata|any;
+    userData: UserMetadata | any;
     setSession: (data: UserMetadata) => void
 };

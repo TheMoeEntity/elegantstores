@@ -11,7 +11,7 @@ import FeaturedCard from '../Cards/Featured'
 import { productType } from '@/src/Helpers/types'
 import profile from '../../../public/images/cat4.png'
 
-const ProductsPage = ({ justIn }: { justIn: productType[] }) => {
+const ProductsPage = ({ justIn, item }: { justIn: productType[], item: productType }) => {
 
   const [additional, setAdditional] = useState<boolean>(true)
   const [question, setQuestion] = useState<boolean>(false)
@@ -22,17 +22,18 @@ const ProductsPage = ({ justIn }: { justIn: productType[] }) => {
     <div className='w-full min-h-screen'>
       <div className="text-gray-500 flex gap-x-3 items-center mt-7 mx-auto w-[90%]">
         <span>Home</span><span className='fa-angle-right fa'></span><span>Shop</span>
-        <span className='fa-angle-right fa'></span><span>Puffers</span>
-        <span className='fa-angle-right fa'></span><span className='text-black'>Leather Puffers</span>
+        <span className='fa-angle-right fa'></span><span>{item.category}</span>
+        <span className='fa-angle-right fa'></span><span className='text-black'>{item.title}</span>
       </div>
       <div className="flex flex-col lg:flex-row mt-7 mx-auto w-[90%] mb-8">
         <div className='basis-full flex flex-col gap-y-4 md:basis-[50%]'>
-          <div className="w-full">
+          <div className="w-full relative h-[640px]">
             <Image
-              src={showcase}
+              src={item.image}
               alt="product main image"
               quality={100}
               sizes={'100vw'}
+              fill
               className="object-cover w-full h-auto"
             />
           </div>
@@ -69,15 +70,15 @@ const ProductsPage = ({ justIn }: { justIn: productType[] }) => {
 
         <div className='basis-full md:basis-[50%] gap-y-8 py-8 lg:py-0 flex flex-col px-2 md:px-5'>
           <div className='flex gap-x-3 items-center'>
-            {[...Array(4)].map((_, i) => (
+            {[...Array(Math.floor(item.rating.rate))].map((_, i) => (
               <span key={i} className={`fa fa-star`}></span>
             ))}
             <span className='font-extrabold'>3 reviews</span>
           </div>
-          <div><h1 className='font-extrabold text-4xl md:text-5xl'>Tray table</h1></div>
+          <div><h1 className='font-extrabold text-4xl md:text-5xl'>{item.title}</h1></div>
           <div className='text-gray-500 pb-5 border-b-[1px] border-slate-200 flex flex-col gap-y-3'>
-            <span>Buy one or buy a few and make every space where you sit more convenient. Light and easy to move around with removable tray top, handy for serving snacks.</span>
-            <span className='font-extrabold text-3xl md:text-4xl text-black'>$89.99</span> <span>In stock</span>
+            <span>{item.description}.</span>
+            <span className='font-extrabold text-3xl md:text-4xl text-black'>${item.price}</span> <span>In stock</span>
           </div>
           <div className='text-gray-500 border-b-[1px] pb-5'>
             Offer expires in:
@@ -247,7 +248,7 @@ const ProductsPage = ({ justIn }: { justIn: productType[] }) => {
           >
             {
               [...justIn.slice(0, 4)].map((x) => (
-                <FeaturedCard img={x.image} key={x.id} title={x.title} price={x.price} />
+                <FeaturedCard img={x.image} key={x.id} id={x.id} title={x.title} price={x.price} />
               ))
             }
           </div>

@@ -5,7 +5,7 @@ import Catgories from "../components/Categories";
 import Best_Sellers from "../components/Best_Sellers";
 import { Helpers } from "../Helpers";
 import Extras from "../components/Extras";
-import { readUserSession } from "../Helpers/supabase";
+import { createSupabaseServerClient, readUserSession } from "../Helpers/supabase";
 
 export default async function Home() {
   const products = await Helpers.getProducts(

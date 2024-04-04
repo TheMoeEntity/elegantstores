@@ -6,12 +6,13 @@ const Best = ({
     title,
     price,
     img,
-    desc
+    id
 }: {
     title: string;
     price: number;
     img: string
-    desc: string
+    desc: string,
+    id:string
 }) => {
     return (
         <div className='flex shadow-md md:min-h-fit flex-col gap-3 h-auto min-w-full md:min-w-[10%] md:basis-[30%] lg:basis-[23%] pb-5 rounded-sm'>
@@ -30,7 +31,7 @@ const Best = ({
                     <span key={i} className={`fa fa-star`}></span>
                 ))}
             </div>
-            <Link href={'/products/' + title} className='font-semibold px-4'>
+            <Link href={'/products/' + id} className='font-semibold px-4'>
                 <span className='hover:text-[#377DFF]'>
                     {title}
                 </span>

@@ -10,10 +10,12 @@ const FeaturedCard = ({
   title,
   price,
   img,
+  id
 }: {
   title: string;
   price: number;
   img: string;
+  id:string
 }) => {
 
   const [url,setUrl] = useState<StaticImageData|string>(man5)
@@ -44,7 +46,7 @@ const FeaturedCard = ({
           ))}
         </div>
         <div className="w-full flex-col flex-wrap">
-          <Link href={'/products/' + title} className="text-sm font-bold hover:text-[#377DFF]">{title}</Link>
+          <Link href={'/products/' + id} className="text-sm font-bold hover:text-[#377DFF]">{title}</Link>
         </div>
         <div>${price}</div>
       </div>

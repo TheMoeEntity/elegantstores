@@ -1,12 +1,19 @@
 import { FormEvent } from "react";
-import { fakeProductType } from "./types";
+import { fakeProductType, productType } from "./types";
 import axios from "axios";
-import { useClientStore } from "./zustand";
 
 export class Helpers {
     static async formatProducts() {
         const insta = await this.getProducts('https://api.escuelajs.co/api/v1/products/?categoryId=3') as fakeProductType[]
         return insta.map(prod => prod.images[0])
+    }
+    static getSingle = async (slug: string) => {
+        const data = await this.getProducts('https://fakestoreapi.com/products') as productType[]
+        if (!data) return;
+        const single = data.find((x) => {
+            return x.id == slug;
+        });
+        return single;
     }
     static  isValidUrl = (urlString:string) => {
         var urlPattern = new RegExp('^(https?:\\/\\/)?' + // validate protocol
