@@ -9,6 +9,7 @@ import { useState } from 'react'
 
 const ShopPage = ({ products }: { products: fakeProductType[] }) => {
     const [search, setSearch] = useState<boolean>(false)
+    console.log(products)
     return (
         <section>
             <CategoryModal search={search} setSearch={() => setSearch(false)} />
