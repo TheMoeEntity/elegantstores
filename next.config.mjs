@@ -18,9 +18,14 @@ const nextConfig = {
                 protocol: 'https',
                 hostname: 'i.imgur.com',
                 pathname: '**'
+            },
+            {
+                protocol: 'https',
+                hostname: 'zthlrxszabizorqqtcuy.supabase.co',
+                pathname: '**'
             }
         ]
     },
 };
-
+//zthlrxszabizorqqtcuy.supabase.co
 export default nextConfig;

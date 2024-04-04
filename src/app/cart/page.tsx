@@ -191,33 +191,33 @@ const Cart = () => {
                                         <div></div>
                                         <div>Free Shipping</div>
                                     </div>
-                                    <span>$0.00</span>
+                                    <span>₦0.00</span>
                                 </div>
                                 <div className='flex rounded-md justify-between items-center px-4 border-[1px] border-black'>
                                     <div className='flex gap-x-3 py-3'>
                                         <div></div>
                                         <div>Express Shipping</div>
                                     </div>
-                                    <span>$0.00</span>
+                                    <span>₦0.00</span>
                                 </div>
                                 <div className='flex rounded-md justify-between items-center px-4 border-[1px] border-black'>
                                     <div className='flex gap-x-3 py-3'>
                                         <div></div>
                                         <div>Pick up</div>
                                     </div>
-                                    <span>$0.00</span>
+                                    <span>₦0.00</span>
                                 </div>
                                 <div className='flex rounded-md justify-between items-center px-4 border-b-[1px] border-gray-200'>
                                     <div className='flex gap-x-3 py-3'>
                                         Subtotal
                                     </div>
-                                    <span>$123.045</span>
+                                    <span>₦123.045</span>
                                 </div>
                                 <div className='flex rounded-md justify-between items-center px-4 border-b-[1px] border-gray-200'>
                                     <h2 className='flex gap-x-3 py-3 text-xl font-semibold'>
                                         Total
                                     </h2>
-                                    <span>$1345.045</span>
+                                    <span>₦1345.045</span>
                                 </div>
                                 <div>
                                     <button className='bg-black text-white w-full py-3 rounded-md'>Checkout</button>

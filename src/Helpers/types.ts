@@ -72,3 +72,27 @@ export interface IStore {
     userData: UserMetadata | any;
     setSession: (data: UserMetadata) => void
 };
+export interface ISBProducts {
+    id: number
+    title: string
+    price: number
+    description: string
+    category: string
+    rating: number
+    images: string[]
+    colors: string[]
+    sizes: string[]
+    slug: string
+    dimensions: {
+        width: number
+        height: number
+    }
+    in_Stock: boolean
+    reviews: {
+        reviews: {
+            name: string
+            review: string
+            rating: number
+        }[]
+    }
+}

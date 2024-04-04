@@ -14,8 +14,10 @@
     "@supabase/supabase-js": "^2.42.0",
     "axios": "^1.6.8",
     "framer-motion": "^11.0.24",
+    "fs": "^0.0.1-security",
     "next": "14.1.4",
     "notistack": "^3.0.1",
+    "probe-image-size": "^7.2.3",
     "react": "^18",
     "react-dom": "^18",
     "react-text-transition": "^3.1.0",
@@ -23,6 +25,7 @@
   },
   "devDependencies": {
     "@types/node": "^20",
+    "@types/probe-image-size": "^7.2.4",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "autoprefixer": "^10.4.19",

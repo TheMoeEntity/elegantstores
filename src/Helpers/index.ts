@@ -1,6 +1,9 @@
 import { FormEvent } from "react";
-import { fakeProductType, productType } from "./types";
+import { ISBProducts, fakeProductType, productType } from "./types";
 import axios from "axios";
+import { createSupabaseServerClient } from "./supabase";
+
+
 
 export class Helpers {
     static async formatProducts() {
@@ -15,7 +18,23 @@ export class Helpers {
         });
         return single;
     }
-    static  isValidUrl = (urlString:string) => {
+    static fetchSupabaseProducts = async () => {
+        const supabase = await createSupabaseServerClient()
+        const { data: products } = await supabase.from("products").select();
+        return products
+    }
+    static getSingleProduct = async (id: string) => {
+        const data = await this.fetchSupabaseProducts() as ISBProducts[]
+        if (!data) {
+            return
+        }
+        const single = data.find((x) => {
+            return x.slug == id;
+        });
+        return single;
+
+    }
+    static isValidUrl = (urlString: string) => {
         var urlPattern = new RegExp('^(https?:\\/\\/)?' + // validate protocol
             '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // validate domain name
             '((\\d{1,3}\\.){3}\\d{1,3}))' + // validate OR ip (v4) address
@@ -47,9 +66,9 @@ export class Helpers {
 
     static validateSignUpForm = async (
         e: FormEvent<HTMLFormElement>,
-        setStatus:any,
+        setStatus: any,
         enqueueSnackbar: any,
-        push:any
+        push: any
     ) => {
         e.preventDefault();
         const data = {
@@ -106,7 +125,7 @@ export class Helpers {
                 enqueueSnackbar("User profile created successfully", {
                     variant: "success",
                 });
-    
+
             setStatus("User created successfully");
             setTimeout(() => {
                 const resetForm = e.target as HTMLFormElement;
@@ -129,7 +148,7 @@ export class Helpers {
         e: FormEvent<HTMLFormElement>,
         setStatus: any,
         enqueueSnackbar: any,
-        push:any
+        push: any
     ) => {
         e.preventDefault();
         const data = {

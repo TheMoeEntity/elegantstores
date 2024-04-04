@@ -1,22 +1,21 @@
 'use client'
-import Image from 'next/image'
+import Image, { StaticImageData } from 'next/image'
 import React, { useEffect } from 'react'
-import showcase from '../../../public/images/boy.jpeg'
-import stool from '../../../public/images/showcase.png'
-import showcase2 from '../../../public/images/showcase2.webp'
-import showcase4 from '../../../public/images/showcase4.webp'
-import Link from 'next/link'
+import noImage from '../../../public/images/noimage.png'
 import { useState } from 'react'
 import FeaturedCard from '../Cards/Featured'
-import { productType } from '@/src/Helpers/types'
+import { ISBProducts, productType } from '@/src/Helpers/types'
 import profile from '../../../public/images/cat4.png'
+import avatar from '../../../public/images/avatar.png'
 
-const ProductsPage = ({ justIn, item }: { justIn: productType[], item: productType }) => {
+const ProductsPage = ({ justIn, item }: { justIn: productType[], item: ISBProducts }) => {
 
   const [additional, setAdditional] = useState<boolean>(true)
   const [question, setQuestion] = useState<boolean>(false)
   const [quantity, setQuantity] = useState<number>(1)
   const [index, setIndex] = useState<number>(0)
+  const [currImage, setCurrImage] = useState<string | StaticImageData>(item.images[0] ?? noImage)
+  const mdWidth = `md:w-[calc(0.45*${item.dimensions.width}px)]`
 
   return (
     <div className='w-full min-h-screen'>
@@ -27,42 +26,49 @@ const ProductsPage = ({ justIn, item }: { justIn: productType[], item: productTy
       </div>
       <div className="flex flex-col lg:flex-row mt-7 mx-auto w-[90%] mb-8">
         <div className='basis-full flex flex-col gap-y-4 md:basis-[50%]'>
-          <div className="w-full relative h-[640px]">
+          <div className="w-full relative">
             <Image
-              src={item.image}
+              src={currImage}
               alt="product main image"
               quality={100}
               sizes={'100vw'}
-              fill
+              height={item.dimensions.height}
+              width={item.dimensions.width}
               className="object-cover w-full h-auto"
             />
           </div>
           <div className='w-full flex flex-row justify-between'>
-            <div className='flex basis-[32%] w-[32%] '>
+            <div onClick={() => setCurrImage(item.images[1] ?? noImage)} className='flex basis-[32%] w-[32%] '>
               <Image
-                src={showcase2}
-                alt="product main image"
+                src={item.images[1] ?? noImage}
+                alt="product auxillary image"
                 quality={100}
                 sizes={'100vw'}
-                className="object-cover w-full h-auto"
+                height={0.38 * item.dimensions.height}
+                width={0.38 * item.dimensions.width}
+                className={`object-cover w-full h-auto ${mdWidth}`}
               />
             </div>
-            <div className='flex basis-[32%] w-[32%] '>
+            <div onClick={() => setCurrImage(item.images[2] ?? noImage)} className='flex basis-[32%] w-[32%] '>
               <Image
-                src={showcase4}
-                alt="product main image"
+                src={item.images[2] ?? noImage}
+                alt="product auxillary image"
                 quality={100}
                 sizes={'100vw'}
-                className="object-cover w-full h-auto"
+                height={0.38 * item.dimensions.height}
+                width={0.38 * item.dimensions.width}
+                className={`object-cover w-full h-auto ${mdWidth}`}
               />
             </div>
-            <div className='flex basis-[32%] w-[32%] '>
+            <div onClick={() => setCurrImage(item.images[0] ?? noImage)} className='flex basis-[32%] w-[32%] '>
               <Image
-                src={stool}
+                src={item.images[0] ?? noImage}
                 alt="product main image"
                 quality={100}
+                height={0.38 * item.dimensions.height}
+                width={0.38 * item.dimensions.width}
                 sizes={'100vw'}
-                className="object-cover w-full h-auto"
+                className={`object-cover w-full h-auto ${mdWidth}`}
               />
             </div>
           </div>
@@ -70,15 +76,15 @@ const ProductsPage = ({ justIn, item }: { justIn: productType[], item: productTy
 
         <div className='basis-full md:basis-[50%] gap-y-8 py-8 lg:py-0 flex flex-col px-2 md:px-5'>
           <div className='flex gap-x-3 items-center'>
-            {[...Array(Math.floor(item.rating.rate))].map((_, i) => (
+            {[...Array((item.rating))].map((_, i) => (
               <span key={i} className={`fa fa-star`}></span>
             ))}
-            <span className='font-extrabold'>3 reviews</span>
+            <span className='font-extrabold'>{item.reviews?.reviews.length ?? "no"} reviews</span>
           </div>
           <div><h1 className='font-extrabold text-4xl md:text-5xl'>{item.title}</h1></div>
           <div className='text-gray-500 pb-5 border-b-[1px] border-slate-200 flex flex-col gap-y-3'>
             <span>{item.description}.</span>
-            <span className='font-extrabold text-3xl md:text-4xl text-black'>${item.price}</span> <span>In stock</span>
+            <span className='font-extrabold text-3xl md:text-4xl text-black'>₦ {item.price.toLocaleString()}</span> <span>In stock</span>
           </div>
           <div className='text-gray-500 border-b-[1px] pb-5'>
             Offer expires in:
@@ -100,18 +106,13 @@ const ProductsPage = ({ justIn, item }: { justIn: productType[], item: productTy
           <div className='text-gray-500'>
             Sizes:
             <div className='flex flex-wrap gap-y-1 gap-x-4 mt-0'>
-              <div className='w-16 px-3 h-16 rounded-md flex flex-col items-center justify-center text-black'>
-                <span className='text-lg font-bold'>XXL</span>
-              </div>
-              <div className='w-16 px-3 h-16 rounded-md flex flex-col items-center justify-center text-black'>
-                <span className='text-lg font-bold'>L</span>
-              </div>
-              <div className='w-16 px-3 h-16 rounded-md flex flex-col items-center justify-center text-black'>
-                <span className='text-lg font-bold'>M</span>
-              </div>
-              <div className='w-16 px-3 h-16 rounded-md flex flex-col items-center justify-center text-black'>
-                <span className='text-lg font-bold'>XS</span>
-              </div>
+              {
+                item.sizes.map((x, i) => (
+                  <div key={i} className='w-16 px-3 h-16 rounded-md flex flex-col items-center justify-center text-black'>
+                    <span className='text-lg font-bold'>{x}</span>
+                  </div>
+                ))
+              }
             </div>
           </div>
 
@@ -161,10 +162,10 @@ const ProductsPage = ({ justIn, item }: { justIn: productType[], item: productTy
         </div>
         <h1 className='font-semibold text-3xl'>Customer Reviews</h1>
         <div className='flex gap-x-3 items-center'>
-          {[...Array(4)].map((_, i) => (
+          {[...Array((item.rating))].map((_, i) => (
             <span key={i} className={`fa fa-star`}></span>
           ))}
-          <span className='font-extrabold'>3 reviews</span>
+          <span className='font-extrabold'>{item.reviews?.reviews.length ?? "no"} reviews</span>
         </div>
 
         <div className="w-full">
@@ -189,42 +190,45 @@ const ProductsPage = ({ justIn, item }: { justIn: productType[], item: productTy
           </form>
         </div>
 
-        <div className='flex justify-between md:flex-row flex-col gap-y-5'>
-          <h2 className='text-3xl font-semibold'>11 Reviews</h2>
-          <div id='service' className={`md:w-[40%] lg:w-[20%]`}>
-            <select
-              className="custom-select outline-none w-full px-2 py-2 text-[black] font-semiold border-[1px] border-[#eef5ff]"
-            >
-              <option>Newest</option>
-              <option>Older</option>
-            </select>
-          </div>
-        </div>
-
+        {
+          item.reviews?.reviews && (
+            <div className='flex justify-between md:flex-row flex-col gap-y-5'>
+              <h2 className='text-3xl font-semibold'>11 Reviews</h2>
+              <div id='service' className={`md:w-[40%] lg:w-[20%]`}>
+                <select
+                  className="custom-select outline-none w-full px-2 py-2 text-[black] font-semiold border-[1px] border-[#eef5ff]"
+                >
+                  <option>Newest</option>
+                  <option>Older</option>
+                </select>
+              </div>
+            </div>
+          )
+        }
         <div className='flex w-full flex-col'>
           {
-            [...Array(3)].map((_x, i) => (
+            item.reviews?.reviews && item.reviews?.reviews.map((x, i) => (
               <div key={i} className='flex border-b-[1px] flex-col pb-5 pt-3 gap-y-7 '>
                 <div className='flex gap-x-3 items-center'>
                   <div className='items-center'>
                     <Image
-                      src={profile}
+                      src={avatar}
                       alt='profile'
                       quality={100}
                       sizes='100vw'
-                      className='object-cover w-[calc(0.4*167px)] md:w-[calc(0.45*167px)] md:h-[calc(0.45*167px)] lg:w-auto rounded-full h-[calc(0.4*167px)] lg:h-full'
+                      className='object-cover w-[calc(0.1*499px)] md:w-[calc(0.1*499px)] md:h-[calc(0.1*499px)] lg:w-[calc(0.15*499px)] rounded-full h-[calc(0.1*499px)] lg:h-full'
                     />
                   </div>
                   <div className='lg:pl-7'>
-                    <div>Sofia Havertz</div>
-                    {[...Array(4)].map((_, i) => (
+                    <div>{x.name}</div>
+                    {[...Array(x.rating+1)].map((_, i) => (
                       <span key={i} className={`fa fa-star text-[8px] md:text-[13px]`}></span>
                     ))}
                   </div>
 
                 </div>
                 <p className='text-gray-500 md:pl-20 lg:pl-36'>
-                  I bought it 3 weeks ago and now come back just to say {`“Awesome Product”`}. I really enjoy it. At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupt et quas molestias excepturi sint non provident.
+                  {x.review}
                 </p>
               </div>
             ))

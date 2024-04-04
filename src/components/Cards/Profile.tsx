@@ -3,14 +3,24 @@ import styles from "./cards.module.css";
 import Image from "next/image";
 import Link from "next/link";
 import boy from "../../../public/images/noimage.png";
-import { useState } from "react";
-import { useClientStore } from "@/src/Helpers/zustand";
+import { useEffect, useState } from "react";
+import { readUserSessionCLient } from "@/src/Helpers/supabase";
 
 
 const Profile = ({ profileOpen = false, forceClose }: { profileOpen: boolean, forceClose: () => void }) => {
-
-    const { userData } = useClientStore();
+    const getData = async ()=> {
+        const user = await readUserSessionCLient()
+        console.log(user)
+        return user
+    }
     const [user, setUser] = useState("");
+    useEffect(()=> {
+        getData().then((user)=> {
+            console.log(user)
+            // setUser(user.data)
+        })
+    
+    },[])
 
     return (
         <div

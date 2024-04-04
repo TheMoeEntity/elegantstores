@@ -1,15 +1,14 @@
 'use client'
 import Image from 'next/image'
 import hero from '../../../public/images/furniture-2.jpeg'
-import { fakeProductType } from '@/src/Helpers/types'
+import { ISBProducts, fakeProductType } from '@/src/Helpers/types'
 import Link from 'next/link'
 import CategoryModal from '../Cards/CategoryModal'
 import { useState } from 'react'
 
 
-const ShopPage = ({ products }: { products: fakeProductType[] }) => {
+const ShopPage = ({ products }: { products: ISBProducts[] }) => {
     const [search, setSearch] = useState<boolean>(false)
-    console.log(products)
     return (
         <section>
             <CategoryModal search={search} setSearch={() => setSearch(false)} />
@@ -92,7 +91,7 @@ const ShopPage = ({ products }: { products: fakeProductType[] }) => {
                     <div className='my-8 flex md:hidden justify-between border-b-[1px] border-t-[1px] border-gray-300 py-6 mx-auto w-[90%]'>
                         <div className='text-xl'>
                             <i className='fa-solid fa-filter mr-3'></i>
-                            <button onClick={()=> setSearch(true)}>
+                            <button onClick={() => setSearch(true)}>
                                 Filter
                             </button>
                         </div>
@@ -116,7 +115,7 @@ const ShopPage = ({ products }: { products: fakeProductType[] }) => {
                             {
                                 (products).slice(0, 8).map((x) => (
                                     <div key={x.id} className='flex group overflow-y-hidden pb-4 md:min-h-auto shadow-md rounded-md flex-col gap-y-2 gap-x-0 h-fit md:min-w-[10%] basis-[47%] md:basis-[30%] lg:basis-[23%]'>
-                                        <Link href={'/products/' + x.title} className='w-full mt-0 mb-3 relative min-h-[250px] md:min-h-[200px] max-h-[auto]'>
+                                        <div className='w-full mt-0 mb-3 relative min-h-[250px] md:min-h-[200px] max-h-[auto]'>
                                             <Image
                                                 src={x.images[0]}
                                                 alt='Best sellers'
@@ -125,15 +124,19 @@ const ShopPage = ({ products }: { products: fakeProductType[] }) => {
                                                 fill
                                                 className='object-cover'
                                             />
-                                        </Link>
-                                        <div className='px-3 flex gap-2'>
+                                        </div>
+                                        <div className='px-3 flex gap-2 mt-1'>
                                             {[...Array(4)].map((_, i) => (
                                                 <span key={i} className={`fa fa-star`}></span>
                                             ))}
                                         </div>
-                                        <div className='px-3 font-semibold'>{x.title}</div>
-                                        <div className='px-3 font-semibold'>${x.price}</div>
-                                        <div className='w-[90%] transition-transform duration-[0.55s] ease mx-auto group-hover:translate-y-0 translate-y-20'>
+                                        <Link href={'/products/' + x.slug} className='font-semibold px-4 mt-1'>
+                                            <span className='hover:text-[#377DFF]'>
+                                                {x.title}
+                                            </span>
+                                        </Link>
+                                        <div className='px-3 font-semibold mt-1'>₦{x.price.toLocaleString()}</div>
+                                        <div className='w-[90%] mt-1 transition-transform duration-[0.55s] ease mx-auto group-hover:translate-y-0 translate-y-20'>
                                             <button className='w-full px-3 py-2 bg-black text-white rounded-lg'>Add to cart</button>
                                         </div>
                                     </div>
