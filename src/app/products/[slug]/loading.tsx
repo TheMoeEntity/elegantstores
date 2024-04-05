@@ -9,7 +9,7 @@ const Loading = () => {
                 <div className="h-5 bg-gray-200 rounded-full max-w-[440px] mb-2.5"></div>
             </div>
 
-            <div className='flex flex-col md:py-5  md:flex-row justify-between mx-auto md:w-[90%]'>
+            <div className='flex flex-col md:py-5  lg:flex-row justify-between mx-auto md:w-[90%]'>
                 <div className="flex px-3 mt-10  md:basis-[60%] items-center gap-8 justify-between w-full h-[600px] bg-gray-300 rounded sm:w-full">
                     <div className='bg-gray-200 w-[70px]'>
                     </div>
