@@ -14,15 +14,15 @@ const ProductsPage = ({ justIn, item }: { justIn: productType[], item: ISBProduc
   const [question, setQuestion] = useState<boolean>(false)
   const [quantity, setQuantity] = useState<number>(1)
   const [index, setIndex] = useState<number>(0)
-  const [currImage, setCurrImage] = useState<string | StaticImageData>(item.images[0] ?? noImage)
-  const mdWidth = `md:w-[calc(0.45*${item.dimensions?.width}px)]`
+  const [currImage, setCurrImage] = useState<string | StaticImageData>(item?.images[0] ?? noImage)
+  const mdWidth = `md:w-[calc(0.45*${item?.dimensions?.width}px)]`
 
   return (
     <div className='w-full min-h-screen'>
       <div className="text-gray-500 flex gap-x-3 items-center mt-7 mx-auto w-[90%]">
         <span>Home</span><span className='fa-angle-right fa'></span><span>Shop</span>
-        <span className='fa-angle-right fa'></span><span>{item.category}</span>
-        <span className='fa-angle-right fa'></span><span className='text-black'>{item.title}</span>
+        <span className='fa-angle-right fa'></span><span>{item?.category}</span>
+        <span className='fa-angle-right fa'></span><span className='text-black'>{item?.title}</span>
       </div>
       <div className="flex flex-col lg:flex-row mt-7 mx-auto w-[90%] mb-8">
         <div className='basis-full flex flex-col gap-y-4 md:basis-[50%]'>
@@ -32,31 +32,31 @@ const ProductsPage = ({ justIn, item }: { justIn: productType[], item: ISBProduc
               alt="product main image"
               quality={100}
               sizes={'100vw'}
-              height={item.dimensions?.height}
-              width={item.dimensions?.width}
+              height={item?.dimensions.height}
+              width={item?.dimensions.width}
               className="object-cover w-full h-auto"
             />
           </div>
           <div className='w-full flex flex-row justify-between'>
-            <div onClick={() => setCurrImage(item.images[1] ?? noImage)} className='flex basis-[32%] w-[32%] '>
+            <div onClick={() => setCurrImage(item?.images[1] ?? noImage)} className='flex basis-[32%] w-[32%] '>
               <Image
-                src={item.images[1] ?? noImage}
+                src={item?.images[1] ?? noImage}
                 alt="product auxillary image"
                 quality={100}
                 sizes={'100vw'}
-                height={(0.38 * item.dimensions.height)}
+                height={(0.38 * item.dimensions.height | 200)}
                 width={0.38 * item.dimensions.width}
                 className={`object-cover w-full h-auto ${mdWidth}`}
               />
             </div>
-            <div onClick={() => setCurrImage(item.images[2] ?? noImage)} className='flex basis-[32%] w-[32%] '>
+            <div onClick={() => setCurrImage(item?.images[2] ?? noImage)} className='flex basis-[32%] w-[32%] '>
               <Image
                 src={item.images[2] ?? noImage}
                 alt="product auxillary image"
                 quality={100}
                 sizes={'100vw'}
-                height={0.38 * item.dimensions?.height}
-                width={0.38 * item.dimensions?.width}
+                height={0.38 * item.dimensions.height}
+                width={0.38 * item.dimensions.width}
                 className={`object-cover w-full h-auto ${mdWidth}`}
               />
             </div>
@@ -65,8 +65,8 @@ const ProductsPage = ({ justIn, item }: { justIn: productType[], item: ISBProduc
                 src={item.images[0] ?? noImage}
                 alt="product main image"
                 quality={100}
-                height={0.38 * item.dimensions?.height}
-                width={0.38 * item.dimensions?.width}
+                height={0.38 * item.dimensions.height}
+                width={0.38 * item.dimensions.width}
                 sizes={'100vw'}
                 className={`object-cover w-full h-auto ${mdWidth}`}
               />

@@ -52,7 +52,7 @@ export interface IProduct extends productType {
     colors: string[]
     sizes: string[]
     slug: string
-    dimensions?: {
+    dimensions: {
         width: number
         height: number
     }
@@ -101,7 +101,7 @@ export interface ISBProducts {
     colors: string[]
     sizes: string[]
     slug: string
-    dimensions?: {
+    dimensions: {
         width: number
         height: number
     }

@@ -8,7 +8,7 @@ const ShopPage = dynamic(() => import("../../../components/ProductsPage"));
 const Products = async ({ params }: { params: { slug: string } }) => {
 
     const justIn = await Helpers.getProducts('https://fakestoreapi.com/products') ?? []
-    let single: ISBProducts | IProduct | productType | undefined = (await Helpers.getSingleProduct(params.slug as string))
+    let single: any = (await Helpers.getSingleProduct(params.slug as string))
     if (!single) {
         let single2: any = await Helpers.getSingle(params.slug).then(async prod => {
             if (prod) {

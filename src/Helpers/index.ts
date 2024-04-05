@@ -18,14 +18,18 @@ export class Helpers {
         });
         return single;
     }
-    static formatPlaceHolder = (item: fakeProductType): ISBProducts => {
+    static formatPlaceHolder = (item: productType): ISBProducts => {
         const items = {
             ...item,
-            images: [(item.image)??item.images[0]],
+            images: [(item.image)],
             slug: item.title.match(/\b(\w+)\b/g)?.join('-') ?? "new-arival",
             sizes: ["M", "L", "XL"],
             colors: ["black,white", 'brown'],
             in_Stock: true,
+            dimensions:{
+                width:200,
+                height:300
+            },
             rating: item.rating.rate,
             reviews: {
                 reviews: []
