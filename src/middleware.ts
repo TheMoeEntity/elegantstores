@@ -76,9 +76,10 @@ export async function middleware(req: NextRequest) {
     } else if (!session) {
         if (req.nextUrl.pathname.startsWith(account)) {
             const redirectUrl = req.nextUrl.clone();
-            redirectUrl.pathname = "/";
+            redirectUrl.pathname = '/login';
+            redirectUrl.searchParams.set('notAuth',"true")
             return NextResponse.redirect(redirectUrl);
-        }
+        } 
     }
     //refresh
     await supabase.auth.getUser()

@@ -92,7 +92,7 @@ const Arrivals = ({ justIn, signedIn }: { justIn: productType[], signedIn: UserM
 
                 <div>
                     <div>
-                        <i className="fa fa-credit-card" aria-hidden="true"></i>
+                        <i className="fa fa-credit-card" aria-hidden></i>
                     </div>
                     <div>
                         <h5 className="fw-light my-3">Secure Payments</h5>

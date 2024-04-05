@@ -81,7 +81,7 @@ const ShopPage = ({ products }: { products: ISBProducts[] }) => {
                             <li className='w-full flex justify-between items-center'>
                                 <span>$400.00+</span>
                                 <span>
-                                    <input className='w-6 h-6' type="checkbox" checked name="" id="" />
+                                    <input className='w-6 h-6' type="checkbox" defaultChecked name="" id="" />
                                 </span>
                             </li>
                         </ul>
@@ -111,22 +111,23 @@ const ShopPage = ({ products }: { products: ISBProducts[] }) => {
                         </div>
                     </div>
                     <div className='md:px-5 py-12 flex flex-col gap-10 w-full h-fit md:w-[100%] mx-auto'>
-                        <div className="flex flex-row gap-2 gap-y-7 md:gap-y-5 md:gap-4 justify-center flex-wrap mb-7">
+                        <div className="flex flex-row gap-2 gap-y-7 md:gap-y-5 md:gap-4 justify-center md:justify-start flex-wrap mb-7">
                             {
                                 (products).slice(0, 8).map((x) => (
                                     <div key={x.id} className='flex group overflow-y-hidden pb-4 md:min-h-auto shadow-md rounded-md flex-col gap-y-2 gap-x-0 h-fit md:min-w-[10%] basis-[47%] md:basis-[30%] lg:basis-[23%]'>
-                                        <div className='w-full mt-0 mb-3 relative min-h-[250px] md:min-h-[200px] max-h-[auto]'>
+                                        <div className='w-full mt-0 mb-3 relative max-h-[auto]'>
                                             <Image
                                                 src={x.images[0]}
-                                                alt='Best sellers'
+                                                alt='Our product'
                                                 quality={100}
                                                 sizes='100vw'
-                                                fill
+                                                width={200}
+                                                height={300}
                                                 className='object-cover'
                                             />
                                         </div>
                                         <div className='px-3 flex gap-2 mt-1'>
-                                            {[...Array(4)].map((_, i) => (
+                                            {[...Array(x.rating)].map((_, i) => (
                                                 <span key={i} className={`fa fa-star`}></span>
                                             ))}
                                         </div>

@@ -8,7 +8,7 @@ const Shop = async () => {
         "https://api.escuelajs.co/api/v1/categories/2/products" ?? []
     );
     const items = await Helpers.fetchSupabaseProducts() as ISBProducts[]
-    // console.log(items)
+  
     return (
         <main className="max-w-7xl mx-auto">
             <ShopPage products={items} />

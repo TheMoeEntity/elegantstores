@@ -47,6 +47,24 @@ export interface productType {
         count: number
     }
 }
+export interface IProduct extends productType {
+    images: string[]
+    colors: string[]
+    sizes: string[]
+    slug: string
+    dimensions?: {
+        width: number
+        height: number
+    }
+    in_Stock: boolean
+    reviews: {
+        reviews: {
+            name: string
+            review: string
+            rating: number
+        }[]
+    }
+}
 
 export interface fakeProductType extends productType {
     description: string
@@ -73,7 +91,7 @@ export interface IStore {
     setSession: (data: UserMetadata) => void
 };
 export interface ISBProducts {
-    id: number
+    id: string
     title: string
     price: number
     description: string
@@ -83,7 +101,7 @@ export interface ISBProducts {
     colors: string[]
     sizes: string[]
     slug: string
-    dimensions: {
+    dimensions?: {
         width: number
         height: number
     }

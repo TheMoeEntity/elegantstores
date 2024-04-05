@@ -1,5 +1,5 @@
 import { FormEvent } from "react";
-import { ISBProducts, fakeProductType, productType } from "./types";
+import { IProduct, ISBProducts, fakeProductType, productType } from "./types";
 import axios from "axios";
 import { createSupabaseServerClient } from "./supabase";
 
@@ -17,6 +17,21 @@ export class Helpers {
             return x.id == slug;
         });
         return single;
+    }
+    static formatPlaceHolder = (item: fakeProductType): ISBProducts => {
+        const items = {
+            ...item,
+            images: [(item.image)??item.images[0]],
+            slug: item.title.match(/\b(\w+)\b/g)?.join('-') ?? "new-arival",
+            sizes: ["M", "L", "XL"],
+            colors: ["black,white", 'brown'],
+            in_Stock: true,
+            rating: item.rating.rate,
+            reviews: {
+                reviews: []
+            }
+        }
+        return items
     }
     static fetchSupabaseProducts = async () => {
         const supabase = await createSupabaseServerClient()
@@ -140,7 +155,7 @@ export class Helpers {
                     variant: "error",
                 }
             );
-            console.log(error);
+
         }
         setStatus("Sign up");
     };
@@ -185,8 +200,8 @@ export class Helpers {
                 enqueueSnackbar("Login success", {
                     variant: "success",
                 });
-            console.log(res.status);
-            console.log(res);
+
+
             setStatus("Login processed.");
             setTimeout(() => {
                 const resetForm = e.target as HTMLFormElement;
@@ -201,7 +216,7 @@ export class Helpers {
                     variant: "error",
                 }
             );
-            console.log(error);
+
         }
         setStatus("Log in");
     };

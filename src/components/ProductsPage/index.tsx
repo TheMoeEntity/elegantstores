@@ -15,7 +15,7 @@ const ProductsPage = ({ justIn, item }: { justIn: productType[], item: ISBProduc
   const [quantity, setQuantity] = useState<number>(1)
   const [index, setIndex] = useState<number>(0)
   const [currImage, setCurrImage] = useState<string | StaticImageData>(item.images[0] ?? noImage)
-  const mdWidth = `md:w-[calc(0.45*${item.dimensions.width}px)]`
+  const mdWidth = `md:w-[calc(0.45*${item.dimensions?.width}px)]`
 
   return (
     <div className='w-full min-h-screen'>
@@ -32,8 +32,8 @@ const ProductsPage = ({ justIn, item }: { justIn: productType[], item: ISBProduc
               alt="product main image"
               quality={100}
               sizes={'100vw'}
-              height={item.dimensions.height}
-              width={item.dimensions.width}
+              height={item.dimensions?.height}
+              width={item.dimensions?.width}
               className="object-cover w-full h-auto"
             />
           </div>
@@ -44,7 +44,7 @@ const ProductsPage = ({ justIn, item }: { justIn: productType[], item: ISBProduc
                 alt="product auxillary image"
                 quality={100}
                 sizes={'100vw'}
-                height={0.38 * item.dimensions.height}
+                height={(0.38 * item.dimensions.height)}
                 width={0.38 * item.dimensions.width}
                 className={`object-cover w-full h-auto ${mdWidth}`}
               />
@@ -55,8 +55,8 @@ const ProductsPage = ({ justIn, item }: { justIn: productType[], item: ISBProduc
                 alt="product auxillary image"
                 quality={100}
                 sizes={'100vw'}
-                height={0.38 * item.dimensions.height}
-                width={0.38 * item.dimensions.width}
+                height={0.38 * item.dimensions?.height}
+                width={0.38 * item.dimensions?.width}
                 className={`object-cover w-full h-auto ${mdWidth}`}
               />
             </div>
@@ -65,8 +65,8 @@ const ProductsPage = ({ justIn, item }: { justIn: productType[], item: ISBProduc
                 src={item.images[0] ?? noImage}
                 alt="product main image"
                 quality={100}
-                height={0.38 * item.dimensions.height}
-                width={0.38 * item.dimensions.width}
+                height={0.38 * item.dimensions?.height}
+                width={0.38 * item.dimensions?.width}
                 sizes={'100vw'}
                 className={`object-cover w-full h-auto ${mdWidth}`}
               />
@@ -76,7 +76,7 @@ const ProductsPage = ({ justIn, item }: { justIn: productType[], item: ISBProduc
 
         <div className='basis-full md:basis-[50%] gap-y-8 py-8 lg:py-0 flex flex-col px-2 md:px-5'>
           <div className='flex gap-x-3 items-center'>
-            {[...Array((item.rating))].map((_, i) => (
+            {[...Array((Math.floor(item.rating)))].map((_, i) => (
               <span key={i} className={`fa fa-star`}></span>
             ))}
             <span className='font-extrabold'>{item.reviews?.reviews.length ?? "no"} reviews</span>
@@ -84,7 +84,7 @@ const ProductsPage = ({ justIn, item }: { justIn: productType[], item: ISBProduc
           <div><h1 className='font-extrabold text-4xl md:text-5xl'>{item.title}</h1></div>
           <div className='text-gray-500 pb-5 border-b-[1px] border-slate-200 flex flex-col gap-y-3'>
             <span>{item.description}.</span>
-            <span className='font-extrabold text-3xl md:text-4xl text-black'>₦ {item.price.toLocaleString()}</span> <span>In stock</span>
+            <span className='font-extrabold text-3xl md:text-4xl text-black'>₦ {item.price.toLocaleString()}</span> <span>{item.in_Stock? "In stock":"Out of stock"}</span>
           </div>
           <div className='text-gray-500 border-b-[1px] pb-5'>
             Offer expires in:
@@ -162,7 +162,7 @@ const ProductsPage = ({ justIn, item }: { justIn: productType[], item: ISBProduc
         </div>
         <h1 className='font-semibold text-3xl'>Customer Reviews</h1>
         <div className='flex gap-x-3 items-center'>
-          {[...Array((item.rating))].map((_, i) => (
+          {[...Array((Math.floor(item.rating)))].map((_, i) => (
             <span key={i} className={`fa fa-star`}></span>
           ))}
           <span className='font-extrabold'>{item.reviews?.reviews.length ?? "no"} reviews</span>

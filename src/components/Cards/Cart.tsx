@@ -75,7 +75,10 @@ const CartModal = ({ cartOpen, closeCart, forceClose }: { cartOpen: boolean, clo
                     <Link href={"/cart"}>
                         <button onClick={closeCart}>View cart</button>
                     </Link>
-                    <button className={styles.checkBtn}>Check out</button>
+                    <Link href={'/cart?checkout=true'}>
+                        <button onClick={closeCart} className={styles.checkBtn}>Check out</button>
+                    </Link>
+            
                 </div>
             </div>
         </div>

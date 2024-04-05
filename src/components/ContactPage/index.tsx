@@ -122,7 +122,7 @@ const ContactPage = () => {
               frameBorder="0"
               style={{ border: 0 }}
               allowFullScreen={true}
-              aria-hidden="false"
+             
               tabIndex={0}
             ></iframe>
           </div>
@@ -181,7 +181,7 @@ const ContactPage = () => {
 
             <div>
               <div>
-                <i className="fa fa-credit-card" aria-hidden="true"></i>
+                <i className="fa fa-credit-card" aria-hidden></i>
               </div>
               <div>
                 <h5 className="fw-light my-3">Secure Payments</h5>

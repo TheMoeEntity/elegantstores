@@ -62,7 +62,7 @@ const Search_Section = ({ products }: { products: fakeProductType[] }) => {
                                 <li className='w-full flex justify-between items-center'>
                                     <span>$400.00+</span>
                                     <span>
-                                        <input className='w-6 h-6' type="checkbox" checked name="" id="" />
+                                        <input className='w-6 h-6' type="checkbox" defaultChecked name="" id="" />
                                     </span>
                                 </li>
                             </ul>
