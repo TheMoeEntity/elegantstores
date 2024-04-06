@@ -12,10 +12,13 @@ import { UserMetadata } from '@supabase/supabase-js'
 const Header = ({ getSession }: { getSession: UserMetadata | null }) => {
     const { setUser } = useContext(userContext)
     useEffect(() => {
-        setUser({
-            userData: getSession ?? {},
-            isSignedIn: true
-        })
+        if (getSession) {
+            setUser({
+                userData: getSession ?? {},
+                isSignedIn: true
+            })
+        }
+
     }, [])
     const { isOpen, setOpen,
         product, setProduct,
