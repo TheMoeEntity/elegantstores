@@ -3,14 +3,31 @@ import stool from '../../../public/images/showcase.png'
 import Image from "next/image"
 import { motion } from 'framer-motion'
 import Link from "next/link"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { UserMetadata } from '@supabase/supabase-js'
 import avatar from '../../../public/images/avatar.png'
-
+import { userContext } from '@/src/Helpers/ContextAPI/usercontext'
+import { useContext } from 'react'
+import { useSearchParams } from 'next/navigation'
 
 const Dashboard = ({ getSession }: { getSession: UserMetadata | null }) => {
+    const searchParams = useSearchParams()
     const [step, setStep] = useState(0)
     const [quantity, setQuantity] = useState<number>(1)
+    const link = searchParams.get('link')
+    useEffect(()=> {
+        switch (link) {
+            case 'wishlist':
+                setStep(3)
+                break;
+        
+            case 'order':
+                setStep(2)
+                break;
+            default:
+                setStep(0)
+        }
+    },[])
     return (
         <div className='flex my-8 flex-row gap-3 gap-x-7 md:gap-x-3 lg:gap-x-7 flex-wrap mx-auto w-[90%] md:w-[97%] lg:w-[85%]'>
             <div className='flex basis-[100%] md:basis-[30%] px-5 py-10 h-auto gap-y-9 flex-col bg-[#F3F5F7]'>

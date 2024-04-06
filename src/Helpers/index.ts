@@ -21,11 +21,13 @@ export class Helpers {
     static formatPlaceHolder = (item: productType): ISBProducts => {
         const items = {
             ...item,
+            price:item.price+10000,
             images: [(item.image)],
             slug: item.title.match(/\b(\w+)\b/g)?.join('-') ?? "new-arival",
             sizes: ["M", "L", "XL"],
             colors: ["black,white", 'brown'],
             in_Stock: true,
+            count:3,
             dimensions:{
                 width:200,
                 height:300

@@ -5,10 +5,18 @@ import CartModal from '../Cards/Cart'
 import Sidebar from '../Cards/Sidebar'
 import { useHeaderState } from '@/src/Helpers/Hooks'
 import { motion } from 'framer-motion'
-import { useClientStore } from '@/src/Helpers/zustand'
-const Header = () => {
-    // const { userData } = useClientStore()
-    // console.log(userData)
+import { useContext, useEffect } from 'react'
+import { userContext } from '@/src/Helpers/ContextAPI/usercontext'
+import { UserMetadata } from '@supabase/supabase-js'
+
+const Header = ({ getSession }: { getSession: UserMetadata | null }) => {
+    const { setUser } = useContext(userContext)
+    useEffect(() => {
+        setUser({
+            userData: getSession ?? {},
+            isSignedIn: true
+        })
+    }, [])
     const { isOpen, setOpen,
         product, setProduct,
         company, setCompany,
@@ -70,21 +78,10 @@ const Header = () => {
                                 transition={{ duration: 0.75, ease: 'anticipate' }}
                                 className='md:flex lg:flex gap-8 hidden items-center'>
                                 <button onClick={() => push('/')}>Home</button>
-                                <div className='relative group'>
+                                <div className='relative'>
                                     <button onClick={() => push('/shop')}>
-                                        Shop <i className='group-hover:rotate-180 transition duration-200 fa-solid fa-angle-down ml-2'></i>
+                                        Shop
                                     </button>
-                                    <div
-                                        className="invisible absolute -translate-x-5 z-[999999999] flex w-auto flex-col bg-white py-1 px-10 text-gray-800 shadow-xl group-hover:visible">
-
-                                        <Link href={'/products/smartx'} className="my-2 block border-gray-100 py-1 text-gray-500 hover:text-[#ffd16a] md:mx-2">
-                                            Smart X
-                                        </Link>
-
-                                        <Link href={'/products/trackr360'} className="my-2 whitespace-nowrap overflow-hidden block border-gray-100 py-1 text-gray-500 hover:text-[#ffd16a] md:mx-2">
-                                            Trackr 360
-                                        </Link>
-                                    </div>
                                 </div>
                                 <div className='relative group'>
                                     <button>
@@ -93,15 +90,18 @@ const Header = () => {
                                     <div
                                         className="invisible absolute -translate-x-5  z-[999999999] flex w-auto flex-col bg-white py-1 px-10 text-gray-800 shadow-xl group-hover:visible whitespace-nowrap overflow-hidden ">
 
-                                        <Link href={'/about'} className="my-2  block border-gray-100 py-1 text-gray-500 hover:text-[#ffd16a] md:mx-2">
-                                            About us
+                                        <Link href={'/shoes'} className="my-2  block border-gray-100 py-1 text-gray-500 hover:text-[#ffd16a] md:mx-2">
+                                            Shoes
                                         </Link>
 
-                                        <Link href={'/careers'} className="my-2  block border-gray-100 py-1 text-gray-500 hover:text-[#ffd16a] md:mx-2">
-                                            Careers
+                                        <Link href={'/hoodie'} className="my-2  block border-gray-100 py-1 text-gray-500 hover:text-[#ffd16a] md:mx-2">
+                                            Hoodie
                                         </Link>
-                                        <Link href={'/contact'} className="my-2  block border-gray-100 py-1 text-gray-500 hover:text-[#ffd16a] md:mx-2">
-                                            Contact us
+                                        <Link href={'/shop'} className="my-2  block border-gray-100 py-1 text-gray-500 hover:text-[#ffd16a] md:mx-2">
+                                            Shirt
+                                        </Link>
+                                        <Link href={'/shop'} className="my-2  block border-gray-100 py-1 text-gray-500 hover:text-[#ffd16a] md:mx-2">
+                                            Pants
                                         </Link>
                                     </div>
                                 </div>

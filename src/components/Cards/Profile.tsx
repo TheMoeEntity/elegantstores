@@ -2,25 +2,14 @@
 import styles from "./cards.module.css";
 import Image from "next/image";
 import Link from "next/link";
-import boy from "../../../public/images/noimage.png";
-import { useEffect, useState } from "react";
+import boy from "../../../public/images/avatar.png";
+import { useContext, useEffect, useState } from "react";
 import { readUserSessionCLient } from "@/src/Helpers/supabase";
+import { userContext } from "@/src/Helpers/ContextAPI/usercontext";
 
 
 const Profile = ({ profileOpen = false, forceClose }: { profileOpen: boolean, forceClose: () => void }) => {
-    const getData = async ()=> {
-        const user = await readUserSessionCLient()
-        console.log(user)
-        return user
-    }
-    const [user, setUser] = useState("");
-    useEffect(()=> {
-        getData().then((user)=> {
-            console.log(user)
-            // setUser(user.data)
-        })
-    
-    },[])
+    const { user } = useContext(userContext)
 
     return (
         <div
@@ -43,27 +32,33 @@ const Profile = ({ profileOpen = false, forceClose }: { profileOpen: boolean, fo
                 </div>
                 <div className={styles.details}>
                     <div>
-                        <b>{user ?? "Username"}</b>
+                        <b>{user.userData.userName ?? ""}</b>
                     </div>
-                    <div>location</div>
+                    {/* <div>location</div> */}
                 </div>
             </div>
             <div className="">
                 <ul>
-                    <li>
-                        <Link href={`/login`}>
-                            <div>
-                                <i className="fas fa-sign-in-alt"></i> Log in
-                            </div>
-                        </Link>
-                    </li>
-                    <li>
-                        <Link href={`/signup`}>
-                            <div>
-                                <i className="fas fa-user-plus"></i>Create account
-                            </div>
-                        </Link>
-                    </li>
+                    {
+                        !user.isSignedIn && (
+                            <>
+                                <li>
+                                    <Link href={`/login`}>
+                                        <div>
+                                            <i className="fas fa-sign-in-alt"></i> Log in
+                                        </div>
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link href={`/signup`}>
+                                        <div>
+                                            <i className="fas fa-user-plus"></i>Create account
+                                        </div>
+                                    </Link>
+                                </li>
+                            </>
+                        )
+                    }
                     <li>
                         <Link href={`/account`}>
                             <div>
@@ -99,12 +94,16 @@ const Profile = ({ profileOpen = false, forceClose }: { profileOpen: boolean, fo
                             <i className="fa-solid fa-circle-half-stroke"></i>Dark mode
                         </div>
                     </li>
+                    {
+                        user.isSignedIn && (
+                            <li>
+                                <div>
+                                    <i className="fa-solid fa-arrow-right-from-bracket"></i> Log out
+                                </div>
+                            </li>
+                        )
+                    }
 
-                    <li>
-                        <div>
-                            <i className="fa-solid fa-arrow-right-from-bracket"></i> Log out
-                        </div>
-                    </li>
                 </ul>
             </div>
         </div>

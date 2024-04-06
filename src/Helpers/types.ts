@@ -1,9 +1,22 @@
 import { UserMetadata } from "@supabase/supabase-js";
 import { StaticImageData } from "next/image";
+import { Dispatch, ReactNode, SetStateAction } from "react";
 
 export type featuresContent = {
     index: number
 
+}
+export type userSession = {
+    userData: UserMetadata
+    isSignedIn: boolean
+}
+export type userContex = {
+    user: userSession
+    setUser: Dispatch<SetStateAction<userSession>>
+
+}
+export type UserProviderType = {
+    children:ReactNode
 }
 export interface FeaturesType {
     icon: StaticImageData;
@@ -101,6 +114,7 @@ export interface ISBProducts {
     colors: string[]
     sizes: string[]
     slug: string
+    count: number
     dimensions: {
         width: number
         height: number

@@ -7,15 +7,26 @@ import FeaturedCard from '../Cards/Featured'
 import { ISBProducts, productType } from '@/src/Helpers/types'
 import profile from '../../../public/images/cat4.png'
 import avatar from '../../../public/images/avatar.png'
+import { useSnackbar } from 'notistack'
 
 const ProductsPage = ({ justIn, item }: { justIn: productType[], item: ISBProducts }) => {
-
+  const { enqueueSnackbar } = useSnackbar()
   const [additional, setAdditional] = useState<boolean>(true)
   const [question, setQuestion] = useState<boolean>(false)
   const [quantity, setQuantity] = useState<number>(1)
   const [index, setIndex] = useState<number>(0)
   const [currImage, setCurrImage] = useState<string | StaticImageData>(item?.images[0] ?? noImage)
   const mdWidth = `md:w-[calc(0.45*${item?.dimensions?.width}px)]`
+  const checkCount = () => {
+    if (quantity === item.count) {
+      enqueueSnackbar({
+        message: "No more items available",
+        variant: 'warning'
+      })
+    } else {
+      setQuantity(quantity+1)
+    }
+  }
 
   return (
     <div className='w-full min-h-screen'>
@@ -84,7 +95,7 @@ const ProductsPage = ({ justIn, item }: { justIn: productType[], item: ISBProduc
           <div><h1 className='font-extrabold text-4xl md:text-5xl'>{item.title}</h1></div>
           <div className='text-gray-500 pb-5 border-b-[1px] border-slate-200 flex flex-col gap-y-3'>
             <span>{item.description}.</span>
-            <span className='font-extrabold text-3xl md:text-4xl text-black'>₦ {item.price.toLocaleString()}</span> <span>{item.in_Stock? "In stock":"Out of stock"}</span>
+            <span className='font-extrabold text-3xl md:text-4xl text-black'>₦ {item.price.toLocaleString()}</span> {item.in_Stock ? (<span>In stock</span>) : (<span className=' text-red-400'>Out of stock</span>)}
           </div>
           <div className='text-gray-500 border-b-[1px] pb-5'>
             Offer expires in:
@@ -118,7 +129,7 @@ const ProductsPage = ({ justIn, item }: { justIn: productType[], item: ISBProduc
 
           <div className='flex gap-x-4 mt-5 w-full'>
             <div className='w-[28%] md:w-[20%] h-auto bg-gray-100 flex items-center rounded-lg justify-evenly'>
-              <button onClick={() => setQuantity(quantity === 1 ? 1 : quantity - 1)}>-</button><span className='font-extrabold'>{quantity}</span><button onClick={() => setQuantity(quantity + 1)}>+</button>
+              <button onClick={() => setQuantity(quantity === 1 ? 1 : quantity - 1)}>-</button><span className='font-extrabold'>{quantity}</span><button onClick={() => checkCount()}>+</button>
             </div>
             <button className='border-[1px] border-black rounded-lg w-[70%] py-2 text-black'><i className='fa-solid fa-heart mr-3'></i>Wishlist</button>
           </div>
@@ -191,9 +202,9 @@ const ProductsPage = ({ justIn, item }: { justIn: productType[], item: ISBProduc
         </div>
 
         {
-          item.reviews?.reviews && (
+          item.reviews?.reviews.length>0 && (
             <div className='flex justify-between md:flex-row flex-col gap-y-5'>
-              <h2 className='text-3xl font-semibold'>11 Reviews</h2>
+              <h2 className='text-3xl font-semibold'>{item.reviews.reviews.length} Review(s)</h2>
               <div id='service' className={`md:w-[40%] lg:w-[20%]`}>
                 <select
                   className="custom-select outline-none w-full px-2 py-2 text-[black] font-semiold border-[1px] border-[#eef5ff]"
@@ -221,7 +232,7 @@ const ProductsPage = ({ justIn, item }: { justIn: productType[], item: ISBProduc
                   </div>
                   <div className='lg:pl-7'>
                     <div>{x.name}</div>
-                    {[...Array(x.rating+1)].map((_, i) => (
+                    {[...Array(x.rating+2)].map((_, i) => (
                       <span key={i} className={`fa fa-star text-[8px] md:text-[13px]`}></span>
                     ))}
                   </div>
