@@ -109,6 +109,7 @@ export interface ISession {
 }
 export interface IStore {
     cart: cartItem[];
+    cartTotalPrice:number
     cartCount: number;
     addToCart: (item: ISBProducts, quantity:number) => void
     removeFromCart:(id:string) => void

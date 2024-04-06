@@ -8,9 +8,11 @@ import { motion } from 'framer-motion'
 import { useContext, useEffect } from 'react'
 import { userContext } from '@/src/Helpers/ContextAPI/usercontext'
 import { UserMetadata } from '@supabase/supabase-js'
+import { useStore } from '@/src/Helpers/zustand'
 
 const Header = ({ getSession }: { getSession: UserMetadata | null }) => {
     const { setUser } = useContext(userContext)
+    const {cartCount} = useStore()
     useEffect(() => {
         if (getSession) {
             setUser({
@@ -133,7 +135,7 @@ const Header = ({ getSession }: { getSession: UserMetadata | null }) => {
                             profileOpen ? setCartOpen(false) : setCartOpen(!cartOpen)
                         }
                         className='fa-solid fa-shopping-bag text-xl md:text-xl'></button>
-                    <b className='font-extrabold h-5 w-5 flex flex-col items-center justify-center rounded-full bg-black text-white text-xs'>0</b>
+                    <b className='font-extrabold h-5 w-5 flex flex-col items-center justify-center rounded-full bg-black text-white text-xs'>{cartCount}</b>
                 </div>
 
             </div>

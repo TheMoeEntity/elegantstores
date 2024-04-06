@@ -1,21 +1,24 @@
 import styles from "./cart.module.css";
-import Image, { StaticImageData } from "next/image";
+import Image from "next/image";
 import Link from "next/link";
-import noimage from '../../../public/images/noimage.png'
+import { useStore } from "@/src/Helpers/zustand";
+import { useEffect, useState } from "react";
 
 const CartModal = ({ cartOpen, closeCart, forceClose }: { cartOpen: boolean, closeCart: () => void, forceClose: () => void }) => {
-    const cart: { images: StaticImageData, name: string, price: number }[] = [
-        // {
-        //     images: ['/images/boy.jpeg'],
-        //     name: "Big Hoodie",
-        //     price: 45400
-        // } 
-    ]
+    const { cart, removeFromCart, cartTotalPrice } = useStore()
+    const removeAction = (id: string) => {
+        removeFromCart(id);
+    }
+    const [total, setTotal] = useState(cartTotalPrice)
+    useEffect(() => {
+        setTotal(cartTotalPrice)
+    }, [cartTotalPrice, cart])
+
     return (
         <div
             style={{
                 top: cartOpen ? "130px" : "-500px",
-                visibility:!cartOpen ? 'hidden':'visible'
+                visibility: !cartOpen ? 'hidden' : 'visible'
             }}
             className={styles.cartModal}
         >
@@ -32,26 +35,25 @@ const CartModal = ({ cartOpen, closeCart, forceClose }: { cartOpen: boolean, clo
                                 <div className={styles.image}>
                                     <div>
                                         <Image
-                                            src={noimage}
+                                            src={x.item.images[0]}
                                             alt="product image"
                                             fill
                                             quality={100}
                                             style={{ objectFit: 'cover' }}
-                                            priority={true}
                                             sizes="100vw"
                                         />
                                     </div>
                                 </div>
                                 <div className={styles.desc}>
-                                    <h4>{x.name}</h4>
-                                    <h5>Natural | XL</h5>
+                                    <h4>{x.item.title}</h4>
+                                    <h5>{x.quantity}</h5>
                                 </div>
                                 <div className={styles.cost}>
-                                    <button>
+                                    <button onClick={() => removeAction(x.item.id)}>
                                         Remove
                                     </button>
                                     <span className={styles.itempri}>
-                                        ₦{x.price.toLocaleString()}
+                                        ₦{x.item.price.toLocaleString()}
                                     </span>
                                 </div>
                             </div>
@@ -68,7 +70,7 @@ const CartModal = ({ cartOpen, closeCart, forceClose }: { cartOpen: boolean, clo
             >
                 <div className={styles.prices}>
                     <h3>Cart total</h3>
-                    <h4>₦{0}</h4>
+                    <h4>₦{total.toLocaleString()}</h4>
                 </div>
                 <p>shipping total calculated at checkout</p>
                 <div className={styles.bottomControls}>
@@ -78,7 +80,7 @@ const CartModal = ({ cartOpen, closeCart, forceClose }: { cartOpen: boolean, clo
                     <Link href={'/cart?checkout=true'}>
                         <button onClick={closeCart} className={styles.checkBtn}>Check out</button>
                     </Link>
-            
+
                 </div>
             </div>
         </div>

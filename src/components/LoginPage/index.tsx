@@ -6,12 +6,12 @@ import Link from 'next/link'
 import { useSnackbar } from 'notistack'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Helpers } from '@/src/Helpers'
-import { useClientStore } from '@/src/Helpers/zustand'
+import { useStore } from '@/src/Helpers/zustand'
 import { createBrowserClient } from '@supabase/ssr'
 
 
 const LoginPage = () => {
-    const { setSession } = useClientStore();
+    const { cart } = useStore();
     const [status, setStatus] = useState<string>("Log in")
     const { push } = useRouter()
     const { enqueueSnackbar } = useSnackbar()
@@ -21,9 +21,9 @@ const LoginPage = () => {
             process.env.NEXT_PUBLIC_SUPABASE_API_KEY!,
         )
         const { data } = supabase.auth.onAuthStateChange((_event, session) => {
-            if (session) {
-                setSession(session?.user || null);
-            }
+            // if (session) {
+            //     setSession(session?.user || null);
+            // }
         });
 
         return () => {

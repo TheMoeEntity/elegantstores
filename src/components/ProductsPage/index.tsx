@@ -8,6 +8,7 @@ import { ISBProducts, productType } from '@/src/Helpers/types'
 import profile from '../../../public/images/cat4.png'
 import avatar from '../../../public/images/avatar.png'
 import { useSnackbar } from 'notistack'
+import { useStore } from '@/src/Helpers/zustand'
 
 const ProductsPage = ({ justIn, item }: { justIn: productType[], item: ISBProducts }) => {
   const { enqueueSnackbar } = useSnackbar()
@@ -15,6 +16,7 @@ const ProductsPage = ({ justIn, item }: { justIn: productType[], item: ISBProduc
   const [question, setQuestion] = useState<boolean>(false)
   const [quantity, setQuantity] = useState<number>(1)
   const [index, setIndex] = useState<number>(0)
+  const { cart, addToCart } = useStore()
   const [currImage, setCurrImage] = useState<string | StaticImageData>(item?.images[0] ?? noImage)
   const mdWidth = `md:w-[calc(0.45*${item?.dimensions?.width}px)]`
   const checkCount = () => {
@@ -24,10 +26,17 @@ const ProductsPage = ({ justIn, item }: { justIn: productType[], item: ISBProduc
         variant: 'warning'
       })
     } else {
-      setQuantity(quantity+1)
+      setQuantity(quantity + 1)
     }
   }
+const addAction = ()=> {
+  addToCart(item, quantity)
+  enqueueSnackbar({
+    message: "Item has been added to cart",
+    variant: 'success'
+  })
 
+}
   return (
     <div className='w-full min-h-screen'>
       <div className="text-gray-500 flex gap-x-3 items-center mt-7 mx-auto w-[90%]">
@@ -133,7 +142,7 @@ const ProductsPage = ({ justIn, item }: { justIn: productType[], item: ISBProduc
             </div>
             <button className='border-[1px] border-black rounded-lg w-[70%] py-2 text-black'><i className='fa-solid fa-heart mr-3'></i>Wishlist</button>
           </div>
-          <button className='w-full py-3 rounded-lg bg-black text-white'>Add to cart</button>
+          <button onClick={()=> addAction()} className='w-full py-3 rounded-lg bg-black text-white'>Add to cart</button>
 
           <div className='mt-5'>
             <div className=''>
@@ -202,7 +211,7 @@ const ProductsPage = ({ justIn, item }: { justIn: productType[], item: ISBProduc
         </div>
 
         {
-          item.reviews?.reviews.length>0 && (
+          item.reviews?.reviews.length > 0 && (
             <div className='flex justify-between md:flex-row flex-col gap-y-5'>
               <h2 className='text-3xl font-semibold'>{item.reviews.reviews.length} Review(s)</h2>
               <div id='service' className={`md:w-[40%] lg:w-[20%]`}>
@@ -232,7 +241,7 @@ const ProductsPage = ({ justIn, item }: { justIn: productType[], item: ISBProduc
                   </div>
                   <div className='lg:pl-7'>
                     <div>{x.name}</div>
-                    {[...Array(x.rating+2)].map((_, i) => (
+                    {[...Array(x.rating + 2)].map((_, i) => (
                       <span key={i} className={`fa fa-star text-[8px] md:text-[13px]`}></span>
                     ))}
                   </div>
