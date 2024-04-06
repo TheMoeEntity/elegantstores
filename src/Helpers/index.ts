@@ -1,5 +1,5 @@
 import { FormEvent } from "react";
-import { IProduct, ISBProducts, fakeProductType, productType } from "./types";
+import { IProduct, ISBProducts, fakeProductType, loremPicsum, productType } from "./types";
 import axios from "axios";
 import { createSupabaseServerClient } from "./supabase";
 
@@ -7,8 +7,8 @@ import { createSupabaseServerClient } from "./supabase";
 
 export class Helpers {
     static async formatProducts() {
-        const insta = await this.getProducts('https://api.escuelajs.co/api/v1/products/?categoryId=3') as fakeProductType[]
-        return insta.map(prod => prod.images[0])
+        const insta = await this.getProducts('https://picsum.photos/v2/list') as loremPicsum[]
+        return insta.map(prod => prod.download_url)
     }
     static getSingle = async (slug: string) => {
         const data = await this.getProducts('https://fakestoreapi.com/products') as productType[]
@@ -21,16 +21,16 @@ export class Helpers {
     static formatPlaceHolder = (item: productType): ISBProducts => {
         const items = {
             ...item,
-            price:item.price+10000,
+            price: item.price + 10000,
             images: [(item.image)],
             slug: item.title.match(/\b(\w+)\b/g)?.join('-') ?? "new-arival",
             sizes: ["M", "L", "XL"],
             colors: ["black,white", 'brown'],
             in_Stock: true,
-            count:3,
-            dimensions:{
-                width:200,
-                height:300
+            count: 3,
+            dimensions: {
+                width: 200,
+                height: 300
             },
             rating: item.rating.rate,
             reviews: {

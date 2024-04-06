@@ -27,6 +27,14 @@ export type careerType = {
     title: string;
     text: string;
 };
+export type loremPicsum = {
+    id: number,
+    author:string,
+    width: number,
+    height: number,
+    url: string,
+    download_url:string
+}
 export type teamType = {
     title: string;
     profile: string;

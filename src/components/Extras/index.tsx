@@ -89,16 +89,16 @@ const Extras = ({ insta }: { insta: string[] }) => {
 
             <div className='flex flex-row md:flex-row md:gap-5 gap-0 justify-center flex-wrap mb-7 w-[90%] md:w-[95%] mx-auto'>
                 {
-                    insta.slice(0, 4).map((x, i) => (
+                 insta && insta.slice(10, 14).map((x, i) => (
                         <div key={i} className='flex basis-full w-auto md:min-h-fit flex-col gap-3 h-fit min-w-full md:min-w-[10%] md:basis-[20%] lg:basis-[23%]'>
-                            <div className='w-full my-5 relative min-h-[262px] md:min-h-[262px] max-h-[auto]'>
+                            <div className='w-[300] max-w-full my-5 relative min-h-[350px] md:min-h-[220px] lg:min-h-[340px] max-h-[auto]'>
                                 <Image
                                     fill
                                     src={x}
                                     alt='Instagram'
                                     quality={100}
                                     sizes='100vw'
-                                    className='object-cover md:object-contain h-auto'
+                                    className='object-cover h-auto'
                                 />
 
                             </div>

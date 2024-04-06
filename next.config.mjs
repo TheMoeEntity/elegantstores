@@ -23,9 +23,14 @@ const nextConfig = {
                 protocol: 'https',
                 hostname: 'zthlrxszabizorqqtcuy.supabase.co',
                 pathname: '**'
+            },
+            {
+                protocol: 'https',
+                hostname: 'picsum.photos',
+                pathname: '**'
             }
         ]
     },
 };
-//zthlrxszabizorqqtcuy.supabase.co
+//picsum.photos
 export default nextConfig;
