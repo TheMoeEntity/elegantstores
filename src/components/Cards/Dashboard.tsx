@@ -42,7 +42,7 @@ const Dashboard = ({ getSession }: { getSession: UserMetadata | null }) => {
                         sizes={'100vw'}
                         className="object-cover rounded-full w-full h-auto"
                     />
-                    <button className="absolute flex justify-center items-center z-[99999999999] bg-[#FAFAFA] rounded-full w-10 h-10 -right-1 bottom-0">
+                    <button className="absolute flex justify-center items-center z-[9999] bg-[#FAFAFA] rounded-full w-10 h-10 -right-1 bottom-0">
                         <div className="bg-black w-9 h-9 rounded-full flex justify-center items-center">
                             <i className='fa-solid fa-camera'></i>
                         </div>

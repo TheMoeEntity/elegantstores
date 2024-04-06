@@ -93,17 +93,17 @@ const Header = ({ getSession }: { getSession: UserMetadata | null }) => {
                                     <div
                                         className="invisible absolute -translate-x-5  z-[999999999] flex w-auto flex-col bg-white py-1 px-10 text-gray-800 shadow-xl group-hover:visible whitespace-nowrap overflow-hidden ">
 
-                                        <Link href={'/shoes'} className="my-2  block border-gray-100 py-1 text-gray-500 hover:text-[#ffd16a] md:mx-2">
+                                        <Link href={'/shop?category=shoes'} className="my-2  block border-gray-100 py-1 text-gray-500 hover:text-[#ffd16a] md:mx-2">
                                             Shoes
                                         </Link>
 
-                                        <Link href={'/hoodie'} className="my-2  block border-gray-100 py-1 text-gray-500 hover:text-[#ffd16a] md:mx-2">
+                                        <Link href={'/shop?category=hoodie'} className="my-2  block border-gray-100 py-1 text-gray-500 hover:text-[#ffd16a] md:mx-2">
                                             Hoodie
                                         </Link>
-                                        <Link href={'/shop'} className="my-2  block border-gray-100 py-1 text-gray-500 hover:text-[#ffd16a] md:mx-2">
+                                        <Link href={'/shop?category=shirt'} className="my-2  block border-gray-100 py-1 text-gray-500 hover:text-[#ffd16a] md:mx-2">
                                             Shirt
                                         </Link>
-                                        <Link href={'/shop'} className="my-2  block border-gray-100 py-1 text-gray-500 hover:text-[#ffd16a] md:mx-2">
+                                        <Link href={'/shop?category=pants'} className="my-2  block border-gray-100 py-1 text-gray-500 hover:text-[#ffd16a] md:mx-2">
                                             Pants
                                         </Link>
                                     </div>
