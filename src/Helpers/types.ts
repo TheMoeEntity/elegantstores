@@ -108,9 +108,15 @@ export interface ISession {
 
 }
 export interface IStore {
-    userData: UserMetadata | any;
-    setSession: (data: UserMetadata) => void
+    cart: cartItem[];
+    cartCount: number;
+    addToCart: (item: ISBProducts, quantity:number) => void
+    removeFromCart:(id:string) => void
 };
+export type cartItem = {
+    item:ISBProducts
+    quantity:number
+}
 export interface ISBProducts {
     id: string
     title: string

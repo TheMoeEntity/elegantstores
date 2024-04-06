@@ -1,15 +1,10 @@
 'use client'
-import { useClientStore } from "@/src/Helpers/zustand";
+import { userContext } from "@/src/Helpers/ContextAPI/usercontext";
 import { UserMetadata } from "@supabase/supabase-js";
-import React, { useEffect } from "react";
+import React, { useContext } from "react";
 
 export default function Modal({ showModal, setShowModal, metaData } : { showModal: boolean, setShowModal: (args: boolean) => void, metaData: UserMetadata | null }) {
-    const { setSession, userData } = useClientStore();
-    useEffect(() => {
-        if (metaData) {
-            setSession(metaData);
-        }
-    }, [])
+    const { user } = useContext(userContext)
     return (
         <>
             {showModal ? (
@@ -23,7 +18,7 @@ export default function Modal({ showModal, setShowModal, metaData } : { showModa
                                 {/*header*/}
                                 <div className="flex items-start justify-between p-5 border-b border-solid border-blueGray-200 rounded-t">
                                     <h3 className="text-3xl font-semibold">
-                                        Welcome to Elegant Stores {userData?.fullName}
+                                        Welcome to Elegant Stores {user.userData.fullName}
                                     </h3>
                                     <button
                                         className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
