@@ -4,6 +4,8 @@ import Image from 'next/image'
 import Link from 'next/link'
 import React, { useState } from 'react'
 import CategoryModal from './CategoryModal'
+import { Helpers } from '@/src/Helpers'
+import noimage from '../../../public/images/noimage.png'
 
 const Search_Section = ({ products }: { products: fakeProductType[] }) => {
     const [search, setSearch] = useState<boolean>(false)
@@ -89,7 +91,7 @@ const Search_Section = ({ products }: { products: fakeProductType[] }) => {
                                         <div key={x.id} className='flex group overflow-y-hidden pb-4 md:min-h-auto shadow-md rounded-md flex-col gap-y-2 gap-x-0 h-fit md:min-w-[10%] basis-[47%] md:basis-[30%] lg:basis-[23%]'>
                                             <Link href={'/products/' + x.title} className='w-full mt-0 mb-3 relative min-h-[250px] md:min-h-[200px] max-h-[auto]'>
                                                 <Image
-                                                    src={x.images[0]}
+                                                    src={Helpers.isValidUrl(x.images[0]) ? x.images[0]:noimage}
                                                     alt='Best sellers'
                                                     quality={100}
                                                     sizes='100vw'

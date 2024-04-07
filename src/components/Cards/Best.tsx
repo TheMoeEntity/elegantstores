@@ -1,6 +1,7 @@
 import Image, { StaticImageData } from 'next/image'
 import Link from 'next/link';
-// import catimg4 from '../../../public/images/best.png'
+import noimage from '../../../public/images/noimage.png'
+import { Helpers } from '@/src/Helpers';
 
 const Best = ({
     title,
@@ -12,13 +13,13 @@ const Best = ({
     price: number;
     img: string
     desc: string,
-    id:string
+    id: string
 }) => {
     return (
         <div className='flex shadow-md md:min-h-fit flex-col gap-3 h-auto min-w-full md:min-w-[10%] md:basis-[30%] lg:basis-[23%] pb-5 rounded-sm'>
             <div className='w-full relative min-h-[410px] md:min-h-[290px] max-h-[auto]'>
                 <Image
-                    src={img}
+                    src={Helpers.isValidUrl(img) ? img : noimage}
                     alt='Best sellers'
                     quality={100}
                     sizes='100vw'

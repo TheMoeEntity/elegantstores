@@ -99,10 +99,13 @@ const Header = ({ getSession }: { getSession: UserMetadata | null }) => {
                                             Shoes
                                         </Link>
 
-                                        <Link href={'/shop?category=hoodie'} className="my-2  block border-gray-100 py-1 text-gray-500 hover:text-[#ffd16a] md:mx-2">
+                                        <Link href={'/shop?category=hoodies'} className="my-2  block border-gray-100 py-1 text-gray-500 hover:text-[#ffd16a] md:mx-2">
                                             Hoodie
                                         </Link>
-                                        <Link href={'/shop?category=shirt'} className="my-2  block border-gray-100 py-1 text-gray-500 hover:text-[#ffd16a] md:mx-2">
+                                        <Link href={'/shop?category=jackets'} className="my-2  block border-gray-100 py-1 text-gray-500 hover:text-[#ffd16a] md:mx-2">
+                                            Jackets
+                                        </Link>
+                                        <Link href={'/shop?category=shirts'} className="my-2  block border-gray-100 py-1 text-gray-500 hover:text-[#ffd16a] md:mx-2">
                                             Shirt
                                         </Link>
                                         <Link href={'/shop?category=pants'} className="my-2  block border-gray-100 py-1 text-gray-500 hover:text-[#ffd16a] md:mx-2">

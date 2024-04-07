@@ -15,29 +15,33 @@ export class Helpers {
         "9XKjGI",
         "BRe1CK"
     ]
-    static applyCouponCode = (cartTotalPrice:number,code: string, setStatus: any,
-        enqueueSnackbar: any):number => {
-            let discount:number = 0
-            const coupnValues = [0.30,0.15,0.10]
-            setStatus('validating coupon code')
+    static filterCategory = (category: string, items: ISBProducts[]) => {
+        return category === 'all' ? items : items.filter(item => item.category === category)
+    }
+    static applyCouponCode = (cartTotalPrice: number, code: string, setStatus: any,
+        enqueueSnackbar: any): number => {
+        let discount: number = 0
+        const coupnValues = [0.30, 0.15, 0.10]
+        setStatus('validating coupon code')
 
-            if (!this.couponCodes.includes(code)) {
-                setStatus("Coupon code is invalid or expired")
-                enqueueSnackbar(`Invalid coupon code!!`, {
-                    variant: "error"
-                })
-                discount = 0
-            } else {
-                let randomDiscountIndex = Math.floor(Math.random() * coupnValues.length);
-                enqueueSnackbar(`Applying ${coupnValues[randomDiscountIndex]*100}% discount`,{ 
-                    variant:"success"})
-                setStatus("Coupon code applied")
-                discount = cartTotalPrice - (cartTotalPrice * coupnValues[randomDiscountIndex])
-            }
-            setTimeout(() => {
-                setStatus("")
-            }, 3000);
-            return discount
+        if (!this.couponCodes.includes(code)) {
+            setStatus("Coupon code is invalid or expired")
+            enqueueSnackbar(`Invalid coupon code!!`, {
+                variant: "error"
+            })
+            discount = 0
+        } else {
+            let randomDiscountIndex = Math.floor(Math.random() * coupnValues.length);
+            enqueueSnackbar(`Applying ${coupnValues[randomDiscountIndex] * 100}% discount`, {
+                variant: "success"
+            })
+            setStatus("Coupon code applied")
+            discount = cartTotalPrice - (cartTotalPrice * coupnValues[randomDiscountIndex])
+        }
+        setTimeout(() => {
+            setStatus("")
+        }, 3000);
+        return discount
     }
     static async formatProducts() {
         const insta = await this.getProducts('https://picsum.photos/v2/list') as loremPicsum[]

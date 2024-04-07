@@ -18,7 +18,7 @@ const Hero = () => {
                 <div className='flex flex-col gap-5'>
                     <h1 className='text-4xl md:text-[52px] w-[60%] md:w-[90%] leading-tight'>Bring the warmth.</h1>
                     <p className='leading-loose md:w-[70%]'>Everyone needs a good winter jacket. Find yours with our collection and more.</p>
-                    <Link href='/shop' className='rounded-lg bg-[#377DFF] text-white w-fit px-12 py-3 '>Shop now!</Link>
+                    <Link href='/shop?category=jackets' className='rounded-lg bg-[#377DFF] text-white w-fit px-12 py-3 '>Shop now!</Link>
                 </div>
             </div>
         </section>
