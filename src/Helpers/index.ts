@@ -1,8 +1,9 @@
 import { FormEvent } from "react";
-import { IProduct, ISBProducts, fakeProductType, loremPicsum, productType } from "./types";
+import { IProduct, ISBProducts, fakeProductType, loremPicsum, productType, reviewType } from "./types";
 import axios from "axios";
 import { createSupabaseServerClient } from "./supabase";
-import { useStore } from "./zustand";
+import { createSupabaseServerClientCSR } from "./supabase/superbaseCSR";
+import { createBrowserClient } from "@supabase/ssr";
 
 
 export class Helpers {
@@ -80,6 +81,41 @@ export class Helpers {
         const supabase = await createSupabaseServerClient()
         const { data: products } = await supabase.from("products").select();
         return products
+    }
+    static updateReviews = async (slug: string, e: FormEvent, item: ISBProducts, id: string, review: reviewType, enqueueSnackbar: any, setDidReview: (review: boolean) => void) => {
+        const itemToUpdate = item.reviews?.reviews;
+        const reviewData = {
+            review,
+            itemToUpdate,
+            id,
+            slug
+        }
+
+        setDidReview(true);
+        try {
+            const url = "/api/review";
+            const res = await axios.post(url, reviewData);
+
+            res.status === 200 || res.status === 201 &&
+                enqueueSnackbar("Review submitted successfully", {
+                    variant: "success",
+                });
+            setTimeout(() => {
+                const resetForm = e.target as HTMLFormElement;
+                resetForm.reset();
+            }, 3000);
+        } catch (error) {
+            enqueueSnackbar(
+                "There was an error submitting review, try again: " + error,
+                {
+                    variant: "error",
+                }
+            );
+
+        }
+
+        setDidReview(false)
+
     }
     static getSingleProduct = async (id: string) => {
         const data = await this.fetchSupabaseProducts() as ISBProducts[]

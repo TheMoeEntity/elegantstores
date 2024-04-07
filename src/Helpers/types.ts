@@ -1,6 +1,7 @@
 import { UserMetadata } from "@supabase/supabase-js";
 import { StaticImageData } from "next/image";
 import { Dispatch, ReactNode, SetStateAction } from "react";
+import { StringLiteral } from "typescript";
 
 export type featuresContent = {
     index: number
@@ -137,10 +138,11 @@ export interface ISBProducts {
     }
     in_Stock: boolean
     reviews: {
-        reviews: {
-            name: string
-            review: string
-            rating: number
-        }[]
+        reviews: reviewType[]
     }
+}
+export type reviewType = {
+    name:string
+    review:string
+    rating:number
 }

@@ -1,14 +1,15 @@
 'use client'
 import Image, { StaticImageData } from 'next/image'
-import React, { useEffect } from 'react'
+import React, { FormEvent, useEffect } from 'react'
 import noImage from '../../../public/images/noimage.png'
 import { useState } from 'react'
 import FeaturedCard from '../Cards/Featured'
-import { ISBProducts, productType } from '@/src/Helpers/types'
+import { ISBProducts, productType, reviewType } from '@/src/Helpers/types'
 import profile from '../../../public/images/cat4.png'
 import avatar from '../../../public/images/avatar.png'
 import { useSnackbar } from 'notistack'
 import { useStore } from '@/src/Helpers/zustand'
+import { Helpers } from '@/src/Helpers'
 
 const ProductsPage = ({ justIn, item }: { justIn: productType[], item: ISBProducts }) => {
   const { enqueueSnackbar } = useSnackbar()
@@ -17,6 +18,7 @@ const ProductsPage = ({ justIn, item }: { justIn: productType[], item: ISBProduc
   const [quantity, setQuantity] = useState<number>(1)
   const [index, setIndex] = useState<number>(0)
   const { updateTotal, addToCart } = useStore()
+  const [didReview, setDidReview] = useState<boolean>(false)
   const [currImage, setCurrImage] = useState<string | StaticImageData>(item?.images[0] ?? noImage)
   const mdWidth = `md:w-[calc(0.45*${item?.dimensions?.width}px)]`
   const checkCount = () => {
@@ -29,17 +31,45 @@ const ProductsPage = ({ justIn, item }: { justIn: productType[], item: ISBProduc
       setQuantity(quantity + 1)
     }
   }
-const addAction = ()=> {
-  addToCart(item, quantity)
-  updateTotal()
-  enqueueSnackbar({
-    message: "Item has been added to cart",
-    variant: 'success'
-  })
-
-}
+  const addAction = () => {
+    addToCart(item, quantity)
+    updateTotal()
+    enqueueSnackbar({
+      message: "Item has been added to cart",
+      variant: 'success'
+    })
+  }
+  const submitReview = (e: FormEvent) => {
+    setDidReview(true)
+    e.preventDefault()
+    const review: reviewType = {
+      rating: Number((
+        e.target[1 as unknown as keyof typeof e.target] as unknown as HTMLInputElement
+      ).value),
+      name: (
+        e.target[0 as unknown as keyof typeof e.target] as unknown as HTMLInputElement
+      ).value,
+      review: (
+        e.target[2 as unknown as keyof typeof e.target] as unknown as HTMLInputElement
+      ).value,
+    }
+    Helpers.updateReviews(item.slug, e, item, item.id, review, enqueueSnackbar, setDidReview)
+  }
   return (
-    <div className='w-full min-h-screen'>
+    <div className='w-full min-h-screen relative'>
+      {
+        didReview && (
+          <div className="fixed flex justify-center items-center w-full h-full bg-[rgba(0,0,0,0.7)] z-[100] top-0 left-0">
+            <div role="status">
+              <svg aria-hidden className="inline w-12 h-12 text-gray-200 animate-spin dark:text-gray-600 fill-gray-600 dark:fill-gray-300" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor" />
+                <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill" />
+              </svg>
+              <span className="sr-only">Loading...</span>
+            </div>
+          </div>
+        )
+      }
       <div className="text-gray-500 flex gap-x-3 items-center mt-7 mx-auto w-[90%]">
         <span>Home</span><span className='fa-angle-right fa'></span><span>Shop</span>
         <span className='fa-angle-right fa'></span><span>{item?.category}</span>
@@ -143,7 +173,7 @@ const addAction = ()=> {
             </div>
             <button className='border-[1px] border-black rounded-lg w-[70%] py-2 text-black'><i className='fa-solid fa-heart mr-3'></i>Wishlist</button>
           </div>
-          <button onClick={()=> addAction()} className='w-full py-3 rounded-lg bg-black text-white'>Add to cart</button>
+          <button onClick={() => addAction()} className='w-full py-3 rounded-lg bg-black text-white'>Add to cart</button>
 
           <div className='mt-5'>
             <div className=''>
@@ -190,16 +220,16 @@ const addAction = ()=> {
         </div>
 
         <div className="w-full">
-          <form className="w-full md:w-[65%] my-5">
+          <form className="w-full md:w-[65%] my-5 relative" onSubmit={e => submitReview(e)}>
             <h4 className="mb-4">Write a review</h4>
 
             <div className='flex flex-col md:flex-row gap-4 mb-5 justify-between'>
               <div className="form-group w-full md:basis-[48%]">
-                <input className="w-full border-[1px] px-4 py-3 rounded-md" type="text" name="name" id="name" placeholder="Name:" />
+                <input className="w-full border-[1px] px-4 py-3 rounded-md" type="text" placeholder="Name:" />
               </div>
 
               <div className="form-group md:basis-[48%]">
-                <input className="w-full border-[1px] px-4 py-3 rounded-md" type="email" name="mail" id="mail" placeholder="Email:" />
+                <input className="w-full border-[1px] px-4 py-3 rounded-md" type="number" maxLength={5} placeholder="Rating:" />
               </div>
             </div>
 
@@ -242,7 +272,7 @@ const addAction = ()=> {
                   </div>
                   <div className='lg:pl-7'>
                     <div>{x.name}</div>
-                    {[...Array(x.rating + 2)].map((_, i) => (
+                    {[...Array(Math.floor(x.rating))].map((_, i) => (
                       <span key={i} className={`fa fa-star text-[8px] md:text-[13px]`}></span>
                     ))}
                   </div>

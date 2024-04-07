@@ -1,7 +1,6 @@
 'use server'
 import { createServerClient, type CookieOptions, createBrowserClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
-import { createSupabaseServerClientSSR } from './superbaseCSR'
 
 export const createSupabaseServerClient = async () => {
     const cookieStore = cookies()
