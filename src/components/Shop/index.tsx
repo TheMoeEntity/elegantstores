@@ -5,9 +5,22 @@ import { ISBProducts, fakeProductType } from '@/src/Helpers/types'
 import Link from 'next/link'
 import CategoryModal from '../Cards/CategoryModal'
 import { useState } from 'react'
+import { useStore } from '@/src/Helpers/zustand'
+import { useSnackbar } from 'notistack'
 
 
 const ShopPage = ({ products }: { products: ISBProducts[] }) => {
+    const { enqueueSnackbar } = useSnackbar()
+    const { updateTotal, addToCart } = useStore()
+    const addAction = (item: ISBProducts, quantity: number = 1) => {
+        addToCart(item, quantity)
+        updateTotal()
+        enqueueSnackbar({
+            message: "Item has been added to cart",
+            variant: 'success'
+        })
+
+    }
     const [search, setSearch] = useState<boolean>(false)
     return (
         <section>
@@ -138,7 +151,7 @@ const ShopPage = ({ products }: { products: ISBProducts[] }) => {
                                         </Link>
                                         <div className='px-3 font-semibold mt-1'>₦{x.price.toLocaleString()}</div>
                                         <div className='w-[90%] mt-1 transition-transform duration-[0.55s] ease mx-auto group-hover:translate-y-0 translate-y-20'>
-                                            <button className='w-full px-3 py-2 bg-black text-white rounded-lg'>Add to cart</button>
+                                            <button onClick={()=> addAction(x)} className='w-full px-3 py-2 bg-black text-white rounded-lg'>Add to cart</button>
                                         </div>
                                     </div>
                                 ))

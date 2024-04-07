@@ -16,7 +16,7 @@ const ProductsPage = ({ justIn, item }: { justIn: productType[], item: ISBProduc
   const [question, setQuestion] = useState<boolean>(false)
   const [quantity, setQuantity] = useState<number>(1)
   const [index, setIndex] = useState<number>(0)
-  const { cart, addToCart } = useStore()
+  const { updateTotal, addToCart } = useStore()
   const [currImage, setCurrImage] = useState<string | StaticImageData>(item?.images[0] ?? noImage)
   const mdWidth = `md:w-[calc(0.45*${item?.dimensions?.width}px)]`
   const checkCount = () => {
@@ -31,6 +31,7 @@ const ProductsPage = ({ justIn, item }: { justIn: productType[], item: ISBProduc
   }
 const addAction = ()=> {
   addToCart(item, quantity)
+  updateTotal()
   enqueueSnackbar({
     message: "Item has been added to cart",
     variant: 'success'

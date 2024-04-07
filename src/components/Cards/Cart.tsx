@@ -5,8 +5,9 @@ import { useStore } from "@/src/Helpers/zustand";
 import { useEffect, useState } from "react";
 
 const CartModal = ({ cartOpen, closeCart, forceClose }: { cartOpen: boolean, closeCart: () => void, forceClose: () => void }) => {
-    const { cart, removeFromCart, cartTotalPrice } = useStore()
+    const { cart, removeFromCart, cartTotalPrice, updateTotal } = useStore()
     const removeAction = (id: string) => {
+        updateTotal()
         removeFromCart(id);
     }
     const [total, setTotal] = useState(cartTotalPrice)
@@ -39,7 +40,7 @@ const CartModal = ({ cartOpen, closeCart, forceClose }: { cartOpen: boolean, clo
                                             alt="product image"
                                             fill
                                             quality={100}
-                                            style={{ objectFit: 'cover' }}
+                                            style={{ objectFit: 'contain' }}
                                             sizes="100vw"
                                         />
                                     </div>

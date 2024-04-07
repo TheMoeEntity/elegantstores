@@ -3,23 +3,43 @@ import OrderComplete from '@/src/components/Cards/orderComplete'
 import stool from '../../../public/images/showcase.png'
 import Image from "next/image"
 import { motion } from 'framer-motion'
-import { useEffect, useState } from "react"
+import { FormEvent, useEffect, useState } from "react"
 import TextTransition, { presets } from 'react-text-transition';
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
+import { useStore } from '@/src/Helpers/zustand'
+import { Helpers } from '@/src/Helpers'
+import { enqueueSnackbar } from 'notistack'
 
 
 const Cart_Section = ({ notAuth }: { notAuth: boolean }) => {
     const searchParams = useSearchParams()
+    const { cart, removeFromCart, cartTotalPrice } = useStore()
+    const removeAction = (id: string) => {
+        removeFromCart(id);
+    }
+    const [couponStatus, setCouponStatus] = useState('')
     const [quantity, setQuantity] = useState<number>(1)
     const [step, setStep] = useState<number>(0)
+    const [withCoupon, setWithCoupon] = useState<number>(cartTotalPrice)
     const checkout = searchParams.get('checkout')
     useEffect(() => {
-        if (checkout==='true') {
+        if (checkout === 'true') {
             setStep(1)
         }
     }, [])
-
+    const couponAction = (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault()
+        if (cartTotalPrice != withCoupon) {
+            setCouponStatus("Coupon has already been applied")
+            enqueueSnackbar(`Coupons can only be used once ode!!`, {
+                variant: "error"
+            })
+            return
+        }
+       setWithCoupon(Helpers.useCouponCode(cartTotalPrice,(e.target[0 as unknown as keyof typeof e.target] as unknown as HTMLInputElement
+        ).value, setCouponStatus, enqueueSnackbar))
+    }
     return (
         <main className="max-w-7xl mx-auto bg-[#fafafa]">
             <div className='mx-auto w-1/2 flex items-center justify-center'>
@@ -74,120 +94,68 @@ const Cart_Section = ({ notAuth }: { notAuth: boolean }) => {
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        <tr className="border-b border-neutral-200 border-b-gray-200 h-auto">
-                                                            <td className="px-0 min-w-[65%] md:min-w-[55%] md:max-w-[55%] py-0 font-medium align-top" colSpan={2}>
-                                                                <div className="w-full h-[190px] md:h-[160px] flex items-center gap-x-4 md:gap-x-6">
-                                                                    <div className="md:basis-[40%]">
-                                                                        <Image
-                                                                            src={stool}
-                                                                            alt="product main image"
-                                                                            quality={100}
-                                                                            sizes={'100vw'}
-                                                                            className="object-cover w-full h-auto"
-                                                                        />
-                                                                    </div>
-                                                                    <div className='flex flex-col gap-y-4 justify-center basis-[40%] max-w-[45%]'>
-                                                                        <h2 className='font-semibold md:text-xl text-left'>Tray Table</h2>
-                                                                        <h2 className='text-sm text-gray-400 text-left whitespace-nowrap'>Color: green</h2>
-                                                                        <div className='md:flex items-center hidden'>
-                                                                            <span className='text-xl mr-3'>&times;</span>
-                                                                            Remove
+                                                        {
+                                                            cart.length == 0 ? (
+                                                                <tr className='w-full mx-auto text-xl'>
+                                                                    <td className="px-0 min-w-[65%] md:min-w-[55%] md:max-w-[55%] py-0 font-medium" colSpan={2}>
+                                                                        <div className="w-full flex items-center gap-x-4 md:gap-x-6">
+                                                                            <div>
+                                                                                - Empty Cart -
+                                                                            </div>
                                                                         </div>
-                                                                        <div className='flex items-center md:hidden rounded-lg gap-x-4 border-[1px] border-black justify-between py-1 px-3 shadow-md'>
-                                                                            <button onClick={() => setQuantity(quantity === 1 ? 1 : quantity - 1)}>-</button><span className='font-extrabold'>{quantity}</span><button onClick={() => setQuantity(quantity + 1)}>+</button>
+                                                                    </td>
+                                                                    <td className="px-6 py-5  flex-col text-xl  max-w-[100%] items-center justify-center hidden md:table-cell">
+                                                                        <div className='flex items-center rounded-lg gap-x-4 border-[1px] border-black justify-between py-1 px-6 shadow-md w-[120px]'>
+                                                                            <button className='invisible' onClick={() => setQuantity(quantity === 1 ? 1 : quantity - 1)}>-</button><span className='font-extrabold'>0</span><button className='invisible' onClick={() => setQuantity(quantity + 1)}>+</button>
                                                                         </div>
-                                                                    </div>
-                                                                </div>
-                                                            </td>
-                                                            <td className="px-6 py-5  flex-col text-xl h-[160px] max-w-[100%] items-center justify-center hidden md:table-cell">
-                                                                <div className='flex items-center rounded-lg gap-x-4 border-[1px] border-black justify-between py-1 px-6 shadow-md w-[120px]'>
-                                                                    <button onClick={() => setQuantity(quantity === 1 ? 1 : quantity - 1)}>-</button><span className='font-extrabold'>{quantity}</span><button onClick={() => setQuantity(quantity + 1)}>+</button>
-                                                                </div>
-                                                            </td>
-                                                            <td className="whitespace-nowrap px-6 py-4 text-xl hidden md:table-cell">$1332.00</td>
-                                                            <td className="whitespace-nowrap px-6 font-extrabold text-xl py-4 hidden md:table-cell">$38.40</td>
-                                                            <td className="whitespace-nowrap pl-8 py-4 text-xl table-cell md:hidden text-center">
-                                                                <span className='text-right'>$19.00</span> <br />
-                                                                <span className='mt-5 block text-3xl'>&times;</span>
-                                                            </td>
-                                                        </tr>
-
-                                                        <tr className="border-b bg-white border-neutral-200 border-b-gray-200 h-auto">
-                                                            <td className="px-0 min-w-[65%] md:min-w-[55%] md:max-w-[55%] py-0 font-medium align-top" colSpan={2}>
-                                                                <div className="w-full h-[190px] md:h-[160px] flex items-center gap-x-4 md:gap-x-6">
-                                                                    <div className="md:basis-[40%]">
-                                                                        <Image
-                                                                            src={stool}
-                                                                            alt="product main image"
-                                                                            quality={100}
-                                                                            sizes={'100vw'}
-                                                                            className="object-cover w-full h-auto"
-                                                                        />
-                                                                    </div>
-                                                                    <div className='flex flex-col gap-y-4 justify-center basis-[40%] max-w-[45%]'>
-                                                                        <h2 className='font-semibold md:text-xl text-left'>Tray Table</h2>
-                                                                        <h2 className='text-sm text-gray-400 text-left whitespace-nowrap'>Color: green</h2>
-                                                                        <div className='md:flex items-center hidden'>
-                                                                            <span className='text-xl mr-3'>&times;</span>
-                                                                            Remove
-                                                                        </div>
-                                                                        <div className='flex items-center md:hidden rounded-lg gap-x-4 border-[1px] border-black justify-between py-1 px-3 shadow-md'>
-                                                                            <button onClick={() => setQuantity(quantity === 1 ? 1 : quantity - 1)}>-</button><span className='font-extrabold'>{quantity}</span><button onClick={() => setQuantity(quantity + 1)}>+</button>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </td>
-                                                            <td className="px-6 py-5  flex-col text-xl h-[160px] max-w-[100%] items-center justify-center hidden md:table-cell">
-                                                                <div className='flex items-center rounded-lg gap-x-4 border-[1px] border-black justify-between py-1 px-6 shadow-md w-[120px]'>
-                                                                    <button onClick={() => setQuantity(quantity === 1 ? 1 : quantity - 1)}>-</button><span className='font-extrabold'>{quantity}</span><button onClick={() => setQuantity(quantity + 1)}>+</button>
-                                                                </div>
-                                                            </td>
-                                                            <td className="whitespace-nowrap px-6 py-4 text-xl hidden md:table-cell">$1332.00</td>
-                                                            <td className="whitespace-nowrap px-6 font-extrabold text-xl py-4 hidden md:table-cell">$38.40</td>
-                                                            <td className="whitespace-nowrap pl-8 py-4 text-xl table-cell md:hidden text-center">
-                                                                <span className='text-right'>$19.00</span> <br />
-                                                                <span className='mt-5 block text-3xl'>&times;</span>
-                                                            </td>
-                                                        </tr>
-
-                                                        <tr className="border-b border-neutral-200 border-b-gray-200 h-auto">
-                                                            <td className="px-0 min-w-[65%] md:min-w-[55%] md:max-w-[55%] py-0 font-medium align-top" colSpan={2}>
-                                                                <div className="w-full h-[190px] md:h-[160px] flex items-center gap-x-4 md:gap-x-6">
-                                                                    <div className="md:basis-[40%]">
-                                                                        <Image
-                                                                            src={stool}
-                                                                            alt="product main image"
-                                                                            quality={100}
-                                                                            sizes={'100vw'}
-                                                                            className="object-cover w-full h-auto"
-                                                                        />
-                                                                    </div>
-                                                                    <div className='flex flex-col gap-y-4 justify-center basis-[40%] max-w-[45%]'>
-                                                                        <h2 className='font-semibold md:text-xl text-left'>Tray Table</h2>
-                                                                        <h2 className='text-sm text-gray-400 text-left whitespace-nowrap'>Color: green</h2>
-                                                                        <div className='md:flex items-center hidden'>
-                                                                            <span className='text-xl mr-3'>&times;</span>
-                                                                            Remove
-                                                                        </div>
-                                                                        <div className='flex items-center md:hidden rounded-lg gap-x-4 border-[1px] border-black justify-between py-1 px-3 shadow-md'>
-                                                                            <button onClick={() => setQuantity(quantity === 1 ? 1 : quantity - 1)}>-</button><span className='font-extrabold'>{quantity}</span><button onClick={() => setQuantity(quantity + 1)}>+</button>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </td>
-                                                            <td className="px-6 py-5  flex-col text-xl h-[160px] max-w-[100%] items-center justify-center hidden md:table-cell">
-                                                                <div className='flex items-center rounded-lg gap-x-4 border-[1px] border-black justify-between py-1 px-6 shadow-md w-[120px]'>
-                                                                    <button onClick={() => setQuantity(quantity === 1 ? 1 : quantity - 1)}>-</button><span className='font-extrabold'>{quantity}</span><button onClick={() => setQuantity(quantity + 1)}>+</button>
-                                                                </div>
-                                                            </td>
-                                                            <td className="whitespace-nowrap px-6 py-4 text-xl hidden md:table-cell">$1332.00</td>
-                                                            <td className="whitespace-nowrap px-6 font-extrabold text-xl py-4 hidden md:table-cell">$38.40</td>
-                                                            <td className="whitespace-nowrap pl-8 py-4 text-xl table-cell md:hidden text-center">
-                                                                <span className='text-right'>$19.00</span> <br />
-                                                                <span className='mt-5 block text-3xl'>&times;</span>
-                                                            </td>
-                                                        </tr>
-
+                                                                    </td>
+                                                                    <td className="whitespace-nowrap px-6 py-4 text-xl hidden md:table-cell">-</td>
+                                                                    <td className="whitespace-nowrap px-6 font-extrabold text-xl py-4 hidden md:table-cell">-</td>
+                                                                    <td className="whitespace-nowrap pl-8 py-4 text-xl table-cell md:hidden text-center">
+                                                                        <span className='text-right'>-</span> <br />
+                                                                        <span className='mt-5 block text-3xl'>&times;</span>
+                                                                    </td>
+                                                                </tr>) : cart.map((x) => (
+                                                                    <tr key={x.item.id} className="border-b border-neutral-200 border-b-gray-200 h-auto">
+                                                                        <td className="px-0 min-w-[65%] md:min-w-[55%] md:max-w-[55%] py-0 font-medium align-top" colSpan={2}>
+                                                                            <div className="w-full h-[190px] md:h-[160px] flex items-center gap-x-4 md:gap-x-6">
+                                                                                <div className="md:basis-[40%] w-full md:min-w-[auto] min-h-[160px] relative">
+                                                                                    <Image
+                                                                                        src={x.item.images[0]}
+                                                                                        alt="product main image"
+                                                                                        quality={100}
+                                                                                        sizes={'100vw'}
+                                                                                        fill
+                                                                                        className="object-contain w-full h-auto"
+                                                                                    />
+                                                                                </div>
+                                                                                <div className='flex flex-col gap-y-4 justify-center basis-[40%] max-w-[45%]'>
+                                                                                    <h2 className='font-extrabold text-left'>{x.item.title}</h2>
+                                                                                    <h2 className='text-sm text-gray-400 text-left whitespace-nowrap'>Color: green</h2>
+                                                                                    <button onClick={() => removeAction(x.item.id)} className='md:flex items-center hidden'>
+                                                                                        <span className='text-xl mr-3'>&times;</span>
+                                                                                        Remove
+                                                                                    </button>
+                                                                                    <div className='flex items-center md:hidden rounded-lg gap-x-4 border-[1px] border-black justify-between py-1 px-3 shadow-md'>
+                                                                                        <button onClick={() => setQuantity(quantity === 1 ? 1 : quantity - 1)}>-</button><span className='font-extrabold'>{x.quantity}</span><button onClick={() => setQuantity(quantity + 1)}>+</button>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td className="px-6 py-5  flex-col text-xl h-[160px] max-w-[100%] items-center justify-center hidden md:table-cell">
+                                                                            <div className='flex items-center rounded-lg gap-x-4 border-[1px] border-black justify-between py-1 px-6 shadow-md w-[120px]'>
+                                                                                <button onClick={() => setQuantity(quantity === 1 ? 1 : quantity - 1)}>-</button><span className='font-extrabold'>{x.quantity}</span><button onClick={() => setQuantity(quantity + 1)}>+</button>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td className="whitespace-nowrap px-6 py-4 text-xl hidden md:table-cell">₦{x.item.price.toLocaleString()}</td>
+                                                                        <td className="whitespace-nowrap px-6 font-extrabold text-xl py-4 hidden md:table-cell">₦{x.item.price.toLocaleString()}</td>
+                                                                        <td className="whitespace-nowrap pl-8 py-4 text-xl table-cell md:hidden text-center">
+                                                                            <span className='text-right'>₦{x.item.price.toLocaleString()}</span> <br />
+                                                                            <span className='mt-5 block text-3xl'>&times;</span>
+                                                                        </td>
+                                                                    </tr>
+                                                                ))
+                                                        }
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -222,16 +190,16 @@ const Cart_Section = ({ notAuth }: { notAuth: boolean }) => {
                                     <div className='flex gap-x-3 py-3'>
                                         Subtotal
                                     </div>
-                                    <span>₦123.045</span>
+                                    <span>₦{cartTotalPrice.toLocaleString()}</span>
                                 </div>
                                 <div className='flex rounded-md justify-between items-center px-4 border-b-[1px] border-gray-200'>
                                     <h2 className='flex gap-x-3 py-3 text-xl font-semibold'>
                                         Total
                                     </h2>
-                                    <span>₦1345.045</span>
+                                    <span>₦{cartTotalPrice.toLocaleString()}</span>
                                 </div>
                                 <div>
-                                    <button className='bg-black text-white w-full py-3 rounded-md'>Checkout</button>
+                                    <button onClick={() => setStep(1)} className='bg-black text-white w-full py-3 rounded-md'>Checkout</button>
                                 </div>
                             </div>
                         </motion.div>
@@ -368,7 +336,7 @@ const Cart_Section = ({ notAuth }: { notAuth: boolean }) => {
                                                     </div>
                                                 </div>
                                             </div>
-                                            <td className="whitespace-nowrap pl-8 py-4 text-xl table-cell text-center">
+                                            <td className="whitespace-nowrap align-middle pl-8 pt-10 text-xl table-cell text-center">
                                                 <span className='text-right'>$19.00</span> <br />
                                                 <span className='mt-5 block text-3xl'>&times;</span>
                                             </td>
@@ -376,21 +344,26 @@ const Cart_Section = ({ notAuth }: { notAuth: boolean }) => {
                                     ))
                                 }
 
-                                <div className='flex gap-x-3 w-full items-between justify-between'>
+                                <form onSubmit={e => couponAction(e)} className='flex gap-x-3 w-full items-between justify-between'>
                                     <input placeholder='coupon code' type="text" className='py-2 border-[1px] rounded-md pl-2 w-[60%]' />
-                                    <button className='bg-black text-white w-[35%] rounded-md py-2 disabled:bg-slate-300' disabled={notAuth ? true : false} >Apply</button>
+                                    <button type='submit' className='bg-black text-white w-[35%] rounded-md py-2 disabled:bg-slate-300' disabled={notAuth ? true : false} >Apply</button>
+                                </form>
+                                <div className='pl-2 text-sm py-2'>
+                                    <TextTransition springConfig={presets.wobbly}>
+                                        {couponStatus}
+                                    </TextTransition>
                                 </div>
                                 <div className='flex rounded-md justify-between items-center px-4 border-b-[1px] border-gray-200'>
                                     <div className='flex gap-x-3 py-3'>
                                         Subtotal
                                     </div>
-                                    <span>$123.045</span>
+                                    <span>₦{withCoupon}</span>
                                 </div>
                                 <div className='flex rounded-md justify-between items-center px-4 border-b-[1px] border-gray-200'>
                                     <h2 className='flex gap-x-3 py-3 text-xl font-semibold'>
                                         Total
                                     </h2>
-                                    <span>$1345.045</span>
+                                    <span>₦{withCoupon}</span>
                                 </div>
                                 <div>
                                     <button disabled={notAuth ? true : false} className='bg-black text-white w-full py-3 rounded-md disabled:bg-slate-300'>Checkout</button>

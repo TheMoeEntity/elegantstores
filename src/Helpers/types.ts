@@ -111,6 +111,7 @@ export interface IStore {
     cart: cartItem[];
     cartTotalPrice:number
     cartCount: number;
+    updateTotal:()=>void
     addToCart: (item: ISBProducts, quantity:number) => void
     removeFromCart:(id:string) => void
 };

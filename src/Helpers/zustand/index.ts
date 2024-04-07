@@ -6,6 +6,11 @@ export const useStore = create<IStore>((set, get) => ({
     cart: [],
     cartTotalPrice: 0,
     cartCount: 0,
+    updateTotal: () => {
+        const { cart } = get();
+        const updatedTotal = calculateTotal(cart)
+        set({cartTotalPrice:updatedTotal})
+    },
     removeFromCart(id) {
         const { cart } = get();
         const updatedCart = removeCart(id, cart);

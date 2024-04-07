@@ -9,7 +9,7 @@ import { readUserSession } from "../Helpers/supabase";
 
 export default async function Home() {
   const products = await Helpers.getProducts(
-    "https://api.escuelajs.co/api/v1/categories/4/products" ?? []
+    "https://api.escuelajs.co/api/v1/categories/3/products" ?? []
   );
   const justIn = await Helpers.getProducts('https://fakestoreapi.com/products') ?? []
   const insta = await Helpers.formatProducts() || []
