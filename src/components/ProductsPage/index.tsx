@@ -1,6 +1,6 @@
 'use client'
 import Image, { StaticImageData } from 'next/image'
-import React, { FormEvent, useEffect } from 'react'
+import React, { FormEvent, useContext, useEffect } from 'react'
 import noImage from '../../../public/images/noimage.png'
 import { useState } from 'react'
 import FeaturedCard from '../Cards/Featured'
@@ -9,9 +9,12 @@ import avatar from '../../../public/images/avatar.png'
 import { useSnackbar } from 'notistack'
 import { useStore } from '@/src/Helpers/zustand'
 import { Helpers } from '@/src/Helpers'
+import { userContext } from '@/src/Helpers/ContextAPI/usercontext'
+import Link from 'next/link'
 
 const ProductsPage = ({ justIn, item }: { justIn: productType[], item: ISBProducts }) => {
   const { enqueueSnackbar } = useSnackbar()
+  const { user } = useContext(userContext)
   const [additional, setAdditional] = useState<boolean>(true)
   const [question, setQuestion] = useState<boolean>(false)
   const [quantity, setQuantity] = useState<number>(1)
@@ -224,20 +227,27 @@ const ProductsPage = ({ justIn, item }: { justIn: productType[], item: ISBProduc
 
             <div className='flex flex-col md:flex-row gap-4 mb-5 justify-between'>
               <div className="form-group w-full md:basis-[48%]">
-                <input className="w-full border-[1px] px-4 py-3 rounded-md" type="text" placeholder="Name:" />
+                <input readOnly={!user.isSignedIn ? true : false} className="w-full outline-none border-[1px] px-4 py-3 rounded-md" type="text" placeholder="Name:" />
               </div>
 
               <div className="form-group md:basis-[48%]">
-                <input className="w-full border-[1px] px-4 py-3 rounded-md" type="number" maxLength={5} placeholder="Rating:" />
+                <input readOnly={!user.isSignedIn ? true : false} className="w-full outline-none border-[1px] px-4 py-3 rounded-md" type="number" maxLength={5} placeholder="Rating:" />
               </div>
             </div>
 
 
 
-            <textarea className="mb-4 w-full px-4 py-3 border-[1px]" name="comment" id="comment" cols={30} rows={5} placeholder="Comment"></textarea>
+            <textarea disabled={(!user.isSignedIn)} className="mb-4 w-full px-4 py-3 border-[1px]" name="comment" id="comment" cols={30} rows={5} placeholder="Comment"></textarea>
 
-            <button className="rounded-md bg-black text-white py-3 px-4" type="submit">Submit review </button>
+            <button disabled={(!user.isSignedIn) ? true : false} className="rounded-md disabled:bg-slate-300 bg-black text-white py-3 px-4" type="submit">Submit review </button>
           </form>
+          {
+            !user.isSignedIn && (
+              <div>
+                You need to be signed in to review product <Link href={'/login?redirect=' + item.slug} className='underline font-semibold text-blue-900'>sign in</Link>
+              </div>
+            )
+          }
         </div>
 
         {
