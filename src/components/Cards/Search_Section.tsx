@@ -1,5 +1,5 @@
 'use client'
-import { fakeProductType } from '@/src/Helpers/types'
+import { ISBProducts, fakeProductType } from '@/src/Helpers/types'
 import Image from 'next/image'
 import Link from 'next/link'
 import React, { useState } from 'react'
@@ -7,11 +7,27 @@ import CategoryModal from './CategoryModal'
 import { Helpers } from '@/src/Helpers'
 import noimage from '../../../public/images/noimage.png'
 
-const Search_Section = ({ products }: { products: fakeProductType[] }) => {
+const Search_Section = ({ products }: { products: ISBProducts[] }) => {
     const [search, setSearch] = useState<boolean>(false)
+    const [active, setActive] = useState<string>("all")
+    const [loading, setLoading] = useState<boolean>(false)
+    const [items, setItems] = useState(products)
+    const categoryFilter = (category: string) => {
+        setActive(category)
+        setLoading(true)
+        setTimeout(() => {
+            setItems(searchAction(category ?? "all"))
+        }, 2500);
+    }
+    const searchAction = (categoryy: string) => {
+        let filtered: any = items
+        filtered = Helpers.filterCategory(categoryy, products)
+        setLoading(false)
+        return filtered
+    }
     return (
         <>
-            <CategoryModal search={search} setSearch={() => setSearch(false)} />
+            <CategoryModal active={active} categoryFilter={categoryFilter} search={search} setSearch={() => setSearch(false)} />
             <div className='md:px-5 py-0 md:py-12 flex flex-col gap-10 w-full h-fit md:w-[100%] mx-auto'>
                 <div className='flex my-8 flex-row gap-3 flex-wrap mx-auto w-[95%]'>
                     <div className='hidden md:flex basis-[23%] h-[800px] gap-y-9 flex-col'>

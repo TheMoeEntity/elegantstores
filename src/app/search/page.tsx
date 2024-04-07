@@ -1,11 +1,11 @@
 import { Helpers } from '@/src/Helpers'
+import { ISBProducts } from '@/src/Helpers/types';
 import Search_Section from '@/src/components/Cards/Search_Section';
 
 const Search = async () => {
     const searchResult = 'Versace sweatshirt'
-    const products = await Helpers.getProducts(
-        "https://api.escuelajs.co/api/v1/categories/2/products" ?? []
-    );
+    const products = await Helpers.fetchSupabaseProducts() as ISBProducts[]
+    
     return (
         <main className="max-w-7xl mx-auto">
             <div className='w-[95%] mx-auto py-10'>
