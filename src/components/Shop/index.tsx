@@ -54,7 +54,7 @@ const ShopPage = ({ products }: { products: ISBProducts[] }) => {
     }
     return (
         <section>
-            <CategoryModal closeModal={() => setSearch(true)} active={active} categoryFilter={categoryFilter} search={search} setSearch={() => setSearch(false)} />
+            <CategoryModal active={active} categoryFilter={categoryFilter} search={search} setSearch={() => setSearch(false)} />
             <div className="hero w-full relative h-[300px] md:h-[500px]">
                 <div className='absolute left-0 top-0 z-10 w-full h-full bg-[rgba(0,0,0,0.6)] flex items-center justify-center'></div>
                 <Image

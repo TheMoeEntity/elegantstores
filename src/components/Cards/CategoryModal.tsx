@@ -1,7 +1,7 @@
 
 import { motion } from 'framer-motion'
 
-const CategoryModal = ({ search, setSearch, closeModal, active, categoryFilter }: {closeModal:()=>void, categoryFilter: (category: string) => void, search: boolean, active: string, setSearch: () => void }) => {
+const CategoryModal = ({ search, setSearch, active, categoryFilter }: {categoryFilter: (category: string) => void, search: boolean, active: string, setSearch: () => void }) => {
     return (
         <section className={`pt-20 md:hidden  w-[100%] h-full shadow-2xl fixed duration-500 ease-in z-[99999999999] bg-[rgba(0,0,0,0.6)] left-0 ${search == !true ? 'bottom-[-100%]' : 'bottom-0'} no-scrollbar`}>
             <motion.div
@@ -12,7 +12,7 @@ const CategoryModal = ({ search, setSearch, closeModal, active, categoryFilter }
             >
                 <div className='bg-white  overflow-y-scroll shadow-2xl w-[95vw] mx-auto h-full min-w-[95vw] rounded-tl-2xl rounded-tr-2xl'>
                     <div className="w-[95vw] h-fit py-7 min-w-[95vw] bg-[#F9F9F9] flex justify-between items-center px-4 rounded-tl-[48px] rounded-tr-[48px]">
-                        <button onClick={() => setSearch()} className='text-4xl'>
+                        <button onClick={setSearch} className='text-4xl'>
                             &times;
                         </button>
                         <button className='text-xl font-extrabold'>
@@ -25,8 +25,8 @@ const CategoryModal = ({ search, setSearch, closeModal, active, categoryFilter }
                         </div>
                         <div>
                             <ul className='text-gray-600 gap-y-5 py-5 flex-col flex w-fit'>
-                                <button className={`w-fit ${active === 'all' && 'text-black underline'}`} onClick={() => {closeModal;categoryFilter(('all'))}}>All Products</button>
-                                <button className={`w-fit ${active === 'shoes' && 'text-black underline'}`} onClick={() => {closeModal;categoryFilter('shoes')}}>Shoes</button>
+                                <button className={`w-fit ${active === 'all' && 'text-black underline'}`} onClick={() => {categoryFilter(('all'))}}>All Products</button>
+                                <button className={`w-fit ${active === 'shoes' && 'text-black underline'}`} onClick={() => {categoryFilter('shoes')}}>Shoes</button>
                                 <button className={`w-fit ${active === 'shirts' && 'text-black underline'}`} onClick={() => categoryFilter(('shirts'))}>Shirts</button>
                                 <button className={`w-fit ${active === 'pants' && 'text-black underline'}`} onClick={() => categoryFilter(('pants'))}>Pants</button>
                                 <button className={`w-fit ${active === 'jackets' && 'text-black underline'}`} onClick={() => categoryFilter(('jackets'))}>Jackets</button>
