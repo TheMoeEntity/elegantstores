@@ -14,7 +14,7 @@ import { useSearchParams } from 'next/navigation'
 const ShopPage = ({ products }: { products: ISBProducts[] }) => {
     const { enqueueSnackbar } = useSnackbar()
     const searchParams = useSearchParams()
-    const [active,setActive] = useState<string>("all")
+    const [active, setActive] = useState<string>("all")
     let category = searchParams.get('category')
     const [items, setItems] = useState(products)
     const { updateTotal, addToCart } = useStore()
@@ -31,7 +31,7 @@ const ShopPage = ({ products }: { products: ISBProducts[] }) => {
     useEffect(() => {
         if (category) {
             setLoading(true)
-            setActive(category??"all")
+            setActive(category ?? "all")
             setTimeout(() => {
                 setItems(searchAction(category ?? "all"))
             }, 2500);
@@ -39,7 +39,7 @@ const ShopPage = ({ products }: { products: ISBProducts[] }) => {
     }, [category])
 
     const [search, setSearch] = useState<boolean>(false)
-    const categoryFilter = (category:string) => {
+    const categoryFilter = (category: string) => {
         setActive(category)
         setLoading(true)
         setTimeout(() => {
@@ -54,7 +54,7 @@ const ShopPage = ({ products }: { products: ISBProducts[] }) => {
     }
     return (
         <section>
-            <CategoryModal active={active} categoryFilter={categoryFilter} search={search} setSearch={() => setSearch(false)} />
+            <CategoryModal closeModal={() => setSearch(true)} active={active} categoryFilter={categoryFilter} search={search} setSearch={() => setSearch(false)} />
             <div className="hero w-full relative h-[300px] md:h-[500px]">
                 <div className='absolute left-0 top-0 z-10 w-full h-full bg-[rgba(0,0,0,0.6)] flex items-center justify-center'></div>
                 <Image
@@ -130,7 +130,7 @@ const ShopPage = ({ products }: { products: ISBProducts[] }) => {
                         </ul>
                     </div>
                 </div>
-                <div className='md:basis-[72%]'>
+                <div className='md:basis-[72%] basis-full'>
                     <div className='my-8 flex md:hidden justify-between border-b-[1px] border-t-[1px] border-gray-300 py-6 mx-auto w-[90%]'>
                         <div className='text-xl'>
                             <i className='fa-solid fa-filter mr-3'></i>
@@ -153,13 +153,13 @@ const ShopPage = ({ products }: { products: ISBProducts[] }) => {
                             <i className='fa-solid fa-angle-down ml-3'></i>
                         </div>
                     </div>
-                    <div className='md:px-5 py-12 flex flex-col gap-10 w-full h-fit md:w-[100%] mx-auto'>
+                    <div className='md:px-5 py-12 max-w-full flex flex-col gap-10 w-full h-fit md:w-[100%] mx-auto'>
                         {
                             loading ? (
                                 <div className="flex flex-row gap-2 gap-y-7 md:gap-y-5 md:gap-4 justify-center flex-wrap mb-7">
                                     {
                                         [...Array(4)].map((_x, i) => (
-                                            <div key={i} className='md:basis-[22%] animate-pulse'>
+                                            <div key={i} className='md:basis-[22%] basis-[43%] animate-pulse'>
                                                 <div className="flex items-center justify-center w-full h-48 md:h-[400px] bg-gray-200 rounded sm:w-full">
                                                     <svg className="w-10 h-10 md:h-[400px] text-gray-200" aria-hidden xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 18">
                                                         <path d="M18 0H2a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2Zm-5.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm4.376 10.481A1 1 0 0 1 16 15H4a1 1 0 0 1-.895-1.447l3.5-7A1 1 0 0 1 7.468 6a.965.965 0 0 1 .9.5l2.775 4.757 1.546-1.887a1 1 0 0 1 1.618.1l2.541 4a1 1 0 0 1 .028 1.011Z" />
