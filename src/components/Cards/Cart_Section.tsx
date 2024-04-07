@@ -23,6 +23,8 @@ const Cart_Section = ({ notAuth }: { notAuth: boolean }) => {
     const [step, setStep] = useState<number>(0)
     const [withCoupon, setWithCoupon] = useState<number>(cartTotalPrice)
     const checkout = searchParams.get('checkout')
+    const [orderplaced, setOrderPlaced] = useState<boolean>(false)
+
     useEffect(() => {
         if (checkout === 'true') {
             setStep(1)
@@ -65,7 +67,7 @@ const Cart_Section = ({ notAuth }: { notAuth: boolean }) => {
                     </div>
                     <div className={`gap-x-3 flex items-center mr-7 text-left px-2 border-b-[2px] pb-2 ${step === 2 ? 'border-black' : 'text-[#0D141F99] border-transparent'}  w-fit`}>
                         <span className={`w-6 h-6 text-white ${step === 2 ? 'bg-black' : 'bg-[#0D141F99]'} items-center justify-center flex rounded-full text-xs`}>3</span>
-                        <button disabled={notAuth ? true : false} onClick={() => setStep(2)}>Order complete</button>
+                        <button disabled={(notAuth) ? true : !orderplaced ? true : false} onClick={() => setStep(2)}>Order complete</button>
                     </div>
                 </div>
             </div>
@@ -334,7 +336,7 @@ const Cart_Section = ({ notAuth }: { notAuth: boolean }) => {
                             <div className='border-[1px] border-black h-fit rounded-md px-4 py-5 flex flex-col gap-y-5 md:min-w-[39%] lg:min-w-[30%]'>
                                 <h2 className='font-semibold text-2xl'>Order summary</h2>
                                 {
-                                    [...Array(3)].map((_x, i) => (
+                                    cart.map((x, i) => (
                                         <div key={i} className='flex items-between'>
                                             <div>
                                                 <div className="w-full h-[190px] md:h-[160px] flex items-center gap-x-4 md:gap-x-6">
@@ -369,8 +371,8 @@ const Cart_Section = ({ notAuth }: { notAuth: boolean }) => {
                                 }
 
                                 <form onSubmit={e => couponAction(e)} className='flex gap-x-3 w-full items-between justify-between'>
-                                    <input placeholder='coupon code' type="text" readOnly={notAuth ? true : false} className='py-2 border-[1px] outline-none rounded-md pl-2 w-[60%]' />
-                                    <button type='submit' className='bg-black text-white w-[35%] rounded-md py-2 disabled:bg-slate-300' disabled={notAuth ? true : false} >Apply</button>
+                                    <input placeholder='coupon code' type="text" readOnly={notAuth ? true : cart.length === 0 ? true : false} className='py-2 border-[1px] outline-none rounded-md pl-2 w-[60%]' />
+                                    <button type='submit' className='bg-black text-white w-[35%] rounded-md py-2 disabled:bg-slate-300' disabled={notAuth ? true : cart.length === 0 ? true : false} >Apply</button>
                                 </form>
                                 <div className='pl-2 text-sm py-2'>
                                     <TextTransition springConfig={presets.wobbly}>
@@ -390,7 +392,7 @@ const Cart_Section = ({ notAuth }: { notAuth: boolean }) => {
                                     <span>₦{withCoupon}</span>
                                 </div>
                                 <div>
-                                    <button disabled={notAuth ? true : false} className='bg-black text-white w-full py-3 rounded-md disabled:bg-slate-300'>Place order</button>
+                                    <button disabled={notAuth ? true : cart.length === 0 ? true : false} className='bg-black text-white w-full py-3 rounded-md disabled:bg-slate-300'>Place order</button>
                                 </div>
                                 {
                                     notAuth === true && (
