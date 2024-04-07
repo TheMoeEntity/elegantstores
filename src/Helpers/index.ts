@@ -15,7 +15,7 @@ export class Helpers {
         "9XKjGI",
         "BRe1CK"
     ]
-    static useCouponCode = (cartTotalPrice:number,code: string, setStatus: any,
+    static applyCouponCode = (cartTotalPrice:number,code: string, setStatus: any,
         enqueueSnackbar: any):number => {
             let discount:number = 0
             const coupnValues = [0.30,0.15,0.10]

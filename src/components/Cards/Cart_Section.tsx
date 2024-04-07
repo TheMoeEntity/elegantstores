@@ -37,7 +37,7 @@ const Cart_Section = ({ notAuth }: { notAuth: boolean }) => {
             })
             return
         }
-       setWithCoupon(Helpers.useCouponCode(cartTotalPrice,(e.target[0 as unknown as keyof typeof e.target] as unknown as HTMLInputElement
+        setWithCoupon(Helpers.applyCouponCode(cartTotalPrice,(e.target[0 as unknown as keyof typeof e.target] as unknown as HTMLInputElement
         ).value, setCouponStatus, enqueueSnackbar))
     }
     return (
