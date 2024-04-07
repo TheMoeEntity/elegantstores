@@ -345,7 +345,7 @@ const Cart_Section = ({ notAuth }: { notAuth: boolean }) => {
                                 }
 
                                 <form onSubmit={e => couponAction(e)} className='flex gap-x-3 w-full items-between justify-between'>
-                                    <input placeholder='coupon code' type="text" className='py-2 border-[1px] rounded-md pl-2 w-[60%]' />
+                                    <input placeholder='coupon code' type="text" readOnly={!notAuth ? true : false} className='py-2 border-[1px] rounded-md pl-2 w-[60%]' />
                                     <button type='submit' className='bg-black text-white w-[35%] rounded-md py-2 disabled:bg-slate-300' disabled={notAuth ? true : false} >Apply</button>
                                 </form>
                                 <div className='pl-2 text-sm py-2'>

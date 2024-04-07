@@ -3,13 +3,34 @@ import styles from "./cards.module.css";
 import Image from "next/image";
 import Link from "next/link";
 import boy from "../../../public/images/avatar.png";
-import { useContext, useEffect, useState } from "react";
-import { readUserSessionCLient } from "@/src/Helpers/supabase";
+import { useContext, useState } from "react";
 import { userContext } from "@/src/Helpers/ContextAPI/usercontext";
+import { createBrowserClient } from "@supabase/ssr";
+import { useSnackbar } from "notistack";
 
 
 const Profile = ({ profileOpen = false, forceClose }: { profileOpen: boolean, forceClose: () => void }) => {
     const { user } = useContext(userContext)
+    const [showModal, setModal] = useState<boolean>(false)
+    const { enqueueSnackbar } = useSnackbar()
+    const signOutAction = async () => {
+        const supabase = createBrowserClient(
+            process.env.NEXT_PUBLIC_SUPABASE_URL!,
+            process.env.NEXT_PUBLIC_SUPABASE_API_KEY!,
+        )
+        await supabase.auth.signOut().then(() => {
+            enqueueSnackbar({
+                message: "You have been signed out",
+                variant: 'info'
+            })
+            location.href = ('/')
+        }).catch(err => {
+            enqueueSnackbar({
+                message: "Error signing out user: " + err,
+                variant: 'error'
+            })
+        })
+    }
 
     return (
         <div
@@ -19,6 +40,59 @@ const Profile = ({ profileOpen = false, forceClose }: { profileOpen: boolean, fo
             }}
             className={styles.profile}
         >
+            <>
+                {showModal ? (
+                    <>
+                        <div
+                            className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none"
+                        >
+                            <div className="relative w-auto my-6 mx-auto max-w-3xl">
+                                {/*content*/}
+                                <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
+                                    {/*header*/}
+                                    <div className="flex items-start justify-between p-5 border-b border-solid border-blueGray-200 rounded-t">
+                                        <h3 className="text-3xl font-semibold">
+                                            Signout {user.userData.userName}
+                                        </h3>
+                                        <button
+                                            className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+                                            onClick={() => setModal(false)}
+                                        >
+                                            <span className="bg-transparent text-black opacity-5 h-6 w-6 text-2xl block outline-none focus:outline-none">
+                                                ×
+                                            </span>
+                                        </button>
+                                    </div>
+                                    {/*body*/}
+                                    <div className="relative p-6 flex-auto">
+                                        <p className="my-4 text-blueGray-500 text-lg leading-relaxed">
+                                            Hey {user.userData.fullName}, do you really want to sign out?
+                                        </p>
+                                    </div>
+                                    {/*footer*/}
+                                    <div className="flex items-center justify-end p-6 border-t gap-x-3 border-solid border-blueGray-200 rounded-b">
+                                        <button
+                                            className="bg-[#171D28] text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                                            type="button"
+                                            onClick={() => setModal(false)}
+                                        >
+                                            Close
+                                        </button>
+                                        <button
+                                            className="bg-[#377DFF] text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                                            type="button"
+                                            onClick={() => signOutAction()}
+                                        >
+                                            Sign Out
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
+                    </>
+                ) : null}
+            </>
             <div className={styles.userheader}>
                 <div className="">
                     <Image
@@ -97,9 +171,9 @@ const Profile = ({ profileOpen = false, forceClose }: { profileOpen: boolean, fo
                     {
                         user.isSignedIn && (
                             <li>
-                                <div>
+                                <button onClick={() => setModal(true)}>
                                     <i className="fa-solid fa-arrow-right-from-bracket"></i> Log out
-                                </div>
+                                </button>
                             </li>
                         )
                     }
