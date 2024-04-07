@@ -246,7 +246,8 @@ export class Helpers {
             setStatus("Login processed.");
             setTimeout(() => {
                 const resetForm = e.target as HTMLFormElement;
-                push('/?newlogin=true')
+                location.href = ('/?newlogin=true')
+                // push('/?newlogin=true')
                 resetForm.reset();
             }, 3000);
         } catch (error) {

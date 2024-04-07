@@ -15,19 +15,19 @@ const Dashboard = ({ getSession }: { getSession: UserMetadata | null }) => {
     const [step, setStep] = useState(0)
     const [quantity, setQuantity] = useState<number>(1)
     const link = searchParams.get('link')
-    useEffect(()=> {
+    useEffect(() => {
         switch (link) {
             case 'wishlist':
                 setStep(3)
                 break;
-        
+
             case 'order':
                 setStep(2)
                 break;
             default:
                 setStep(0)
         }
-    },[])
+    }, [])
     return (
         <div className='flex my-8 flex-row gap-3 gap-x-7 md:gap-x-3 lg:gap-x-7 flex-wrap mx-auto w-[90%] md:w-[97%] lg:w-[85%]'>
             <div className='flex basis-[100%] md:basis-[30%] px-5 py-10 h-auto gap-y-9 flex-col bg-[#F3F5F7]'>
@@ -273,7 +273,6 @@ const Dashboard = ({ getSession }: { getSession: UserMetadata | null }) => {
                                                                     </div>
                                                                     <div className='flex flex-col gap-y-4 justify-center basis-[40%] max-w-[45%]'>
                                                                         <h2 className='font-semibold md:text-xl text-left'>Tray Table</h2>
-                                                                        <h2 className='text-sm text-gray-400 text-left whitespace-nowrap'>Color: green</h2>
                                                                         <div className='md:flex items-center hidden'>
                                                                             <span className='text-xl mr-3'>&times;</span>
                                                                             Remove
@@ -311,7 +310,6 @@ const Dashboard = ({ getSession }: { getSession: UserMetadata | null }) => {
                                                                     </div>
                                                                     <div className='flex flex-col gap-y-4 justify-center basis-[40%] max-w-[45%]'>
                                                                         <h2 className='font-semibold md:text-xl text-left'>Tray Table</h2>
-                                                                        <h2 className='text-sm text-gray-400 text-left whitespace-nowrap'>Color: green</h2>
                                                                         <div className='md:flex items-center hidden'>
                                                                             <span className='text-xl mr-3'>&times;</span>
                                                                             Remove
@@ -349,7 +347,6 @@ const Dashboard = ({ getSession }: { getSession: UserMetadata | null }) => {
                                                                     </div>
                                                                     <div className='flex flex-col gap-y-4 justify-center basis-[40%] max-w-[45%]'>
                                                                         <h2 className='font-semibold md:text-xl text-left'>Tray Table</h2>
-                                                                        <h2 className='text-sm text-gray-400 text-left whitespace-nowrap'>Color: green</h2>
                                                                         <div className='md:flex items-center hidden'>
                                                                             <span className='text-xl mr-3'>&times;</span>
                                                                             Remove

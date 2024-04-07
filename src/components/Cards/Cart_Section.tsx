@@ -37,7 +37,7 @@ const Cart_Section = ({ notAuth }: { notAuth: boolean }) => {
             })
             return
         }
-        setWithCoupon(Helpers.applyCouponCode(cartTotalPrice,(e.target[0 as unknown as keyof typeof e.target] as unknown as HTMLInputElement
+        setWithCoupon(Helpers.applyCouponCode(cartTotalPrice, (e.target[0 as unknown as keyof typeof e.target] as unknown as HTMLInputElement
         ).value, setCouponStatus, enqueueSnackbar))
     }
     return (
@@ -213,7 +213,7 @@ const Cart_Section = ({ notAuth }: { notAuth: boolean }) => {
                             transition={{ duration: 0.75, ease: 'anticipate' }}
                             className='flex flex-col gap-x-5 lg:flex-row md:items-center lg:items-start gap-y-7'>
                             <div className='flex-grow-[1.7] md:min-w-[50%] lg:min-w-[60%] gap-y-10 flex flex-col'>
-                                <div className='border-black border-[1px] rounded-md px-8 py-4'>
+                                <div className='border-black border-[1px] rounded-md px-8 py-1'>
                                     <form className="mt-5 flex w-full flex-col gap-[20px] pb-12">
                                         <div className='relative w-full my-7 flex flex-col gap-y-12'>
                                             <h2 className='font-semibold text-2xl'>Contact information</h2>
@@ -228,32 +228,18 @@ const Cart_Section = ({ notAuth }: { notAuth: boolean }) => {
                                                 </div>
                                             </div>
 
-                                            <div className='flex flex-col md:flex-row justify-between gap-y-5'>
-                                                <div className='md:w-[48%] flex flex-col'>
-                                                    <label htmlFor="block">First name</label>
-                                                    <input placeholder="Your first name" type="text" className="py-[10px] bg-transparent px-[10px] w-full border-gray-300 border-b-[1px]" />
-                                                </div>
-                                                <div className='md:w-[48%] flex flex-col'>
-                                                    <label htmlFor="block">Surname</label>
-                                                    <input placeholder="Your surname" type="text" className="py-[10px] bg-transparent px-[10px] w-full border-gray-300 border-b-[1px]" />
-                                                </div>
-                                            </div>
-
                                             <div className=''>
                                                 <div className='flex flex-col'>
                                                     <label htmlFor="block">Phone number</label>
                                                     <input placeholder="Your phone number" type="phone" className="py-[10px] bg-transparent px-[10px] w-full border-gray-300 border-b-[1px]" />
                                                 </div>
-
                                             </div>
-
-                                        </div>
-                                        <div className="flex justify-between">
-                                            <div className='flex gap-2'>
-                                                <input type="checkbox" name="" id="" />
-                                                <span>Remember me</span>
+                                            <div className=''>
+                                                <div className='flex flex-col'>
+                                                    <label htmlFor="block">Email:</label>
+                                                    <input placeholder="Your Email address" type="email" className="py-[10px] bg-transparent px-[10px] w-full border-gray-300 border-b-[1px]" />
+                                                </div>
                                             </div>
-
                                         </div>
                                     </form>
                                 </div>
@@ -262,25 +248,16 @@ const Cart_Section = ({ notAuth }: { notAuth: boolean }) => {
                                     <form className="mt-5 flex w-full flex-col gap-[20px] pb-12">
                                         <div className='relative w-full my-7 flex flex-col gap-y-12'>
                                             <h2 className='font-semibold text-2xl'>Shipping Address</h2>
-                                            <div className='flex flex-col md:flex-row justify-between gap-y-5'>
-                                                <div className='md:w-[48%] flex flex-col'>
-                                                    <label htmlFor="block">First name</label>
-                                                    <input placeholder="Your first name" type="text" className="py-[10px] bg-transparent px-[10px] w-full border-gray-300 border-b-[1px]" />
-                                                </div>
-                                                <div className='md:w-[48%] flex flex-col'>
-                                                    <label htmlFor="block">Surname</label>
-                                                    <input placeholder="Your surname" type="text" className="py-[10px] bg-transparent px-[10px] w-full border-gray-300 border-b-[1px]" />
+                                            <div className=''>
+                                                <div className='flex flex-col'>
+                                                    <label htmlFor="block">Street address</label>
+                                                    <input placeholder="Your street address" type="address" className="py-[10px] bg-transparent px-[10px] w-full border-gray-300 border-b-[1px]" />
                                                 </div>
                                             </div>
-
-                                            <div className='flex flex-col md:flex-row justify-between gap-y-5'>
-                                                <div className='md:w-[48%] flex flex-col'>
-                                                    <label htmlFor="block">First name</label>
-                                                    <input placeholder="Your first name" type="text" className="py-[10px] bg-transparent px-[10px] w-full border-gray-300 border-b-[1px]" />
-                                                </div>
-                                                <div className='md:w-[48%] flex flex-col'>
-                                                    <label htmlFor="block">Surname</label>
-                                                    <input placeholder="Your surname" type="text" className="py-[10px] bg-transparent px-[10px] w-full border-gray-300 border-b-[1px]" />
+                                            <div className=''>
+                                                <div className='flex flex-col'>
+                                                    <label htmlFor="block">Country</label>
+                                                    <input placeholder="Your street address" type="text" className="py-[10px] bg-transparent px-[10px] w-full border-gray-300 border-b-[1px]" />
                                                 </div>
                                             </div>
 
@@ -291,20 +268,67 @@ const Cart_Section = ({ notAuth }: { notAuth: boolean }) => {
                                                 </div>
 
                                             </div>
-
-                                        </div>
-                                        <div className="flex justify-between">
-                                            <div className='flex gap-2'>
-                                                <input type="checkbox" name="" id="" />
-                                                <span>Remember me</span>
+                                            <div className=''>
+                                                <div className='flex flex-col'>
+                                                    <label htmlFor="block">Town / City</label>
+                                                    <input placeholder="Your town" type="phone" className="py-[10px] bg-transparent px-[10px] w-full border-gray-300 border-b-[1px]" />
+                                                </div>
+                                            </div>
+                                            <div className='flex flex-col md:flex-row justify-between gap-y-5'>
+                                                <div className='md:w-[48%] flex flex-col'>
+                                                    <label htmlFor="block">State</label>
+                                                    <input placeholder="state" type="text" className="py-[10px] bg-transparent px-[10px] w-full border-gray-300 border-b-[1px]" />
+                                                </div>
+                                                <div className='md:w-[48%] flex flex-col'>
+                                                    <label htmlFor="block">Zip code</label>
+                                                    <input placeholder="Your zipcode" type="text" className="py-[10px] bg-transparent px-[10px] w-full border-gray-300 border-b-[1px]" />
+                                                </div>
                                             </div>
 
                                         </div>
                                     </form>
                                 </div>
 
-                                <div>
-
+                                <div className='flex-1 border-[1px] max-w-full border-black rounded-md px-4 md:px-8 py-5 flex flex-col gap-y-5'>
+                                    <h2 className='font-semibold text-2xl'>Payment method</h2>
+                                    <div className='flex rounded-md bg-[#F3F5F7] justify-between items-center px-4 border-[1px] border-black'>
+                                        <div className='flex gap-x-3 items-center py-3'>
+                                            <div className='w-4 h-4 flex items-center justify-center border-[1px] border-black rounded-full'>
+                                                <div className='w-2 h-2 bg-black rounded-full'></div>
+                                            </div>
+                                            <div>Paypal</div>
+                                        </div>
+                                    </div>
+                                    <div className='flex rounded-md bg-[#F3F5F7] justify-between items-center px-4 border-[1px] border-black'>
+                                        <div className='flex gap-x-3 items-center py-3'>
+                                            <div className='w-4 h-4 flex items-center justify-center border-[1px] border-black rounded-full'>
+                                                {
+                                                    false && (<div className='w-2 h-2 bg-black rounded-full'></div>)
+                                                }
+                                            </div>
+                                            <div>PayStack</div>
+                                        </div>
+                                    </div>
+                                    <div className='flex rounded-md bg-[#F3F5F7] justify-between items-center px-4 border-[1px] border-black'>
+                                        <div className='flex gap-x-3 items-center py-3'>
+                                            <div className='w-4 h-4 flex items-center justify-center border-[1px] border-black rounded-full'>
+                                                {
+                                                    false && (<div className='w-2 h-2 bg-black rounded-full'></div>)
+                                                }
+                                            </div>
+                                            <div>Pay with credit card</div>
+                                        </div>
+                                    </div>
+                                    <div className='flex rounded-md bg-[#F3F5F7] justify-between items-center px-4 border-[1px] border-black'>
+                                        <div className='flex gap-x-3 items-center py-3'>
+                                            <div className='w-4 h-4 flex items-center justify-center border-[1px] border-black rounded-full'>
+                                                {
+                                                    false && (<div className='w-2 h-2 bg-black rounded-full'></div>)
+                                                }
+                                            </div>
+                                            <div>Flutterwave</div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div className='border-[1px] border-black h-fit rounded-md px-4 py-5 flex flex-col gap-y-5 md:min-w-[39%] lg:min-w-[30%]'>
@@ -345,7 +369,7 @@ const Cart_Section = ({ notAuth }: { notAuth: boolean }) => {
                                 }
 
                                 <form onSubmit={e => couponAction(e)} className='flex gap-x-3 w-full items-between justify-between'>
-                                    <input placeholder='coupon code' type="text" readOnly={!notAuth ? true : false} className='py-2 border-[1px] rounded-md pl-2 w-[60%]' />
+                                    <input placeholder='coupon code' type="text" readOnly={notAuth ? true : false} className='py-2 border-[1px] outline-none rounded-md pl-2 w-[60%]' />
                                     <button type='submit' className='bg-black text-white w-[35%] rounded-md py-2 disabled:bg-slate-300' disabled={notAuth ? true : false} >Apply</button>
                                 </form>
                                 <div className='pl-2 text-sm py-2'>
@@ -366,7 +390,7 @@ const Cart_Section = ({ notAuth }: { notAuth: boolean }) => {
                                     <span>₦{withCoupon}</span>
                                 </div>
                                 <div>
-                                    <button disabled={notAuth ? true : false} className='bg-black text-white w-full py-3 rounded-md disabled:bg-slate-300'>Checkout</button>
+                                    <button disabled={notAuth ? true : false} className='bg-black text-white w-full py-3 rounded-md disabled:bg-slate-300'>Place order</button>
                                 </div>
                                 {
                                     notAuth === true && (
