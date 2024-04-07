@@ -14,8 +14,9 @@ import { enqueueSnackbar } from 'notistack'
 
 const Cart_Section = ({ notAuth }: { notAuth: boolean }) => {
     const searchParams = useSearchParams()
-    const { cart, removeFromCart, cartTotalPrice } = useStore()
+    const { cart, removeFromCart, cartTotalPrice, updateTotal, emptyCart } = useStore()
     const removeAction = (id: string) => {
+        updateTotal()
         removeFromCart(id);
     }
     const [couponStatus, setCouponStatus] = useState('')
@@ -29,6 +30,7 @@ const Cart_Section = ({ notAuth }: { notAuth: boolean }) => {
         if (checkout === 'true') {
             setStep(1)
         }
+        // emptyCart()
     }, [])
     const couponAction = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
@@ -120,7 +122,7 @@ const Cart_Section = ({ notAuth }: { notAuth: boolean }) => {
                                                                 </tr>) : cart.map((x) => (
                                                                     <tr key={x.item.id} className="border-b border-neutral-200 border-b-gray-200 h-auto">
                                                                         <td className="px-0 min-w-[65%] md:min-w-[55%] md:max-w-[55%] py-0 font-medium align-top" colSpan={2}>
-                                                                            <div className="w-full h-[190px] md:h-[160px] flex items-center gap-x-4 md:gap-x-6">
+                                                                            <div className="w-full h-[190px] md:min-h-[160px] flex items-center gap-x-4 md:gap-x-6">
                                                                                 <div className="md:basis-[40%] w-full md:min-w-[auto] min-h-[160px] relative">
                                                                                     <Image
                                                                                         src={x.item.images[0]}
@@ -153,7 +155,11 @@ const Cart_Section = ({ notAuth }: { notAuth: boolean }) => {
                                                                         <td className="whitespace-nowrap px-6 font-extrabold text-xl py-4 hidden md:table-cell">₦{x.item.price.toLocaleString()}</td>
                                                                         <td className="whitespace-nowrap pl-8 py-4 text-xl table-cell md:hidden text-center">
                                                                             <span className='text-right'>₦{x.item.price.toLocaleString()}</span> <br />
-                                                                            <span className='mt-5 block text-3xl'>&times;</span>
+                                                                            <span className='mt-5 block text-3xl'>
+                                                                                <button onClick={() => removeAction(x.item.id)}>
+                                                                                    &times;
+                                                                                </button>
+                                                                            </span>
                                                                         </td>
                                                                     </tr>
                                                                 ))

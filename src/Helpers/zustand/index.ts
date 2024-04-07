@@ -10,14 +10,14 @@ export const useStore = create<IStore>()(
             cartCount: 0,
             updateTotal: () => {
                 const { cart } = get();
-                const updatedTotal = calculateTotal(cart)
-                set({ cartTotalPrice: updatedTotal })
+                const updatedTotal = calculateTotal(cart);
+                set({cart:cart, cartTotalPrice: updatedTotal, cartCount:cart.length })
             },
             removeFromCart(id) {
                 const { cart } = get();
                 const updatedCart = removeCart(id, cart);
-                const updatedTotal = calculateTotal(cart)
-                set({ cart: updatedCart, cartCount: cart.length, cartTotalPrice: updatedTotal });
+                const updatedTotal = calculateTotal(cart);
+                set({ cart: updatedCart, cartCount: cart.length-1, cartTotalPrice: updatedTotal });
             },
             addToCart(item, quantity) {
                 const { cart } = get();
@@ -25,6 +25,9 @@ export const useStore = create<IStore>()(
                 const updatedTotal = calculateTotal(cart)
                 set({ cart: updatedCart, cartCount: cart.length, cartTotalPrice: updatedTotal });
             },
+            emptyCart() {
+                set({cart:[],cartCount:0,cartTotalPrice:0})
+            }
         }),
         {
             name: 'Elegant-cart-store', // Unique name for your store
@@ -53,11 +56,12 @@ const updateCart = (product: ISBProducts, cart: cartItem[], quantity: number): c
 }
 
 function removeCart(idProduct: string, cart: cartItem[]): cartItem[] {
-    return cart.map(item => {
-        if (item.item.id === idProduct)
-            return { item: item.item, quantity: item.quantity - 1 }
-        return item;
-    }).filter(item => {
-        return item.quantity;
-    });
+    // return cart.map(item => {
+    //     if (item.item.id === idProduct)
+    //         return { item: item.item, quantity: item.quantity - 1 }
+    //     return item;
+    // }).filter(item => {
+    //     return item.quantity;
+    // });
+    return cart.filter(item=> item.item.id !== idProduct)
 }
