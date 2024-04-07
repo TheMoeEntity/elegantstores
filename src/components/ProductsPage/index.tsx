@@ -130,7 +130,7 @@ const ProductsPage = ({ justIn, item }: { justIn: productType[], item: ISBProduc
             {[...Array((Math.floor(item.rating)))].map((_, i) => (
               <span key={i} className={`fa fa-star`}></span>
             ))}
-            <span className='font-extrabold'>{item.reviews?.reviews.length ?? "no"} reviews</span>
+            <span className='font-extrabold'>{item.reviews?.reviews.length ?? "no"} review(s)</span>
           </div>
           <div><h1 className='font-extrabold text-4xl md:text-5xl'>{item.title}</h1></div>
           <div className='text-gray-500 pb-5 border-b-[1px] border-slate-200 flex flex-col gap-y-3'>

@@ -83,7 +83,7 @@ export class Helpers {
         return products
     }
     static updateReviews = async (slug: string, e: FormEvent, item: ISBProducts, id: string, review: reviewType, enqueueSnackbar: any, setDidReview: (review: boolean) => void) => {
-        const itemToUpdate = item.reviews?.reviews;
+        const itemToUpdate = item.reviews?.reviews
         const reviewData = {
             review,
             itemToUpdate,
@@ -103,6 +103,7 @@ export class Helpers {
             setTimeout(() => {
                 const resetForm = e.target as HTMLFormElement;
                 resetForm.reset();
+                // location.reload()
             }, 3000);
         } catch (error) {
             enqueueSnackbar(
