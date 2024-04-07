@@ -1,30 +1,36 @@
-import { create } from 'zustand'
-import { ISBProducts, IStore, cartItem } from '../types'
+import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
+import { ISBProducts, IStore, cartItem } from '../types';
 
-
-export const useStore = create<IStore>((set, get) => ({
-    cart: [],
-    cartTotalPrice: 0,
-    cartCount: 0,
-    updateTotal: () => {
-        const { cart } = get();
-        const updatedTotal = calculateTotal(cart)
-        set({cartTotalPrice:updatedTotal})
-    },
-    removeFromCart(id) {
-        const { cart } = get();
-        const updatedCart = removeCart(id, cart);
-        const updatedTotal = calculateTotal(cart)
-        set({ cart: updatedCart, cartCount: cart.length, cartTotalPrice:updatedTotal });
-    },
-    addToCart(item, quantity) {
-        const { cart } = get();
-        const updatedCart = updateCart(item, cart, quantity)
-        const updatedTotal = calculateTotal(cart)
-        set({ cart: updatedCart, cartCount: cart.length, cartTotalPrice: updatedTotal });
-    },
-
-}))
+export const useStore = create<IStore>()(
+    persist(
+        (set, get) => ({
+            cart: [],
+            cartTotalPrice: 0,
+            cartCount: 0,
+            updateTotal: () => {
+                const { cart } = get();
+                const updatedTotal = calculateTotal(cart)
+                set({ cartTotalPrice: updatedTotal })
+            },
+            removeFromCart(id) {
+                const { cart } = get();
+                const updatedCart = removeCart(id, cart);
+                const updatedTotal = calculateTotal(cart)
+                set({ cart: updatedCart, cartCount: cart.length, cartTotalPrice: updatedTotal });
+            },
+            addToCart(item, quantity) {
+                const { cart } = get();
+                const updatedCart = updateCart(item, cart, quantity)
+                const updatedTotal = calculateTotal(cart)
+                set({ cart: updatedCart, cartCount: cart.length, cartTotalPrice: updatedTotal });
+            },
+        }),
+        {
+            name: 'Elegant-cart-store', // Unique name for your store
+        }
+    )
+);
 const calculateTotal = (cart: cartItem[]) => {
     const cartFiltered = cart.map(x => x.item.price * x.quantity)
     const tot = cartFiltered.reduce((a, b) => a + b)
