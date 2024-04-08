@@ -6,27 +6,21 @@ export const useStore = create<IStore>()(
     persist(
         (set, get) => ({
             cart: [],
-            cartTotalPrice: 0,
             cartCount: 0,
-            updateTotal: () => {
-                const { cart } = get();
-                const updatedTotal = calculateTotal(cart);
-                set({cart:cart, cartTotalPrice: updatedTotal, cartCount:cart.length })
-            },
             removeFromCart(id) {
                 const { cart } = get();
                 const updatedCart = removeCart(id, cart);
                 const updatedTotal = calculateTotal(cart);
-                set({ cart: updatedCart, cartCount: cart.length-1, cartTotalPrice: updatedTotal });
+                set({ cart: updatedCart, cartCount: cart.length - 1 });
             },
             addToCart(item, quantity) {
                 const { cart } = get();
                 const updatedCart = updateCart(item, cart, quantity)
                 const updatedTotal = calculateTotal(cart)
-                set({ cart: updatedCart, cartCount: cart.length, cartTotalPrice: updatedTotal });
+                set({ cart: updatedCart, cartCount: cart.length,});
             },
             emptyCart() {
-                set({cart:[],cartCount:0,cartTotalPrice:0})
+                set({ cart: [], cartCount: 0})
             }
         }),
         {
@@ -37,7 +31,7 @@ export const useStore = create<IStore>()(
 const calculateTotal = (cart: cartItem[]) => {
     const cartFiltered = cart.map(x => x.item.price * x.quantity)
     const tot = cartFiltered.reduce((a, b) => a + b)
-    return tot
+    return cart.length === 0 ? 0 : tot
 }
 const updateCart = (product: ISBProducts, cart: cartItem[], quantity: number): cartItem[] => {
     const cartItem = { item: product, quantity } as cartItem;
@@ -63,5 +57,5 @@ function removeCart(idProduct: string, cart: cartItem[]): cartItem[] {
     // }).filter(item => {
     //     return item.quantity;
     // });
-    return cart.filter(item=> item.item.id !== idProduct)
+    return cart.filter(item => item.item.id !== idProduct)
 }

@@ -1,5 +1,5 @@
 import { FormEvent } from "react";
-import { IProduct, ISBProducts, fakeProductType, loremPicsum, productType, reviewType } from "./types";
+import { IProduct, ISBProducts, cartItem, fakeProductType, loremPicsum, productType, reviewType } from "./types";
 import axios from "axios";
 import { createSupabaseServerClient } from "./supabase";
 import { createSupabaseServerClientCSR } from "./supabase/superbaseCSR";
@@ -82,6 +82,9 @@ export class Helpers {
         const { data: products } = await supabase.from("products").select();
         return products
     }
+    static CalculateTotal = (cart: cartItem[]) => {
+        return cart.map((x) => x.item.price * x.quantity).reduce((a, b) => {return  a + b}, 0);
+    };
     static updateReviews = async (slug: string, e: FormEvent, item: ISBProducts, id: string, review: reviewType, enqueueSnackbar: any, setDidReview: (review: boolean) => void) => {
         const itemToUpdate = item.reviews?.reviews
         const reviewData = {

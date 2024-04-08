@@ -3,7 +3,7 @@ import OrderComplete from '@/src/components/Cards/orderComplete'
 import stool from '../../../public/images/showcase.png'
 import Image from "next/image"
 import { motion } from 'framer-motion'
-import { FormEvent, useEffect, useState } from "react"
+import { FormEvent, useCallback, useEffect, useMemo, useState } from "react"
 import TextTransition, { presets } from 'react-text-transition';
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
@@ -14,15 +14,20 @@ import { enqueueSnackbar } from 'notistack'
 
 const Cart_Section = ({ notAuth }: { notAuth: boolean }) => {
     const searchParams = useSearchParams()
-    const { cart, removeFromCart, cartTotalPrice, updateTotal, emptyCart } = useStore()
+    const { cart, removeFromCart, emptyCart } = useStore()
     const removeAction = (id: string) => {
-        updateTotal()
         removeFromCart(id);
     }
+    const total = useMemo(
+        () => {
+            return Helpers.CalculateTotal(cart)
+        },
+        [cart],
+    )
     const [couponStatus, setCouponStatus] = useState('')
     const [quantity, setQuantity] = useState<number>(1)
     const [step, setStep] = useState<number>(0)
-    const [withCoupon, setWithCoupon] = useState<number>(cartTotalPrice)
+    const [withCoupon, setWithCoupon] = useState<number>(total)
     const checkout = searchParams.get('checkout')
     const [orderplaced, setOrderPlaced] = useState<boolean>(false)
 
@@ -34,14 +39,14 @@ const Cart_Section = ({ notAuth }: { notAuth: boolean }) => {
     }, [])
     const couponAction = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        if (cartTotalPrice != withCoupon) {
+        if (total != withCoupon) {
             setCouponStatus("Coupon has already been applied")
             enqueueSnackbar(`Coupons can only be used once ode!!`, {
                 variant: "error"
             })
             return
         }
-        setWithCoupon(Helpers.applyCouponCode(cartTotalPrice, (e.target[0 as unknown as keyof typeof e.target] as unknown as HTMLInputElement
+        setWithCoupon(Helpers.applyCouponCode(total, (e.target[0 as unknown as keyof typeof e.target] as unknown as HTMLInputElement
         ).value, setCouponStatus, enqueueSnackbar))
     }
     return (
@@ -198,13 +203,13 @@ const Cart_Section = ({ notAuth }: { notAuth: boolean }) => {
                                     <div className='flex gap-x-3 py-3'>
                                         Subtotal
                                     </div>
-                                    <span>₦{cartTotalPrice.toLocaleString()}</span>
+                                    <span>₦{total.toLocaleString()}</span>
                                 </div>
                                 <div className='flex rounded-md justify-between items-center px-4 border-b-[1px] border-gray-200'>
                                     <h2 className='flex gap-x-3 py-3 text-xl font-semibold'>
                                         Total
                                     </h2>
-                                    <span>₦{cartTotalPrice.toLocaleString()}</span>
+                                    <span>₦{total.toLocaleString()}</span>
                                 </div>
                                 <div>
                                     <button onClick={() => setStep(1)} className='bg-black text-white w-full py-3 rounded-md'>Checkout</button>

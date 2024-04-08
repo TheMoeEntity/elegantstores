@@ -110,10 +110,8 @@ export interface ISession {
 }
 export interface IStore {
     cart: cartItem[];
-    cartTotalPrice:number
     cartCount: number;
     emptyCart:()=>void,
-    updateTotal:()=>void
     addToCart: (item: ISBProducts, quantity:number) => void
     removeFromCart:(id:string) => void
 };

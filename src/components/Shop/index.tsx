@@ -17,11 +17,10 @@ const ShopPage = ({ products }: { products: ISBProducts[] }) => {
     const [active, setActive] = useState<string>("all")
     let category = searchParams.get('category')
     const [items, setItems] = useState(products)
-    const { updateTotal, addToCart } = useStore()
+    const { addToCart } = useStore()
     const [loading, setLoading] = useState<boolean>(false)
     const addAction = (item: ISBProducts, quantity: number = 1) => {
         addToCart(item, quantity)
-        updateTotal()
         enqueueSnackbar({
             message: "Item has been added to cart",
             variant: 'success'

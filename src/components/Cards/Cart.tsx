@@ -2,18 +2,21 @@ import styles from "./cart.module.css";
 import Image from "next/image";
 import Link from "next/link";
 import { useStore } from "@/src/Helpers/zustand";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { Helpers } from "@/src/Helpers";
 
 const CartModal = ({ cartOpen, closeCart, forceClose }: { cartOpen: boolean, closeCart: () => void, forceClose: () => void }) => {
-    const { cart, removeFromCart, cartTotalPrice, updateTotal } = useStore()
+    const { cart, removeFromCart } = useStore()
     const removeAction = (id: string) => {
-        updateTotal()
         removeFromCart(id);
     }
-    const [total, setTotal] = useState(cartTotalPrice)
-    useEffect(() => {
-        setTotal(cartTotalPrice)
-    }, [cartTotalPrice, cart])
+    const total = useMemo(
+        () => {
+            return Helpers.CalculateTotal(cart)
+        },
+        [cart],
+    )
+
 
     return (
         <div
@@ -71,7 +74,7 @@ const CartModal = ({ cartOpen, closeCart, forceClose }: { cartOpen: boolean, clo
             >
                 <div className={styles.prices}>
                     <h3>Cart total</h3>
-                    <h4>₦{total.toLocaleString()}</h4>
+                    <h4>₦{Helpers.CalculateTotal(cart).toLocaleString()}</h4>
                 </div>
                 <p>shipping total calculated at checkout</p>
                 <div className={styles.bottomControls}>
