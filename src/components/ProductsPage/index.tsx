@@ -78,7 +78,7 @@ const ProductsPage = ({ justIn, item }: { justIn: productType[], item: ISBProduc
       </div>
       <div className="flex flex-col lg:flex-row mt-7 mx-auto w-[90%] mb-8">
         <div className='basis-full flex flex-col gap-y-4 md:basis-[50%]'>
-          <div className="w-full relative">
+          <div className={`w-full relative`}>
             <Image
               src={currImage}
               alt="product main image"
@@ -86,7 +86,7 @@ const ProductsPage = ({ justIn, item }: { justIn: productType[], item: ISBProduc
               sizes={'100vw'}
               height={item?.dimensions.height}
               width={item?.dimensions.width}
-              className="object-cover w-full h-auto"
+              className="object-cover w-full h-full"
             />
           </div>
           <div className='w-full flex flex-row justify-between'>

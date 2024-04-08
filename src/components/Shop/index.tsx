@@ -169,7 +169,7 @@ const ShopPage = ({ products }: { products: ISBProducts[] }) => {
                                     }
                                 </div>
                             ) : (
-                                <div className="flex flex-row gap-2 gap-y-7 md:gap-y-5 md:gap-4 justify-center md:justify-start flex-wrap mb-7">
+                                <div className="flex flex-row gap-2 gap-y-7 md:gap-y-5 md:gap-4 md:justify-center justify-start flex-wrap mb-7">
                                     {
                                         (items).map((x) => (
                                             <div key={x.id} className='flex group overflow-y-hidden pb-4 md:min-h-auto shadow-md rounded-md flex-col gap-y-2 gap-x-0 h-fit md:min-w-[10%] basis-[47%] md:basis-[30%] lg:basis-[23%]'>
