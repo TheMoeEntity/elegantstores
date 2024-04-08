@@ -351,17 +351,18 @@ const Cart_Section = ({ notAuth }: { notAuth: boolean }) => {
                                         <div key={i} className='flex items-between'>
                                             <div>
                                                 <div className="w-full h-[190px] md:h-[160px] flex items-center gap-x-4 md:gap-x-6">
-                                                    <div className="md:basis-[40%]">
+                                                    <div className="md:basis-[40%] min-w-[90px] sm:min-w-[70px] md:min-w-[120px] min-h-[120px] relative">
                                                         <Image
-                                                            src={stool}
+                                                            src={x.item.images[0]}
                                                             alt="product main image"
                                                             quality={100}
+                                                            fill
                                                             sizes={'100vw'}
-                                                            className="object-cover w-full h-auto"
+                                                            className="object-contain w-full h-auto"
                                                         />
                                                     </div>
                                                     <div className='flex flex-col gap-y-4 justify-center basis-[40%] max-w-[45%]'>
-                                                        <h2 className='font-semibold md:text-xl text-left'>Tray Table</h2>
+                                                        <h2 className='font-semibold md:text-xl text-left'>{x.item.title.slice(0, 13)+"..."}</h2>
                                                         <h2 className='text-sm text-gray-400 text-left whitespace-nowrap'>Color: green</h2>
                                                         <div className='md:flex items-center hidden'>
                                                             <span className='text-xl mr-3'>&times;</span>
@@ -374,8 +375,8 @@ const Cart_Section = ({ notAuth }: { notAuth: boolean }) => {
                                                 </div>
                                             </div>
                                             <td className="whitespace-nowrap align-middle pl-8 pt-10 text-xl table-cell text-center">
-                                                <span className='text-right'>$19.00</span> <br />
-                                                <span className='mt-5 block text-3xl'>&times;</span>
+                                                <span className='text-right text-sm md:text-xl'>₦{x.item.price.toLocaleString()}</span> <br />
+                                                <span className='mt-5 md:hidden text-3xl block'>&times;</span>
                                             </td>
                                         </div>
                                     ))
