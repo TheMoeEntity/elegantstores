@@ -6,8 +6,7 @@ import Link from "next/link"
 import { useEffect, useState } from "react"
 import { UserMetadata } from '@supabase/supabase-js'
 import avatar from '../../../public/images/avatar.png'
-import { userContext } from '@/src/Helpers/ContextAPI/usercontext'
-import { useContext } from 'react'
+
 import { useSearchParams } from 'next/navigation'
 
 const Dashboard = ({ getSession }: { getSession: UserMetadata | null }) => {

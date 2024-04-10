@@ -1,4 +1,4 @@
-import { FormEvent } from "react";
+import { ChangeEvent, FormEvent } from "react";
 import { IProduct, ISBProducts, cartItem, fakeProductType, loremPicsum, productType, reviewType } from "./types";
 import axios from "axios";
 import { createSupabaseServerClient } from "./supabase";
@@ -7,6 +7,16 @@ import { createBrowserClient } from "@supabase/ssr";
 
 
 export class Helpers {
+    static toBase64 = (file: File) =>
+        new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = reject;
+        });
+        
+
+
     static couponCodes = [
         "5yZO4",
         "usDLR",
@@ -16,6 +26,11 @@ export class Helpers {
         "9XKjGI",
         "BRe1CK"
     ]
+    static async checkUserExists(email_address: string) {
+        const supabase = await createSupabaseServerClient()
+        const userExists = await supabase.rpc('email_exists', { email_address });
+        return userExists.data
+    }
     static filterCategory = (category: string, items: ISBProducts[]) => {
         return category === 'all' ? items : items.filter(item => item.category === category)
     }
@@ -83,7 +98,7 @@ export class Helpers {
         return products
     }
     static CalculateTotal = (cart: cartItem[]) => {
-        return cart.map((x) => x.item.price * x.quantity).reduce((a, b) => {return  a + b}, 0);
+        return cart.map((x) => x.item.price * x.quantity).reduce((a, b) => { return a + b }, 0);
     };
     static updateReviews = async (slug: string, e: FormEvent, item: ISBProducts, id: string, review: reviewType, enqueueSnackbar: any, setDidReview: (review: boolean) => void) => {
         const itemToUpdate = item.reviews?.reviews
@@ -213,31 +228,47 @@ export class Helpers {
         }
 
         setStatus("Sending credentials....");
-        try {
-            const url = "/api/signup";
-            const res = await axios.post(url, data);
+        
+        await fetch(('/api/signup'), {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+            .then(async res => {
+                const isJson = res.headers.get('content-type')?.includes('application/json')
+                const data = isJson ? await res.json() : null
 
-            res.status === 200 || res.status === 201 &&
-                enqueueSnackbar("User profile created successfully", {
-                    variant: "success",
-                });
+                if (!res.ok) {
+                    setStatus("...Error creating user");
+                    const error = (data && data.message) || res.status;
+                    enqueueSnackbar(
+                         error,
+                        {
+                            variant: "error",
+                        }
+                    );
+                    return Promise.reject(error)
 
-            setStatus("User created successfully");
-            setTimeout(() => {
-                const resetForm = e.target as HTMLFormElement;
-                resetForm.reset();
-                push('/login?verify=true');
-            }, 3000);
-        } catch (error) {
-            setStatus("...Error creating user");
-            enqueueSnackbar(
-                "There was an error creating user, try again: " + error,
-                {
-                    variant: "error",
+                } else if (res.ok) {
+                    enqueueSnackbar("User profile created successfully", {
+                        variant: "success",
+                    });
+                    setStatus("User created successfully");
+                    setTimeout(() => {
+                        const resetForm = e.target as HTMLFormElement;
+                        resetForm.reset();
+                        push('/login?verify=true');
+                    }, 3000);
+                    return res.json()
                 }
-            );
+            })
+            .catch(err => {
+                console.log(err)
+            })
 
-        }
         setStatus("Sign up");
     };
     static validateLoginForm = async (
@@ -273,33 +304,101 @@ export class Helpers {
         }
 
         setStatus("Sending credentials....");
-        try {
-            const url = "/api/login";
-            const res = await axios.post(url, data);
 
-            res.status === 200 || res.status === 201 &&
-                enqueueSnackbar("Login success", {
-                    variant: "success",
-                });
+        await fetch(('/api/login'), {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+            .then(async res => {
+                const isJson = res.headers.get('content-type')?.includes('application/json')
+                const data = isJson ? await res.json() : null
 
+                if (!res.ok) {
+                    setStatus("...Error signin in user");
+                    const error = (data && data.message) || res.status;
+                    enqueueSnackbar(
+                        error,
+                        {
+                            variant: "error",
+                        }
+                    );
+                    return Promise.reject(error)
 
-            setStatus("Login processed.");
-            setTimeout(() => {
-                const resetForm = e.target as HTMLFormElement;
-                location.href = ('/?newlogin=true')
-                // push('/?newlogin=true')
-                resetForm.reset();
-            }, 3000);
-        } catch (error) {
-            setStatus("...Error Loggin in user");
+                } else if (res.ok) {
+                    enqueueSnackbar("Login success", {
+                        variant: "success",
+                    });
+                    setStatus("Welcome.");
+                    setTimeout(() => {
+                        const resetForm = e.target as HTMLFormElement;
+                        location.href = ('/?newlogin=true')
+                        // push('/?newlogin=true')
+                        resetForm.reset();
+                    }, 3000);
+                    return res.json()
+                }
+            })
+            .catch(err => {
+                console.log(err)
+            })
+        setStatus("Log in");
+    };
+
+    static handleFileSelected = async (
+        e: ChangeEvent<HTMLInputElement>,
+        enqueueSnackbar: any,
+        setSize: any,
+        setUserFile: any,
+        setCurrFile: any,
+        size: string
+    ) => {
+        const files = (e.target as HTMLInputElement).files;
+
+        if (!files) return;
+        const fileType = files[0].type;
+        console.log(fileType);
+        const acceptedFileTypes: string[] = [
+            "application/pdf",
+            "image/png",
+            "image/jpeg",
+            "image/png",
+        ];
+        if (!acceptedFileTypes.includes(fileType)) {
             enqueueSnackbar(
-                "There was an error logging in user, try again: " + error,
+                "File type not supported. Kindly upload a valid pdf, jpeg or jpg",
                 {
                     variant: "error",
                 }
             );
-
+            return;
         }
-        setStatus("Log in");
+
+        const sizes = parseFloat(String(files[0].size / (1024 * 1024))).toFixed(2);
+        console.log(sizes);
+        setSize(this.formatBytes(files[0].size));
+        setCurrFile(files[0].name + `, ${size}`);
+        if (Number(sizes) > 2) {
+            enqueueSnackbar("Max file size is 2MB", {
+                variant: "error",
+            });
+            return;
+        }
+
+        setUserFile(files[0]);
     };
+    static formatBytes(bytes: number, decimals = 2) {
+        if (!+bytes) return "0 Bytes";
+
+        const k = 1024;
+        const dm = decimals < 0 ? 0 : decimals;
+        const sizes = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
+
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+
+        return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`;
+    }
 }
