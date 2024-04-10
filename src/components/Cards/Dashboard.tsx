@@ -3,15 +3,20 @@ import stool from '../../../public/images/showcase.png'
 import Image from "next/image"
 import { motion } from 'framer-motion'
 import Link from "next/link"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { UserMetadata } from '@supabase/supabase-js'
 import avatar from '../../../public/images/avatar.png'
-
 import { useSearchParams } from 'next/navigation'
+import { Helpers } from '@/src/Helpers'
+import { useSnackbar } from 'notistack'
 
 const Dashboard = ({ getSession }: { getSession: UserMetadata | null }) => {
+    const { enqueueSnackbar } = useSnackbar()
+    // console.log(getSession)
     const searchParams = useSearchParams()
     const [step, setStep] = useState(0)
+    const [status, setStatus] = useState('Upload image')
+    const [currProfile, setCurrProfile] = useState<any>(avatar)
     const [quantity, setQuantity] = useState<number>(1)
     const link = searchParams.get('link')
     useEffect(() => {
@@ -26,7 +31,42 @@ const Dashboard = ({ getSession }: { getSession: UserMetadata | null }) => {
             default:
                 setStep(0)
         }
+        if (!getSession?.profile) {
+            setCurrProfile(avatar)
+        } else {
+            setCurrProfile(decodeURIComponent(getSession?.profile))
+        }
     }, [])
+
+    const [currFile, setCurrFile] = useState<string>("No file selected*");
+    const [size, setSize] = useState("");
+    const [userFile, setUserFile] = useState<File | null>(null);
+    const inputFile = useRef<HTMLInputElement | null>(null);
+    const openFiles = () => {
+        if (inputFile.current) inputFile.current.click();
+    };
+
+    useEffect(() => {
+        if (currFile !== "No file selected*") {
+            const isFile = !userFile ? "Selected file size:" : `${userFile.name}, `;
+            setCurrFile(isFile + ` ${size}`);
+        }
+    }, [size]);
+    const uploadImage = async () => {
+        let results: any;
+        if (userFile) {
+            try {
+                results = await Helpers.toBase64(userFile);
+            } catch (error) {
+                enqueueSnackbar("There was an error parsing file: " + error, {
+                    variant: "error",
+                });
+                return;
+            }
+        }
+        setCurrProfile(decodeURIComponent(results))
+        await Helpers.uploadProfile(setStatus, enqueueSnackbar, results)
+    }
     return (
         <div className='flex my-8 flex-row gap-3 gap-x-7 md:gap-x-3 lg:gap-x-7 flex-wrap mx-auto w-[90%] md:w-[97%] lg:w-[85%]'>
             <div className='flex basis-[100%] md:basis-[30%] px-5 py-10 h-auto gap-y-9 flex-col bg-[#F3F5F7]'>
@@ -35,17 +75,36 @@ const Dashboard = ({ getSession }: { getSession: UserMetadata | null }) => {
                 </div>
                 <div className="w-24 h-24 relative text-white flex justify-center items-center">
                     <Image
-                        src={avatar}
+                        src={currProfile}
                         alt="avatar"
                         quality={100}
+                        fill
                         sizes={'100vw'}
                         className="object-cover rounded-full w-full h-auto"
                     />
-                    <button className="absolute flex justify-center items-center z-[9999] bg-[#FAFAFA] rounded-full w-10 h-10 -right-1 bottom-0">
+                    <input onChange={(e) =>
+                        Helpers.handleFileSelected(
+                            e,
+                            enqueueSnackbar,
+                            setSize,
+                            setUserFile,
+                            setCurrFile,
+                            size
+                        )
+                    } type="file" className="hidden" ref={inputFile} id="" />
+                    <button onClick={() => openFiles()} className="absolute flex justify-center items-center z-[9999] bg-[#FAFAFA] rounded-full w-10 h-10 -right-1 bottom-0">
                         <div className="bg-black w-9 h-9 rounded-full flex justify-center items-center">
                             <i className='fa-solid fa-camera'></i>
                         </div>
                     </button>
+                </div>
+                <div>
+                    <div className='mb-5'>
+                        {currFile} <br />
+                    </div>
+                    {
+                        currFile !== 'No file selected*' && (<button onClick={() => uploadImage()} className='bg-black text-white px-3 py-2 text-sm rounded-md'>{status}</button>)
+                    }
                 </div>
                 <div>
                     <ul className='text-gray-600 gap-y-5 flex-col flex'>

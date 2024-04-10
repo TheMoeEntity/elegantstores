@@ -14,7 +14,7 @@ export class Helpers {
             reader.onload = () => resolve(reader.result);
             reader.onerror = reject;
         });
-        
+
 
 
     static couponCodes = [
@@ -228,7 +228,7 @@ export class Helpers {
         }
 
         setStatus("Sending credentials....");
-        
+
         await fetch(('/api/signup'), {
             method: 'POST',
             headers: {
@@ -245,7 +245,7 @@ export class Helpers {
                     setStatus("...Error creating user");
                     const error = (data && data.message) || res.status;
                     enqueueSnackbar(
-                         error,
+                        error,
                         {
                             variant: "error",
                         }
@@ -401,4 +401,57 @@ export class Helpers {
 
         return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`;
     }
+
+    static uploadProfile = async (
+        setStatus: any,
+        enqueueSnackbar: any,
+        data: string
+    ) => {
+        const data2 = {
+            profile:data
+        }
+        setStatus("Uploading....");
+        
+        await fetch(('/api/update/profile'), {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data2)
+        })
+            .then(async res => {
+                const isJson = res.headers.get('content-type')?.includes('application/json')
+                const data = isJson ? await res.json() : null
+
+                if (!res.ok) {
+                    setStatus("Upload failed");
+                    const error = (data && data.message) || res.status;
+                    enqueueSnackbar(
+                        error,
+                        {
+                            variant: "error",
+                        }
+                    );
+                    return Promise.reject(error)
+
+                } else if (res.ok) {
+                    enqueueSnackbar("Your profile image has been uploaded successfully", {
+                        variant: "success",
+                    });
+                    setStatus("Uploaded");
+                    return res.json()
+                }
+            })
+            .catch(err => {
+                enqueueSnackbar(
+                    err,
+                    {
+                        variant: "error",
+                    }
+                );
+                console.log(err)
+            })
+        setStatus("Upload");
+    };
 }
