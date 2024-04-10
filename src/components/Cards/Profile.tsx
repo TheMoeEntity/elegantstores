@@ -3,7 +3,7 @@ import styles from "./cards.module.css";
 import Image from "next/image";
 import Link from "next/link";
 import boy from "../../../public/images/avatar.png";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { userContext } from "@/src/Helpers/ContextAPI/usercontext";
 import { createBrowserClient } from "@supabase/ssr";
 import { useSnackbar } from "notistack";
@@ -13,6 +13,14 @@ const Profile = ({ profileOpen = false, forceClose }: { profileOpen: boolean, fo
     const { user } = useContext(userContext)
     const [showModal, setModal] = useState<boolean>(false)
     const { enqueueSnackbar } = useSnackbar()
+    const [currProfile, setCurrProfile] = useState<any>(boy)
+    useEffect(() => {
+        if (!user.userData.profile) {
+            setCurrProfile(boy)
+        } else {
+            setCurrProfile(decodeURIComponent(user.userData.profile))
+        }
+    }, [user])
     const signOutAction = async () => {
         const supabase = createBrowserClient(
             process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -96,7 +104,7 @@ const Profile = ({ profileOpen = false, forceClose }: { profileOpen: boolean, fo
             <div className={styles.userheader}>
                 <div className="">
                     <Image
-                        src={boy}
+                        src={currProfile}
                         alt="user image"
                         fill
                         style={{ objectFit: 'cover' }}
