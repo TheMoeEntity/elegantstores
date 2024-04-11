@@ -11,7 +11,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
             password
         })
         if (error?.message) {
-            return NextResponse.json({ success: false, error:error.message }, { status: 400 });
+            return NextResponse.json({ success: false, message:error.message }, { status: 400 });
         }
         
         return NextResponse.json({ success: true, data }, { status: 201 });

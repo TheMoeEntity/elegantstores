@@ -8,9 +8,10 @@ import Footer from './Footer';
 import Script from 'next/script';
 import { scrollTopView } from '../Helpers/Views';
 import { UserMetadata } from '@supabase/supabase-js';
+import { Toaster } from 'react-hot-toast';
 
 
-const AppLayout = ({ children,session }: { children: ReactNode, session:UserMetadata|null }) => {
+const AppLayout = ({ children, session }: { children: ReactNode, session: UserMetadata | null }) => {
     const { scrollBtn, scrollTop } = useScrollTop();
 
     return (
@@ -19,6 +20,14 @@ const AppLayout = ({ children,session }: { children: ReactNode, session:UserMeta
                 classes={{ containerRoot: "z-alert" }}
                 anchorOrigin={{ horizontal: "left", vertical: "bottom" }}
             >
+                <Toaster
+                    toastOptions={{
+                        style: {
+                            zIndex: '9999999999999999999999999999999999999999999999999',
+                            background: 'white'
+                        }
+                    }}
+                />
                 <Header getSession={session} />
                 {children}
                 <Footer />

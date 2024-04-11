@@ -4,6 +4,7 @@ import axios from "axios";
 import { createSupabaseServerClient } from "./supabase";
 import { createSupabaseServerClientCSR } from "./supabase/superbaseCSR";
 import { createBrowserClient } from "@supabase/ssr";
+import { ToastType } from "react-hot-toast";
 
 
 export class Helpers {
@@ -180,7 +181,7 @@ export class Helpers {
     static validateSignUpForm = async (
         e: FormEvent<HTMLFormElement>,
         setStatus: any,
-        enqueueSnackbar: any,
+        toast: any,
         push: any
     ) => {
         e.preventDefault();
@@ -211,19 +212,13 @@ export class Helpers {
         };
 
         if (data.fullName.trim() === "") {
-            enqueueSnackbar("Full name cannot be empty", {
-                variant: "error",
-            });
+            toast.error("Full name cannot be empty");
             return;
         } else if (data.userName === "") {
-            enqueueSnackbar("Specify a username please", {
-                variant: "error",
-            });
+            toast.error("Specify a username please");
             return;
         } else if (data.password !== data.CPassword) {
-            enqueueSnackbar("Password does not match", {
-                variant: "error",
-            });
+            toast.error("Password does not match");
             return;
         }
 
@@ -244,18 +239,11 @@ export class Helpers {
                 if (!res.ok) {
                     setStatus("...Error creating user");
                     const error = (data && data.message) || res.status;
-                    enqueueSnackbar(
-                        error,
-                        {
-                            variant: "error",
-                        }
-                    );
+                    toast.error(error)
                     return Promise.reject(error)
 
                 } else if (res.ok) {
-                    enqueueSnackbar("User profile created successfully", {
-                        variant: "success",
-                    });
+                    toast.success("User profile created successfully");
                     setStatus("User created successfully");
                     setTimeout(() => {
                         const resetForm = e.target as HTMLFormElement;
@@ -274,7 +262,7 @@ export class Helpers {
     static validateLoginForm = async (
         e: FormEvent<HTMLFormElement>,
         setStatus: any,
-        enqueueSnackbar: any,
+        toast: any,
         push: any
     ) => {
         e.preventDefault();
@@ -292,14 +280,10 @@ export class Helpers {
         };
 
         if (data.email.trim() === "") {
-            enqueueSnackbar("Email cannot be empty", {
-                variant: "error",
-            });
+            toast.error("Email cannot be empty");
             return;
         } else if (data.password === '') {
-            enqueueSnackbar("Oga enter your password", {
-                variant: "error",
-            });
+            toast.error("Oga enter your password");
             return;
         }
 
@@ -320,18 +304,11 @@ export class Helpers {
                 if (!res.ok) {
                     setStatus("...Error signin in user");
                     const error = (data && data.message) || res.status;
-                    enqueueSnackbar(
-                        error,
-                        {
-                            variant: "error",
-                        }
-                    );
+                    toast.error(error)
                     return Promise.reject(error)
 
                 } else if (res.ok) {
-                    enqueueSnackbar("Login success", {
-                        variant: "success",
-                    });
+                    toast.success("Login success")
                     setStatus("Welcome.");
                     setTimeout(() => {
                         const resetForm = e.target as HTMLFormElement;
@@ -404,14 +381,14 @@ export class Helpers {
 
     static uploadProfile = async (
         setStatus: any,
-        enqueueSnackbar: any,
+        toast: any,
         data: string
     ) => {
         const data2 = {
-            profile:data
+            profile: data
         }
         setStatus("Uploading....");
-        
+
         await fetch(('/api/update/profile'), {
             method: 'POST',
             headers: {
@@ -427,29 +404,19 @@ export class Helpers {
                 if (!res.ok) {
                     setStatus("Upload failed");
                     const error = (data && data.message) || res.status;
-                    enqueueSnackbar(
-                        error,
-                        {
-                            variant: "error",
-                        }
+                    toast.error(
+                        error
                     );
                     return Promise.reject(error)
 
                 } else if (res.ok) {
-                    enqueueSnackbar("Your profile image has been uploaded successfully", {
-                        variant: "success",
-                    });
+                    toast.success("Your profile image has been uploaded successfully");
                     setStatus("Uploaded");
                     return res.json()
                 }
             })
             .catch(err => {
-                enqueueSnackbar(
-                    err,
-                    {
-                        variant: "error",
-                    }
-                );
+                toast.error(err)
                 console.log(err)
             })
         setStatus("Upload");

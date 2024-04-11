@@ -22,7 +22,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
             }
         })
         if (error?.message) {
-            return NextResponse.json({ success: false, error }, { status: 400 });
+            return NextResponse.json({ success: false, message:error.message }, { status: 400 });
         }
 
         const { error: error2 } = await supabase
@@ -30,7 +30,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
             .insert({ userName, fullName, wishlist: { items: [] }, recentlyViewed: { items: [] }, orders: { orders: [] }, address: null, coupons: null, userID: data.user?.id })
 
         if (error2) {
-            return NextResponse.json({ error: "Failed to create user. " + error?.message }, { status: 400 });
+            return NextResponse.json({ error: "Failed to create user. " + error?.message, message:error2.message }, { status: 400 });
         }
 
 

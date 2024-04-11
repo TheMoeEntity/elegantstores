@@ -9,6 +9,7 @@ import avatar from '../../../public/images/avatar.png'
 import { useSearchParams } from 'next/navigation'
 import { Helpers } from '@/src/Helpers'
 import { useSnackbar } from 'notistack'
+import toast from 'react-hot-toast';
 
 const Dashboard = ({ getSession }: { getSession: UserMetadata | null }) => {
     const { enqueueSnackbar } = useSnackbar()
@@ -65,7 +66,7 @@ const Dashboard = ({ getSession }: { getSession: UserMetadata | null }) => {
             }
         }
         setCurrProfile(decodeURIComponent(results))
-        await Helpers.uploadProfile(setStatus, enqueueSnackbar, results)
+        await Helpers.uploadProfile(setStatus, toast, results)
     }
     return (
         <div className='flex my-8 flex-row gap-3 gap-x-7 md:gap-x-3 lg:gap-x-7 flex-wrap mx-auto w-[90%] md:w-[97%] lg:w-[85%]'>
