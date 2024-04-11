@@ -1,10 +1,7 @@
 import { ChangeEvent, FormEvent } from "react";
-import { IProduct, ISBProducts, cartItem, fakeProductType, loremPicsum, productType, reviewType } from "./types";
+import { ISBProducts, cartItem, loremPicsum, productType, reviewType } from "./types";
 import axios from "axios";
-import { createSupabaseServerClient } from "./supabase";
-import { createSupabaseServerClientCSR } from "./supabase/superbaseCSR";
-import { createBrowserClient } from "@supabase/ssr";
-import { ToastType } from "react-hot-toast";
+import { createSupabaseServerClient, readUserSession } from "./supabase";
 
 
 export class Helpers {
@@ -97,6 +94,15 @@ export class Helpers {
         const supabase = await createSupabaseServerClient()
         const { data: products } = await supabase.from("products").select();
         return products
+    }
+    static fetchSupabaseUsers = async () => {
+        const supabase = await createSupabaseServerClient()
+        const user = await readUserSession()
+        const userID = user.data.user?.id
+        const { data: users } = await supabase.from("users").select();
+        const foundUser = users?.find(user => user.userID == userID)
+        
+        return foundUser
     }
     static CalculateTotal = (cart: cartItem[]) => {
         return cart.map((x) => x.item.price * x.quantity).reduce((a, b) => { return a + b }, 0);

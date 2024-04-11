@@ -17,7 +17,7 @@ export type userContex = {
 
 }
 export type UserProviderType = {
-    children:ReactNode
+    children: ReactNode
 }
 export interface FeaturesType {
     icon: StaticImageData;
@@ -30,11 +30,11 @@ export type careerType = {
 };
 export type loremPicsum = {
     id: number,
-    author:string,
+    author: string,
     width: number,
     height: number,
     url: string,
-    download_url:string
+    download_url: string
 }
 export type teamType = {
     title: string;
@@ -111,13 +111,13 @@ export interface ISession {
 export interface IStore {
     cart: cartItem[];
     cartCount: number;
-    emptyCart:()=>void,
-    addToCart: (item: ISBProducts, quantity:number) => void
-    removeFromCart:(id:string) => void
+    emptyCart: () => void,
+    addToCart: (item: ISBProducts, quantity: number) => void
+    removeFromCart: (id: string) => void
 };
 export type cartItem = {
-    item:ISBProducts
-    quantity:number
+    item: ISBProducts
+    quantity: number
 }
 export interface ISBProducts {
     id: string
@@ -141,7 +141,17 @@ export interface ISBProducts {
     }
 }
 export type reviewType = {
-    name:string
-    review:string
-    rating:number
+    name: string
+    review: string
+    rating: number
+}
+export type addressType = {
+    shipping: {
+        phone: string,
+        address: string
+    }
+    billing: {
+        phone: string,
+        address: string
+    }
 }

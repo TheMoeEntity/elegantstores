@@ -10,16 +10,50 @@ import { useSearchParams } from 'next/navigation'
 import { Helpers } from '@/src/Helpers'
 import { useSnackbar } from 'notistack'
 import toast from 'react-hot-toast';
+import { addressType } from '@/src/Helpers/types'
 
 const Dashboard = ({ getSession }: { getSession: UserMetadata | null }) => {
     const { enqueueSnackbar } = useSnackbar()
     // console.log(getSession)
+    const [isEditingBilling, setIsEditingBilling] = useState(false)
     const searchParams = useSearchParams()
     const [step, setStep] = useState(0)
     const [status, setStatus] = useState('Upload image')
     const [currProfile, setCurrProfile] = useState<any>(avatar)
     const [quantity, setQuantity] = useState<number>(1)
     const link = searchParams.get('link')
+    const [address, setAddress] = useState<addressType>({
+        billing: {
+            phone: '',
+            address: ''
+        },
+        shipping: {
+            phone: '',
+            address: ''
+        }
+    })
+
+    useEffect(() => {
+
+        let isSubscribed = true;
+
+        // declare the async data fetching function
+        const fetchAddress = async () => {
+            const data = await Helpers.fetchSupabaseUsers()
+            if (isSubscribed) {
+                setAddress(data.addresss);
+            }
+
+        }
+
+
+        fetchAddress()
+            // make sure to catch any error
+            .catch(console.error);;
+
+        return () => { isSubscribed = false; }
+    }, [getSession])
+
     useEffect(() => {
         switch (link) {
             case 'wishlist':
@@ -215,29 +249,75 @@ const Dashboard = ({ getSession }: { getSession: UserMetadata | null }) => {
                             className="px-7 ">
                             <h2 className="text-2xl font-semibold mb-7">Address</h2>
                             <div className="flex flex-col gap-5  md:flex-row">
-                                <div className="min-w-[46%] border-[1px] border-black justify-start items-start rounded-md px-4 py-4 flex flex-between">
-                                    <div className="flex flex-col gap-y-4">
+                                <div className="min-w-[46%] border-[1px] border-black justify-start items-start rounded-md px-4 py-4 flex flex-col gap-y-5 flex-between">
+                                    <div className='flex justify-between w-full'>
                                         <strong className="text-xl font-semibold">Billing address</strong>
-                                        <span>Sofia Havertz</span>
-                                        <span>(+234) 807 548 9362</span>
-                                        <span>no 27 alo street, abakaliki</span>
+                                        <button className="text-gray-400">
+                                            <i className="fas fa-edit mr-2"></i>
+                                            Edit
+                                        </button>
                                     </div>
-                                    <button className="text-gray-400">
-                                        <i className="fas fa-edit mr-2"></i>
-                                        Edit
-                                    </button>
+                                    <form className="flex flex-col gap-y-4 w-[85%]">
+                                        <input type="text" className='border-b-[1px] px-2 bg-transparent py-1' name="" defaultValue={getSession?.fullName} id="" />
+                                        <input type="tel"
+                                            value={address.billing.phone}
+                                            onChange={e => setAddress(state => {
+                                                return {
+                                                    shipping: {
+                                                        ...state?.shipping
+                                                    },
+                                                    billing: {
+                                                        phone: e.target.value,
+                                                        address: state?.billing.address
+                                                    }
+                                                }
+                                            })}
+                                            className='border-b-[1px] px-2 bg-transparent py-1' placeholder='phone number' name="" id="" />
+                                        <input
+                                            value={address.billing.address}
+                                            onChange={e => setAddress(state => {
+                                                return {
+                                                    shipping: {
+                                                        ...state?.shipping
+                                                    },
+                                                    billing: {
+                                                        address: e.target.value,
+                                                        phone: state?.billing.phone
+                                                    }
+                                                }
+                                            })}
+                                        type="text" className='border-b-[1px] px-2 bg-transparent py-1' placeholder='Billing adddress' name="" id="" />
+                                    </form>
+
                                 </div>
-                                <div className="min-w-[46%] border-[1px] border-black justify-start items-start rounded-md px-4 py-4 flex flex-between">
-                                    <div className="flex flex-col gap-y-4">
+                                <div className="min-w-[46%] border-[1px] border-black justify-start items-start rounded-md px-4 py-4 flex flex-col gap-y-5 flex-between">
+                                    <div className='flex justify-between w-full'>
                                         <strong className="text-xl font-semibold">Shipping address</strong>
-                                        <span>Sofia Havertz</span>
-                                        <span>(+234) 807 548 9362</span>
-                                        <span>no 27 alo street, abakaliki</span>
+                                        <button className="text-gray-400">
+                                            <i className="fas fa-edit mr-2"></i>
+                                            Edit
+                                        </button>
                                     </div>
-                                    <button className="text-gray-400">
-                                        <i className="fas fa-edit mr-2"></i>
-                                        Edit
-                                    </button>
+                                    <form className="flex flex-col gap-y-4 w-[85%]">
+
+                                        <input type="text" className='border-b-[1px] px-2 bg-transparent py-1' name="" defaultValue={getSession?.fullName} id="" />
+                                        <input type="tel"
+                                            value={address.billing.phone}
+                                            onChange={e => setAddress(state => {
+                                                return {
+                                                    shipping: {
+                                                        ...state?.shipping
+                                                    },
+                                                    billing: {
+                                                        phone: e.target.value,
+                                                        address: state?.billing.address
+                                                    }
+                                                }
+                                            })}
+                                        className='border-b-[1px] px-2 bg-transparent py-1' placeholder='phone number' name="" id="" />
+                                        <input type="text" className='border-b-[1px] px-2 bg-transparent py-1' placeholder='Billing adddress' name="" id="" />
+                                    </form>
+
                                 </div>
                             </div>
                         </motion.div>

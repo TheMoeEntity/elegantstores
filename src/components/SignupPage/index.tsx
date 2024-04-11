@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { Helpers } from '@/src/Helpers'
 import { useSnackbar } from 'notistack'
 import { useRouter } from 'next/navigation'
+import toast from 'react-hot-toast';
 
 
 const SignupPage = () => {
@@ -27,7 +28,7 @@ const SignupPage = () => {
                     <div className='leading-loose '>
                         Already have an account? <Link href={'/login'} className='text-[#377DFF]'>Login</Link>
                     </div>
-                    <form onSubmit={e => Helpers.validateSignUpForm(e, setStatus, enqueueSnackbar, push)} className="mt-5 flex md:w-[90%] flex-col gap-[20px] pb-12">
+                    <form onSubmit={e => Helpers.validateSignUpForm(e, setStatus, toast, push)} className="mt-5 flex md:w-[90%] flex-col gap-[20px] pb-12">
                         <div className="">
                             <label htmlFor="" className=" block font-bold mb-2">Your Name</label>
                             <input placeholder="Enter full name" type="text" className="py-[10px] bg-transparent px-[10px] w-full border-gray-300 border-b-[1px]" />
