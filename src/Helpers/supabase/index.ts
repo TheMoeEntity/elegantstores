@@ -13,12 +13,12 @@ export const createSupabaseServerClient = async () => {
                 get(name: string) {
                     return cookieStore.get(name)?.value
                 },
-                // set(name: string, value: string, options: CookieOptions) {
-                //     cookieStore.set({ name, value, ...options })
-                // },
-                // remove(name: string, options: CookieOptions) {
-                //     cookieStore.set({ name, value: '', ...options })
-                // },
+                set(name: string, value: string, options: CookieOptions) {
+                    cookieStore.set({ name, value, ...options })
+                },
+                remove(name: string, options: CookieOptions) {
+                    cookieStore.set({ name, value: '', ...options })
+                },
             },
         }
     )
@@ -37,11 +37,8 @@ export const readUserSessionCLient = async ()=> {
         process.env.NEXT_PUBLIC_SUPABASE_API_KEY!,
     )
     const user = supabase.auth.getUser()
-    let data;
-     user.then(user => {
-        data = user
-     })
-    return data
+
+    return user
 }
 
 

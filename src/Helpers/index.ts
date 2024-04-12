@@ -1,7 +1,8 @@
 import { ChangeEvent, FormEvent } from "react";
-import { ISBProducts, addressType, cartItem, loremPicsum, productType, reviewType } from "./types";
+import { ISBProducts, addressType, cartItem, loremPicsum, productType, reviewType, wishList } from "./types";
 import axios from "axios";
-import { createSupabaseServerClient, readUserSession } from "./supabase";
+import { createSupabaseServerClient, readUserSession, readUserSessionCLient } from "./supabase";
+import { createSupabaseServerClientCSR } from "./supabase/superbaseCSR";
 
 
 export class Helpers {
@@ -101,6 +102,15 @@ export class Helpers {
 
         return foundUser
     }
+    static fetchSupabaseUsersClient = async () => {
+        const supabase = await createSupabaseServerClientCSR()
+        const user = await readUserSessionCLient()
+        const userID = user.data.user?.id
+        const { data: users } = await supabase.from("users").select();
+        const foundUser = users?.find(user => user.userID == userID)
+
+        return foundUser
+    }
     static updateAddress = async (
         toast: any,
         data: addressType,
@@ -129,12 +139,11 @@ export class Helpers {
                     const error = (data && data.message) || res.status;
                     toast.error(
                         error
-                    );
+                    )
                     toast.error("Error. " + error);
 
                 } else if (res.ok) {
                     toast.success("Your address has been updated successfully");
-                    console.log(res.json())
                 }
             })
             .catch(err => {
@@ -147,6 +156,48 @@ export class Helpers {
     static CalculateTotal = (cart: cartItem[]) => {
         return cart.map((x) => x.item.price * x.quantity).reduce((a, b) => { return a + b }, 0);
     };
+
+    static updateWishList = async (e: FormEvent, wishList: wishList, setDidReview: (bool: boolean) => void, toast: any) => {
+        setDidReview(true)
+        // const oldItems = await this.fetchSupabaseUsersClient().then(x => x.wishlist.items) as wishList[]
+        e.preventDefault()
+        const data2 = {
+            oldItems: [],
+            wishList
+        }
+       
+        await fetch(('/api/update/wishlist'), {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(JSON.parse(JSON.stringify(data2)))
+        })
+            .then(async res => {
+
+                const isJson = res.headers.get('content-type')?.includes('application/json')
+                const data = isJson ? await res.json() : null
+                setDidReview(false)
+                if (!res.ok) {
+
+                    const error = (data && data.message) || res.status;
+                    toast.error(
+                        error
+                    )
+                    toast.error("Error. " + error);
+
+                } else if (res.ok) {
+                    toast.success("Product has been added to wishlist");
+                }
+            })
+            .catch(err => {
+                setDidReview(false)
+                console.log(err)
+            })
+        setDidReview(false)
+
+    }
     static updateReviews = async (slug: string, e: FormEvent, item: ISBProducts, id: string, review: reviewType, enqueueSnackbar: any, setDidReview: (review: boolean) => void) => {
         const itemToUpdate = item.reviews?.reviews
         const reviewData = {
@@ -309,7 +360,6 @@ export class Helpers {
         e: FormEvent<HTMLFormElement>,
         setStatus: any,
         toast: any,
-        push: any
     ) => {
         e.preventDefault();
         const data = {

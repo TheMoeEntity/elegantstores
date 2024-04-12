@@ -4,13 +4,16 @@ import React, { FormEvent, useContext, useEffect } from 'react'
 import noImage from '../../../public/images/noimage.png'
 import { useState } from 'react'
 import FeaturedCard from '../Cards/Featured'
-import { ISBProducts, productType, reviewType } from '@/src/Helpers/types'
+import { ISBProducts, productType, reviewType, wishList } from '@/src/Helpers/types'
 import avatar from '../../../public/images/avatar.png'
 import { useSnackbar } from 'notistack'
 import { useStore } from '@/src/Helpers/zustand'
 import { Helpers } from '@/src/Helpers'
 import { userContext } from '@/src/Helpers/ContextAPI/usercontext'
 import Link from 'next/link'
+import { update } from '@/src/actions/updateWishList'
+import toast from 'react-hot-toast'
+import axios from 'axios'
 
 const ProductsPage = ({ justIn, item, revalidate }: { justIn: productType[], item: ISBProducts, revalidate: () => void }) => {
   const { enqueueSnackbar } = useSnackbar()
@@ -56,6 +59,16 @@ const ProductsPage = ({ justIn, item, revalidate }: { justIn: productType[], ite
     }
     await Helpers.updateReviews(item.slug, e, item, item.id, review, enqueueSnackbar, setDidReview)
     revalidate()
+  }
+  const addToWishList = async (e: FormEvent) => {
+    e.preventDefault()
+    const wishList: wishList = {
+      image: item.images[0],
+      price: item.price,
+      title: item.title
+    }
+    await Helpers.updateWishList(e, wishList, setDidReview, toast)
+
   }
   return (
     <div className='w-full min-h-screen relative'>
@@ -173,7 +186,9 @@ const ProductsPage = ({ justIn, item, revalidate }: { justIn: productType[], ite
             <div className='w-[28%] md:w-[20%] h-auto bg-gray-100 flex items-center rounded-lg justify-evenly'>
               <button onClick={() => setQuantity(quantity === 1 ? 1 : quantity - 1)}>-</button><span className='font-extrabold'>{quantity}</span><button onClick={() => checkCount()}>+</button>
             </div>
-            <button className='border-[1px] border-black rounded-lg w-[70%] py-2 text-black'><i className='fa-solid fa-heart mr-3'></i>Wishlist</button>
+            <form className='w-[70%] text-black' onSubmit={async (e) => await addToWishList(e)}>
+              <button type='submit' className='border-[1px] w-full border-black rounded-lg py-2 text-black'><i className='fa-solid fa-heart mr-3'></i>Wishlist</button>
+            </form>
           </div>
           <button onClick={() => addAction()} className='w-full py-3 rounded-lg bg-black text-white'>Add to cart</button>
 

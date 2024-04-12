@@ -10,9 +10,9 @@ import { useSearchParams } from 'next/navigation'
 import { Helpers } from '@/src/Helpers'
 import { useSnackbar } from 'notistack'
 import toast from 'react-hot-toast';
-import { addressType } from '@/src/Helpers/types'
+import { addressType, wishList } from '@/src/Helpers/types'
 
-const Dashboard = ({ getSession, email, getAddress }: { getSession: UserMetadata | null, email: string | null, getAddress: addressType }) => {
+const Dashboard = ({ getSession, email, getAddress, wishlist }: { getSession: UserMetadata | null, email: string | null, getAddress: addressType, wishlist: wishList[] }) => {
     const { enqueueSnackbar } = useSnackbar()
     const [didSave, setDidSave] = useState(false)
     const [isEditingBilling, setIsEditingBilling] = useState(false)
@@ -440,116 +440,47 @@ const Dashboard = ({ getSession, email, getAddress }: { getSession: UserMetadata
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        <tr className="border-b border-neutral-200 border-b-gray-200 h-auto">
-                                                            <td className="px-0 min-w-[65%] md:min-w-[55%] md:max-w-[55%] py-0 font-medium align-top" colSpan={2}>
-                                                                <div className="w-full h-[190px] md:h-[160px] flex items-center gap-x-4 md:gap-x-6">
-                                                                    <div className="md:basis-[40%]">
-                                                                        <Image
-                                                                            src={stool}
-                                                                            alt="product main image"
-                                                                            quality={100}
-                                                                            sizes={'100vw'}
-                                                                            className="object-cover w-full h-auto"
-                                                                        />
-                                                                    </div>
-                                                                    <div className='flex flex-col gap-y-4 justify-center basis-[40%] max-w-[45%]'>
-                                                                        <h2 className='font-semibold md:text-xl text-left'>Tray Table</h2>
-                                                                        <div className='md:flex items-center hidden'>
-                                                                            <span className='text-xl mr-3'>&times;</span>
-                                                                            Remove
+                                                        {
+                                                            wishlist.map((x) => (
+                                                                <tr key={x.price} className="border-b border-neutral-200 border-b-gray-200 h-auto">
+                                                                    <td className="px-0 min-w-[65%] md:min-w-[55%] md:max-w-[55%] py-0 font-medium align-top" colSpan={2}>
+                                                                        <div className="w-full h-[190px] md:min-w-[auto] md:min-h-[160px] flex items-center gap-x-4 md:gap-x-6">
+                                                                            <div className="md:basis-[40%] w-full md:min-w-[auto] min-h-[160px] relative">
+                                                                                <Image
+                                                                                    src={x.image}
+                                                                                    alt="product main image"
+                                                                                    quality={100}
+                                                                                    sizes={'100vw'}
+                                                                                    fill
+                                                                                    className="object-contain w-full h-auto"
+                                                                                />
+                                                                            </div>
+                                                                            <div className='flex flex-col gap-y-4 justify-center basis-[40%] max-w-[45%]'>
+                                                                                <h2 className='font-semibold md:text-xl text-left'>{x.title}</h2>
+                                                                                <div className='md:flex items-center hidden'>
+                                                                                    <span className='text-xl mr-3'>&times;</span>
+                                                                                    Remove
+                                                                                </div>
+                                                                                <div className='flex items-center md:hidden rounded-lg gap-x-4 border-[1px] border-black justify-between py-1 px-3 shadow-md'>
+                                                                                    <button onClick={() => setQuantity(quantity === 1 ? 1 : quantity - 1)}>-</button><span className='font-extrabold'>{quantity}</span><button onClick={() => setQuantity(quantity + 1)}>+</button>
+                                                                                </div>
+                                                                            </div>
                                                                         </div>
-                                                                        <div className='flex items-center md:hidden rounded-lg gap-x-4 border-[1px] border-black justify-between py-1 px-3 shadow-md'>
-                                                                            <button onClick={() => setQuantity(quantity === 1 ? 1 : quantity - 1)}>-</button><span className='font-extrabold'>{quantity}</span><button onClick={() => setQuantity(quantity + 1)}>+</button>
+                                                                    </td>
+                                                                    <td className="px-6 py-5  flex-col text-xl h-[160px] max-w-[100%] items-center justify-center hidden md:table-cell">
+                                                                        <div className='flex items-center gap-x-4 border-[1px] justify-between shadow-md w-[120px]'>
+                                                                            <button className='w-full bg-black text-white rounded-lg text-sm px-2 py-2'>Add to cart</button>
                                                                         </div>
-                                                                    </div>
-                                                                </div>
-                                                            </td>
-                                                            <td className="px-6 py-5  flex-col text-xl h-[160px] max-w-[100%] items-center justify-center hidden md:table-cell">
-                                                                <div className='flex items-center gap-x-4 border-[1px] justify-between shadow-md w-[120px]'>
-                                                                    <button className='w-full bg-black text-white rounded-lg text-sm px-2 py-2'>Add to cart</button>
-                                                                </div>
-                                                            </td>
-                                                            <td className="whitespace-nowrap px-6 py-4 text-xl hidden md:table-cell">$1332.00</td>
-                                                            <td className="whitespace-nowrap px-6 font-extrabold text-xl py-4 hidden md:table-cell">$0</td>
-                                                            <td className="whitespace-nowrap pl-8 py-4 text-xl table-cell md:hidden text-center">
-                                                                <span className='text-right'>$19.00</span> <br />
-                                                                <span className='mt-5 block text-3xl'>&times;</span>
-                                                            </td>
-                                                        </tr>
-
-                                                        <tr className="border-b bg-white border-neutral-200 border-b-gray-200 h-auto">
-                                                            <td className="px-0 min-w-[65%] md:min-w-[55%] md:max-w-[55%] py-0 font-medium align-top" colSpan={2}>
-                                                                <div className="w-full h-[190px] md:h-[160px] flex items-center gap-x-4 md:gap-x-6">
-                                                                    <div className="md:basis-[40%]">
-                                                                        <Image
-                                                                            src={stool}
-                                                                            alt="product main image"
-                                                                            quality={100}
-                                                                            sizes={'100vw'}
-                                                                            className="object-cover w-full h-auto"
-                                                                        />
-                                                                    </div>
-                                                                    <div className='flex flex-col gap-y-4 justify-center basis-[40%] max-w-[45%]'>
-                                                                        <h2 className='font-semibold md:text-xl text-left'>Tray Table</h2>
-                                                                        <div className='md:flex items-center hidden'>
-                                                                            <span className='text-xl mr-3'>&times;</span>
-                                                                            Remove
-                                                                        </div>
-                                                                        <div className='flex items-center md:hidden rounded-lg gap-x-4 border-[1px] border-black justify-between py-1 px-3 shadow-md'>
-                                                                            <button onClick={() => setQuantity(quantity === 1 ? 1 : quantity - 1)}>-</button><span className='font-extrabold'>{quantity}</span><button onClick={() => setQuantity(quantity + 1)}>+</button>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </td>
-                                                            <td className="px-6 py-5  flex-col text-xl h-[160px] max-w-[100%] items-center justify-center hidden md:table-cell">
-                                                                <div className='flex items-center gap-x-4 border-[1px] justify-between shadow-md w-[120px]'>
-                                                                    <button className='w-full bg-black text-white rounded-lg text-sm px-2 py-2'>Add to cart</button>
-                                                                </div>
-                                                            </td>
-                                                            <td className="whitespace-nowrap px-6 py-4 text-xl hidden md:table-cell">$1332.00</td>
-                                                            <td className="whitespace-nowrap px-6 font-extrabold text-xl py-4 hidden md:table-cell">$0</td>
-                                                            <td className="whitespace-nowrap pl-8 py-4 text-xl table-cell md:hidden text-center">
-                                                                <span className='text-right'>$19.00</span> <br />
-                                                                <span className='mt-5 block text-3xl'>&times;</span>
-                                                            </td>
-                                                        </tr>
-
-                                                        <tr className="border-b border-neutral-200 border-b-gray-200 h-auto">
-                                                            <td className="px-0 min-w-[65%] md:min-w-[55%] md:max-w-[55%] py-0 font-medium align-top" colSpan={2}>
-                                                                <div className="w-full h-[190px] md:h-[160px] flex items-center gap-x-4 md:gap-x-6">
-                                                                    <div className="md:basis-[40%]">
-                                                                        <Image
-                                                                            src={stool}
-                                                                            alt="product main image"
-                                                                            quality={100}
-                                                                            sizes={'100vw'}
-                                                                            className="object-cover w-full h-auto"
-                                                                        />
-                                                                    </div>
-                                                                    <div className='flex flex-col gap-y-4 justify-center basis-[40%] max-w-[45%]'>
-                                                                        <h2 className='font-semibold md:text-xl text-left'>Tray Table</h2>
-                                                                        <div className='md:flex items-center hidden'>
-                                                                            <span className='text-xl mr-3'>&times;</span>
-                                                                            Remove
-                                                                        </div>
-                                                                        <div className='flex items-center md:hidden rounded-lg gap-x-4 border-[1px] border-black justify-between py-1 px-3 shadow-md'>
-                                                                            <button onClick={() => setQuantity(quantity === 1 ? 1 : quantity - 1)}>-</button><span className='font-extrabold'>{quantity}</span><button onClick={() => setQuantity(quantity + 1)}>+</button>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </td>
-                                                            <td className="px-6 py-5  flex-col text-xl h-[160px] max-w-[100%] items-center justify-center hidden md:table-cell">
-                                                                <div className='flex items-center gap-x-4 border-[1px] justify-between shadow-md w-[120px]'>
-                                                                    <button className='w-full bg-black text-white rounded-lg text-sm px-2 py-2'>Add to cart</button>
-                                                                </div>
-                                                            </td>
-                                                            <td className="whitespace-nowrap px-6 py-4 text-xl hidden md:table-cell">$1332.00</td>
-                                                            <td className="whitespace-nowrap px-6 font-extrabold text-xl py-4 hidden md:table-cell">$0</td>
-                                                            <td className="whitespace-nowrap pl-8 py-4 text-xl table-cell md:hidden text-center">
-                                                                <span className='text-right'>$19.00</span> <br />
-                                                                <span className='mt-5 block text-3xl'>&times;</span>
-                                                            </td>
-                                                        </tr>
+                                                                    </td>
+                                                                    <td className="whitespace-nowrap px-6 py-4 text-xl hidden md:table-cell">${x.price.toLocaleString()}</td>
+                                                                    <td className="whitespace-nowrap px-6 font-extrabold text-xl py-4 hidden md:table-cell">$0</td>
+                                                                    <td className="whitespace-nowrap pl-8 py-4 text-xl table-cell md:hidden text-center">
+                                                                        <span className='text-right'>${x.price.toLocaleString()}</span> <br />
+                                                                        <span className='mt-5 block text-3xl'>&times;</span>
+                                                                    </td>
+                                                                </tr>
+                                                            ))
+                                                        }
 
                                                     </tbody>
                                                 </table>

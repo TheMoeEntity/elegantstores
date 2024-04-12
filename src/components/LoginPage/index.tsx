@@ -62,7 +62,7 @@ const LoginPage = () => {
                     <div className='leading-loose '>
                         {`Don't`} have an account yet <Link href={'/signup'} className='text-[#377DFF]'>Sign up</Link>
                     </div>
-                    <form onSubmit={e => Helpers.validateLoginForm(e, setStatus, toast, push)} className="mt-5 flex md:w-[90%] flex-col gap-[20px] pb-12">
+                    <form onSubmit={e => Helpers.validateLoginForm(e, setStatus, toast,)} className="mt-5 flex md:w-[90%] flex-col gap-[20px] pb-12">
                         <div className="">
                             <label htmlFor="" className=" block font-bold mb-2">Email</label>
                             <input placeholder="Your email address" type="text" className="py-[10px] bg-transparent px-[10px] w-full border-gray-300 border-b-[1px]" />

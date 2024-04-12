@@ -155,3 +155,8 @@ export type addressType = {
         address: string
     }
 }
+export type wishList = {
+    image:string,
+    price:number
+    title:string
+}

@@ -11,12 +11,12 @@ export async function POST(req: NextRequest, res: NextResponse) {
             password
         })
         if (error?.message) {
-            return NextResponse.json({ success: false, message:error.message }, { status: 400 });
+            return NextResponse.json({ success: false, message: error.message }, { status: 400 });
         }
-        
+
         return NextResponse.json({ success: true, data }, { status: 201 });
     } catch (error) {
-        
+
         return NextResponse.json({ error: "Failed to Login user: " + error }, { status: 500 });
     }
 }

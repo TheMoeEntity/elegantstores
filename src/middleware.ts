@@ -81,6 +81,7 @@ export async function middleware(req: NextRequest) {
         }
     }
     //refresh
+    await supabase.auth.getUser()
     return response
 
 }
