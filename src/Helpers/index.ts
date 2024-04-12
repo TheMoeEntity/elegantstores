@@ -1,5 +1,5 @@
 import { ChangeEvent, FormEvent } from "react";
-import { ISBProducts, cartItem, loremPicsum, productType, reviewType } from "./types";
+import { ISBProducts, addressType, cartItem, loremPicsum, productType, reviewType } from "./types";
 import axios from "axios";
 import { createSupabaseServerClient, readUserSession } from "./supabase";
 
@@ -12,9 +12,6 @@ export class Helpers {
             reader.onload = () => resolve(reader.result);
             reader.onerror = reject;
         });
-
-
-
     static couponCodes = [
         "5yZO4",
         "usDLR",
@@ -101,9 +98,52 @@ export class Helpers {
         const userID = user.data.user?.id
         const { data: users } = await supabase.from("users").select();
         const foundUser = users?.find(user => user.userID == userID)
-        
+
         return foundUser
     }
+    static updateAddress = async (
+        toast: any,
+        data: addressType,
+        setModal: (stat: boolean) => void
+    ) => {
+        const data2 = {
+            address: data
+        }
+
+        setModal(true)
+        await fetch(('/api/update/address'), {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data2)
+        })
+            .then(async res => {
+
+                const isJson = res.headers.get('content-type')?.includes('application/json')
+                const data = isJson ? await res.json() : null
+                setModal(false)
+                if (!res.ok) {
+
+                    const error = (data && data.message) || res.status;
+                    toast.error(
+                        error
+                    );
+                    toast.error("Error. " + error);
+
+                } else if (res.ok) {
+                    toast.success("Your address has been updated successfully");
+                    console.log(res.json())
+                }
+            })
+            .catch(err => {
+                setModal(false)
+                console.log(err)
+            })
+
+
+    };
     static CalculateTotal = (cart: cartItem[]) => {
         return cart.map((x) => x.item.price * x.quantity).reduce((a, b) => { return a + b }, 0);
     };

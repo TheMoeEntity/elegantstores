@@ -6,9 +6,6 @@ export async function POST(req: NextRequest, _res: NextResponse) {
 
     const { address } = await req.json()
 
-    const itemToUpdate = {
-        address
-    }
 
     const supabase = await createSupabaseServerClient()
     try {
@@ -16,7 +13,7 @@ export async function POST(req: NextRequest, _res: NextResponse) {
 
         const { error } = await supabase.from("users").
             update({
-                address: itemToUpdate
+                address
             })
             .eq("userID", user.data.user?.id)
         const errMessage = error?.message

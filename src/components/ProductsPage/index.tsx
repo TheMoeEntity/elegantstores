@@ -12,7 +12,7 @@ import { Helpers } from '@/src/Helpers'
 import { userContext } from '@/src/Helpers/ContextAPI/usercontext'
 import Link from 'next/link'
 
-const ProductsPage = ({ justIn, item }: { justIn: productType[], item: ISBProducts }) => {
+const ProductsPage = ({ justIn, item, revalidate }: { justIn: productType[], item: ISBProducts, revalidate: () => void }) => {
   const { enqueueSnackbar } = useSnackbar()
   const { user } = useContext(userContext)
   const [additional, setAdditional] = useState<boolean>(true)
@@ -40,7 +40,7 @@ const ProductsPage = ({ justIn, item }: { justIn: productType[], item: ISBProduc
       variant: 'success'
     })
   }
-  const submitReview = (e: FormEvent) => {
+  const submitReview = async (e: FormEvent) => {
     setDidReview(true)
     e.preventDefault()
     const review: reviewType = {
@@ -54,7 +54,8 @@ const ProductsPage = ({ justIn, item }: { justIn: productType[], item: ISBProduc
         e.target[2 as unknown as keyof typeof e.target] as unknown as HTMLInputElement
       ).value,
     }
-    Helpers.updateReviews(item.slug, e, item, item.id, review, enqueueSnackbar, setDidReview)
+    await Helpers.updateReviews(item.slug, e, item, item.id, review, enqueueSnackbar, setDidReview)
+    revalidate()
   }
   return (
     <div className='w-full min-h-screen relative'>
@@ -226,17 +227,17 @@ const ProductsPage = ({ justIn, item }: { justIn: productType[], item: ISBProduc
 
             <div className='flex flex-col md:flex-row gap-4 mb-5 justify-between'>
               <div className="form-group w-full md:basis-[48%]">
-                <input readOnly={!user.isSignedIn ? true : false} className="w-full outline-none border-[1px] px-4 py-3 rounded-md" type="text" placeholder="Name:" />
+                <input readOnly={!user.isSignedIn ? true : false} required className="w-full outline-none border-[1px] px-4 py-3 rounded-md" type="text" placeholder="Name:" />
               </div>
 
               <div className="form-group md:basis-[48%]">
-                <input readOnly={!user.isSignedIn ? true : false} className="w-full outline-none border-[1px] px-4 py-3 rounded-md" type="number" maxLength={5} placeholder="Rating:" />
+                <input readOnly={!user.isSignedIn ? true : false} className="w-full outline-none border-[1px] px-4 py-3 rounded-md" type="number" required maxLength={5} placeholder="Rating:" />
               </div>
             </div>
 
 
 
-            <textarea disabled={(!user.isSignedIn)} className="mb-4 w-full px-4 py-3 border-[1px]" name="comment" id="comment" cols={30} rows={5} placeholder="Comment"></textarea>
+            <textarea disabled={(!user.isSignedIn)} className="mb-4 w-full px-4 py-3 border-[1px]" name="comment" id="comment" cols={30} required rows={5} placeholder="Comment"></textarea>
 
             <button disabled={(!user.isSignedIn) ? true : false} className="rounded-md disabled:bg-slate-300 bg-black text-white py-3 px-4" type="submit">Submit review </button>
           </form>

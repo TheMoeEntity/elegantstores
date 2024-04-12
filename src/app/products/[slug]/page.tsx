@@ -1,12 +1,16 @@
 import { Helpers } from "@/src/Helpers";
 import { formatProductWithDimensions } from "@/src/Helpers/Hooks/getImageDimensions";
 import { IProduct, ISBProducts, productType } from "@/src/Helpers/types";
+import { revalidatePath } from "next/cache";
 import dynamic from "next/dynamic";
 import { notFound } from "next/navigation";
 const ShopPage = dynamic(() => import("../../../components/ProductsPage"));
 
 const Products = async ({ params }: { params: { slug: string } }) => {
-
+    const revalidate = async () => {
+        'use server'
+     revalidatePath('/products/' + params.slug)
+    }
     const justIn = await Helpers.getProducts('https://fakestoreapi.com/products') ?? []
     let single: any = (await Helpers.getSingleProduct(params.slug as string))
     if (!single) {
@@ -29,7 +33,7 @@ const Products = async ({ params }: { params: { slug: string } }) => {
 
     return (
         <main className="max-w-7xl mx-auto">
-            <ShopPage item={single} justIn={justIn} />
+            <ShopPage revalidate={revalidate} item={single} justIn={justIn} />
         </main>
     )
 }

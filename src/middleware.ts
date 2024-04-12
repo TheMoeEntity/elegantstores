@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createSupabaseServerClient } from "./Helpers/supabase";
 import { createServerClient, type CookieOptions } from '@supabase/ssr'
 
 export async function middleware(req: NextRequest) {
@@ -57,10 +56,10 @@ export async function middleware(req: NextRequest) {
             },
         }
     )
-    supabase.auth.getUser()
+
     const {
-        data: { session },
-    } = await supabase.auth.getSession();
+        data: { user: session },
+    } = await supabase.auth.getUser()
 
     if (session) {
         if (req.nextUrl.pathname.startsWith(apisignup)) {
@@ -77,12 +76,11 @@ export async function middleware(req: NextRequest) {
         if (req.nextUrl.pathname.startsWith(account)) {
             const redirectUrl = req.nextUrl.clone();
             redirectUrl.pathname = '/login';
-            redirectUrl.searchParams.set('notAuth',"true")
+            redirectUrl.searchParams.set('notAuth', "true")
             return NextResponse.redirect(redirectUrl);
-        } 
+        }
     }
     //refresh
-    await supabase.auth.getUser()
     return response
 
 }
