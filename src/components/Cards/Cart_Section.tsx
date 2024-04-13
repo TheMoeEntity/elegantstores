@@ -3,7 +3,7 @@ import OrderComplete from '@/src/components/Cards/orderComplete'
 import stool from '../../../public/images/showcase.png'
 import Image from "next/image"
 import { motion } from 'framer-motion'
-import { FormEvent, useCallback, useEffect, useMemo, useState } from "react"
+import { FormEvent, useEffect, useMemo, useState } from "react"
 import TextTransition, { presets } from 'react-text-transition';
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
