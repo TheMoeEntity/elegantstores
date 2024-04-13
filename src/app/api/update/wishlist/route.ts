@@ -22,7 +22,7 @@ export async function POST(req: NextRequest, _res: NextResponse) {
         if (error) {
             return NextResponse.json({ error: "Error updating address", message: `Failed to update address. ${errMessage}` }, { status: error.code as unknown as number });
         }
-
+        
         return NextResponse.json({ success: true, data }, { status: 201 });
 
     } catch (error) {

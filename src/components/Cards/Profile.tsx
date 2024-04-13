@@ -9,16 +9,14 @@ import { createBrowserClient } from "@supabase/ssr";
 import { useSnackbar } from "notistack";
 
 
-const Profile = ({ profileOpen = false, forceClose }: { profileOpen: boolean, forceClose: () => void }) => {
+const Profile = ({ profileOpen = false, forceClose, url }: { url: string, profileOpen: boolean, forceClose: () => void }) => {
     const { user } = useContext(userContext)
     const [showModal, setModal] = useState<boolean>(false)
     const { enqueueSnackbar } = useSnackbar()
     const [currProfile, setCurrProfile] = useState<any>(boy)
     useEffect(() => {
-        if (!user.userData.profile) {
-            setCurrProfile(boy)
-        } else {
-            setCurrProfile(decodeURIComponent(user.userData.profile))
+        if (url && url !== '') {
+            setCurrProfile(url)
         }
     }, [user])
     const signOutAction = async () => {

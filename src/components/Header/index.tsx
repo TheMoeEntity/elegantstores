@@ -10,9 +10,9 @@ import { userContext } from '@/src/Helpers/ContextAPI/usercontext'
 import { UserMetadata } from '@supabase/supabase-js'
 import { useStore } from '@/src/Helpers/zustand'
 
-const Header = ({ getSession }: { getSession: UserMetadata | null }) => {
+const Header = ({ getSession, url }: { url: string, getSession: UserMetadata | null }) => {
     const { setUser } = useContext(userContext)
-    const {cartCount} = useStore()
+    const { cartCount } = useStore()
     useEffect(() => {
         if (getSession) {
             setUser({
@@ -39,6 +39,7 @@ const Header = ({ getSession }: { getSession: UserMetadata | null }) => {
                 cartOpen={cartOpen}
             />
             <Profile
+                url={url}
                 forceClose={() => setProfileOpen(false)}
                 profileOpen={profileOpen}
             />

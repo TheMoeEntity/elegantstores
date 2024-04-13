@@ -165,7 +165,7 @@ export class Helpers {
             oldItems: [],
             wishList
         }
-       
+
         await fetch(('/api/update/wishlist'), {
             method: 'POST',
             headers: {
@@ -463,6 +463,16 @@ export class Helpers {
 
         setUserFile(files[0]);
     };
+    static handleImageChange = (userFile: File | null, setCurrProfile: (file: string | ArrayBuffer | null) => void) => {
+
+        if (userFile) {
+            const reader = new FileReader();
+            reader.onload = () => {
+                setCurrProfile(reader.result);
+            };
+            reader.readAsDataURL(userFile);
+        }
+    };
     static formatBytes(bytes: number, decimals = 2) {
         if (!+bytes) return "0 Bytes";
 
@@ -476,15 +486,13 @@ export class Helpers {
     }
 
     static uploadProfile = async (
-        setStatus: any,
         toast: any,
         data: string
     ) => {
         const data2 = {
-            profile: data
+            avatar_URI: data
         }
-        setStatus("Uploading....");
-
+        console.log("awaitinf..")
         await fetch(('/api/update/profile'), {
             method: 'POST',
             headers: {
@@ -498,7 +506,6 @@ export class Helpers {
                 const data = isJson ? await res.json() : null
 
                 if (!res.ok) {
-                    setStatus("Upload failed");
                     const error = (data && data.message) || res.status;
                     toast.error(
                         error
@@ -507,14 +514,12 @@ export class Helpers {
 
                 } else if (res.ok) {
                     toast.success("Your profile image has been uploaded successfully");
-                    setStatus("Uploaded");
-                    return res.json()
+                    return data
                 }
             })
             .catch(err => {
                 toast.error(err)
                 console.log(err)
             })
-        setStatus("Upload");
     };
 }

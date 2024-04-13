@@ -4,15 +4,17 @@ import Image from "next/image"
 import { motion } from 'framer-motion'
 import Link from "next/link"
 import { useEffect, useRef, useState } from "react"
-import { UserMetadata } from '@supabase/supabase-js'
+import { UserMetadata, createClient } from '@supabase/supabase-js'
 import avatar from '../../../public/images/avatar.png'
 import { useSearchParams } from 'next/navigation'
 import { Helpers } from '@/src/Helpers'
 import { useSnackbar } from 'notistack'
 import toast from 'react-hot-toast';
 import { addressType, wishList } from '@/src/Helpers/types'
+import { createSupabaseServerClientCSR } from '@/src/Helpers/supabase/superbaseCSR'
 
-const Dashboard = ({ getSession, email, getAddress, wishlist }: { getSession: UserMetadata | null, email: string | null, getAddress: addressType, wishlist: wishList[] }) => {
+const Dashboard = ({ getSession, email, getAddress, wishlist, uid, url }: { url: string, uid: string | null, getSession: UserMetadata | null, email: string | null, getAddress: addressType, wishlist: wishList[] }) => {
+
     const { enqueueSnackbar } = useSnackbar()
     const [didSave, setDidSave] = useState(false)
     const [isEditingBilling, setIsEditingBilling] = useState(false)
@@ -20,9 +22,10 @@ const Dashboard = ({ getSession, email, getAddress, wishlist }: { getSession: Us
     const searchParams = useSearchParams()
     const [step, setStep] = useState(0)
     const [status, setStatus] = useState('Upload image')
-    const [currProfile, setCurrProfile] = useState<any>(avatar)
+    const [currProfile, setCurrProfile] = useState<any>(url)
     const [quantity, setQuantity] = useState<number>(1)
     const link = searchParams.get('link')
+    const [userFile, setUserFile] = useState<File | null>(null);
     const [address, setAddress] = useState<addressType>({
         billing: {
             phone: '',
@@ -34,6 +37,9 @@ const Dashboard = ({ getSession, email, getAddress, wishlist }: { getSession: Us
         }
     })
 
+    useEffect(() => {
+        Helpers.handleImageChange(userFile, setCurrProfile)
+    }, [userFile])
     // useEffect(() => {
 
     //     let isSubscribed = true;
@@ -79,7 +85,7 @@ const Dashboard = ({ getSession, email, getAddress, wishlist }: { getSession: Us
 
     const [currFile, setCurrFile] = useState<string>("No file selected*");
     const [size, setSize] = useState("");
-    const [userFile, setUserFile] = useState<File | null>(null);
+
     const inputFile = useRef<HTMLInputElement | null>(null);
     const openFiles = () => {
         if (inputFile.current) inputFile.current.click();
@@ -92,19 +98,34 @@ const Dashboard = ({ getSession, email, getAddress, wishlist }: { getSession: Us
         }
     }, [size]);
     const uploadImage = async () => {
-        let results: any;
-        if (userFile) {
-            try {
-                results = await Helpers.toBase64(userFile);
-            } catch (error) {
-                enqueueSnackbar("There was an error parsing file: " + error, {
-                    variant: "error",
-                });
-                return;
+        setStatus('Uploading...')
+        const supabase = await createSupabaseServerClientCSR()
+        try {
+            setDidSave(true)
+            
+            const file = userFile
+            const fileExt = userFile?.name.split('.').pop()
+            const filePath = `${uid}-${Math.random()}.${fileExt}`
+            if (file) {
+                const { error: uploadError, data } = await supabase.storage.from('avatars').upload(filePath, file)
+                if (data) {
+                    const imageUrl = supabase.storage.from('avatars').getPublicUrl(filePath);
+                    console.log(imageUrl.data.publicUrl)
+                    await Helpers.uploadProfile(toast, imageUrl.data.publicUrl)
+                }
+                if (uploadError) {
+                    throw uploadError
+                }
+                toast.success("Image uploaded successully")
             }
+
+            // onUpload(filePath)
+        } catch (error) {
+            toast.error('Error uploading avatar! ' + error)
+        } finally {
+            setStatus('Upload image')
+            setDidSave(false)
         }
-        setCurrProfile(decodeURIComponent(results))
-        await Helpers.uploadProfile(setStatus, toast, results)
     }
     const saveAddress = async () => {
         if (
@@ -118,6 +139,9 @@ const Dashboard = ({ getSession, email, getAddress, wishlist }: { getSession: Us
         }
         await Helpers.updateAddress(toast, address, setDidSave)
     }
+    useEffect(() => {
+        if (url) setCurrProfile(url)
+    }, [url])
     return (
         <div className='flex my-8 flex-row gap-3 gap-x-7 md:gap-x-3 lg:gap-x-7 flex-wrap mx-auto w-[90%] md:w-[97%] lg:w-[85%]'>
             {
@@ -153,7 +177,7 @@ const Dashboard = ({ getSession, email, getAddress, wishlist }: { getSession: Us
                             setSize,
                             setUserFile,
                             setCurrFile,
-                            size
+                            size,
                         )
                     } type="file" className="hidden" ref={inputFile} id="" />
                     <button onClick={() => openFiles()} className="absolute flex justify-center items-center z-[1] bg-[#FAFAFA] rounded-full w-10 h-10 -right-1 bottom-0">
@@ -227,7 +251,7 @@ const Dashboard = ({ getSession, email, getAddress, wishlist }: { getSession: Us
                             <form className="mt-5 flex md:w-[90%] flex-col gap-[20px] pr-5 pb-12">
                                 <div className="">
                                     <label htmlFor="" className=" block font-bold mb-2">Your Name</label>
-                                    <input placeholder="Enter full name" defaultValue={getSession?.fullName} type="text" className="py-[10px] bg-transparent px-[10px] w-full border-gray-300 border-b-[1px]" />
+                                    <input placeholder="Enter full name" disabled defaultValue={getSession?.fullName} type="text" className="py-[10px] bg-transparent px-[10px] w-full border-gray-300 border-b-[1px]" />
                                 </div>
                                 <div className="">
                                     <label htmlFor="" className=" block font-bold mb-2">Username</label>
@@ -235,7 +259,7 @@ const Dashboard = ({ getSession, email, getAddress, wishlist }: { getSession: Us
                                 </div>
                                 <div className="">
                                     <label htmlFor="" className=" block font-bold mb-2">Email</label>
-                                    <input placeholder="Your email address" defaultValue={email ?? ''} type="email" className="py-[10px] bg-transparent px-[10px] w-full border-gray-300 border-b-[1px]" />
+                                    <input disabled placeholder="Your email address" defaultValue={email ?? ''} type="email" className="py-[10px] bg-transparent px-[10px] w-full border-gray-300 border-b-[1px]" />
                                 </div>
                                 <div className="">
                                     <label htmlFor="" className=" block font-bold mb-2">Password</label>
@@ -423,7 +447,7 @@ const Dashboard = ({ getSession, email, getAddress, wishlist }: { getSession: Us
                             animate={{ x: 0, opacity: 1 }}
                             transition={{ duration: 0.75, ease: 'anticipate' }}
                             className='flex flex-col gap-x-5 lg:flex-row md:items-center lg:items-start gap-y-7'>
-                            <div className='flex-1 flex-grow-[1.75]'>
+                            <div className='flex-1 flex-grow-[1.85] w-[100%]'>
                                 <div className="flex flex-col">
                                     <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
                                         <div className="inline-block min-w-full py-2 sm:px-6 lg:px-8">
@@ -445,7 +469,7 @@ const Dashboard = ({ getSession, email, getAddress, wishlist }: { getSession: Us
                                                                 <tr key={x.price} className="border-b border-neutral-200 border-b-gray-200 h-auto">
                                                                     <td className="px-0 min-w-[65%] md:min-w-[55%] md:max-w-[55%] py-0 font-medium align-top" colSpan={2}>
                                                                         <div className="w-full h-[190px] md:min-w-[auto] md:min-h-[160px] flex items-center gap-x-4 md:gap-x-6">
-                                                                            <div className="md:basis-[40%] w-full md:min-w-[auto] min-h-[160px] relative">
+                                                                            <div className="md:basis-[40%] w-full md:min-w-[80px] min-h-[160px] relative">
                                                                                 <Image
                                                                                     src={x.image}
                                                                                     alt="product main image"
@@ -456,7 +480,7 @@ const Dashboard = ({ getSession, email, getAddress, wishlist }: { getSession: Us
                                                                                 />
                                                                             </div>
                                                                             <div className='flex flex-col gap-y-4 justify-center basis-[40%] max-w-[45%]'>
-                                                                                <h2 className='font-semibold md:text-xl text-left'>{x.title}</h2>
+                                                                                <h2 className='font-semibold md:text-xl text-left'>{x.title.slice(0, 15)}...</h2>
                                                                                 <div className='md:flex items-center hidden'>
                                                                                     <span className='text-xl mr-3'>&times;</span>
                                                                                     Remove

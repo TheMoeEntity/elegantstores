@@ -11,7 +11,7 @@ import { UserMetadata } from '@supabase/supabase-js';
 import { Toaster } from 'react-hot-toast';
 
 
-const AppLayout = ({ children, session }: { children: ReactNode, session: UserMetadata | null }) => {
+const AppLayout = ({ children, session, url }: {url:string, children: ReactNode, session: UserMetadata | null }) => {
     const { scrollBtn, scrollTop } = useScrollTop();
 
     return (
@@ -28,7 +28,7 @@ const AppLayout = ({ children, session }: { children: ReactNode, session: UserMe
                         }
                     }}
                 />
-                <Header getSession={session} />
+                <Header url={url} getSession={session} />
                 {children}
                 <Footer />
                 <Script
