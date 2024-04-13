@@ -1,6 +1,6 @@
 import { Helpers } from "@/src/Helpers";
 import { formatProductWithDimensions } from "@/src/Helpers/Hooks/getImageDimensions";
-import { IProduct, ISBProducts, productType } from "@/src/Helpers/types";
+import { IProduct, ISBProducts, productType, wishList } from "@/src/Helpers/types";
 import { revalidatePath } from "next/cache";
 import dynamic from "next/dynamic";
 import { notFound } from "next/navigation";
@@ -29,11 +29,11 @@ const Products = async ({ params }: { params: { slug: string } }) => {
         const formatted = (await formatProductWithDimensions(single as ISBProducts))
         single = formatted
     }
-
+    const oldwishlist = await Helpers.fetchSupabaseUsers().then(x => x.wishlist.items).catch(() => []) as wishList[]
 
     return (
         <main className="max-w-7xl mx-auto">
-            <ShopPage revalidate={revalidate} item={single} justIn={justIn} />
+            <ShopPage oldwishlist={oldwishlist} revalidate={revalidate} item={single} justIn={justIn} />
         </main>
     )
 }

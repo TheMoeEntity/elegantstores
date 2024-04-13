@@ -15,7 +15,7 @@ import { update } from '@/src/actions/updateWishList'
 import toast from 'react-hot-toast'
 import axios from 'axios'
 
-const ProductsPage = ({ justIn, item, revalidate }: { justIn: productType[], item: ISBProducts, revalidate: () => void }) => {
+const ProductsPage = ({ justIn, item, revalidate, oldwishlist }: { oldwishlist: wishList[], justIn: productType[], item: ISBProducts, revalidate: () => void }) => {
   const { enqueueSnackbar } = useSnackbar()
   const { user } = useContext(userContext)
   const [additional, setAdditional] = useState<boolean>(true)
@@ -61,11 +61,18 @@ const ProductsPage = ({ justIn, item, revalidate }: { justIn: productType[], ite
     revalidate()
   }
   const addToWishList = async (e: FormEvent) => {
+
     e.preventDefault()
     const wishList: wishList = {
       image: item.images[0],
       price: item.price,
       title: item.title
+    }
+    const itemExists = oldwishlist.find(item => item.title == wishList.title)
+    console.log(itemExists)
+    if (itemExists) {
+      enqueueSnackbar('Item already in wishlist', { variant: 'error' })
+      return
     }
     await Helpers.updateWishList(e, wishList, setDidReview, toast)
 

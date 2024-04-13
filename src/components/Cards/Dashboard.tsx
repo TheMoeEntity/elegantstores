@@ -102,7 +102,7 @@ const Dashboard = ({ getSession, email, getAddress, wishlist, uid, url }: { url:
         const supabase = await createSupabaseServerClientCSR()
         try {
             setDidSave(true)
-            
+            await deleteProfilePicture(url,supabase)
             const file = userFile
             const fileExt = userFile?.name.split('.').pop()
             const filePath = `${uid}-${Math.random()}.${fileExt}`
@@ -139,6 +139,20 @@ const Dashboard = ({ getSession, email, getAddress, wishlist, uid, url }: { url:
         }
         await Helpers.updateAddress(toast, address, setDidSave)
     }
+    const deleteProfilePicture = async (oldAvatarUrl: string, supabase: any) => {
+        try {
+            // Extract the key from the old avatar URL
+            const key = oldAvatarUrl.substring(oldAvatarUrl.lastIndexOf('/') + 1);
+
+            // Remove the old profile picture from the storage bucket
+            await supabase.storage.from('avatars').remove([key]);
+
+            console.log('Old profile picture deleted successfully');
+        } catch (error) {
+            console.error('Error deleting old profile picture:', error);
+        }
+    }
+
     useEffect(() => {
         if (url) setCurrProfile(url)
     }, [url])
