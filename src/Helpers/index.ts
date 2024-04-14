@@ -568,4 +568,7 @@ export class Helpers {
             return 0;
         });
     }
+    static filterProductsByPrice(products: ISBProducts[], minPrice: number, maxPrice: number): ISBProducts[] {
+        return products.filter(product => product.price >= minPrice && product.price <= maxPrice);
+    }
 }
