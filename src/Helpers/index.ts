@@ -1,5 +1,5 @@
 import { ChangeEvent, FormEvent } from "react";
-import { ISBProducts, addressType, cartItem, loremPicsum, productType, reviewType, wishList } from "./types";
+import { Countries, ISBProducts, addressType, cartItem, loremPicsum, productType, reviewType, wishList } from "./types";
 import axios from "axios";
 import { createSupabaseServerClient, readUserSession, readUserSessionCLient } from "./supabase";
 import { createSupabaseServerClientCSR } from "./supabase/superbaseCSR";
@@ -484,7 +484,6 @@ export class Helpers {
 
         return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`;
     }
-
     static uploadProfile = async (
         toast: any,
         data: string
@@ -522,4 +521,51 @@ export class Helpers {
                 console.log(err)
             })
     };
+    static async getCountries(url: string) {
+        const products = await fetch(url)
+            .then(async (res) => {
+                const isJson = res.headers
+                    .get("content-type")
+                    ?.includes("application/json");
+                const data = isJson ? await res.json() : null;
+                if (res.ok || res.status === 200) {
+                    let formattedCountries = this.formatCountries(data)
+                    return this.sortAlphabetically(formattedCountries)
+                }
+                if (!res.ok) {
+                    const error = (data && data.message) || res.status;
+                    return Promise.reject(error);
+                }
+            })
+            .catch((_err) => {
+                return []
+            });
+        return products;
+    }
+    static formatCountries(countries: Countries[]) {
+        return countries.map((country) =>
+        ({
+            name: `${country.name.common}`,
+            nameAndSymbol: `${country.name.common} ${country.flag}`,
+            idd: {
+                root: `${country.idd.root}`,
+                suffixes: `${country.idd.suffixes}`
+            },
+            population: country.population
+        }))
+    }
+    static sortAlphabetically(countries: {
+        nameAndSymbol: string;
+        population: number;
+    }[]) {
+        return countries.sort(function (a, b) {
+            if (a.nameAndSymbol < b.nameAndSymbol) {
+                return -1;
+            }
+            if (a.nameAndSymbol > b.nameAndSymbol) {
+                return 1;
+            }
+            return 0;
+        });
+    }
 }

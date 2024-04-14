@@ -3,18 +3,21 @@ import OrderComplete from '@/src/components/Cards/orderComplete'
 import stool from '../../../public/images/showcase.png'
 import Image from "next/image"
 import { motion } from 'framer-motion'
-import { FormEvent, useEffect, useMemo, useState } from "react"
+import { ChangeEvent, FormEvent, useContext, useEffect, useMemo, useState } from "react"
 import TextTransition, { presets } from 'react-text-transition';
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 import { useStore } from '@/src/Helpers/zustand'
 import { Helpers } from '@/src/Helpers'
 import { enqueueSnackbar } from 'notistack'
+import { addressType } from '@/src/Helpers/types'
+import { userContext } from '@/src/Helpers/ContextAPI/usercontext'
 
 
-const Cart_Section = ({ notAuth }: { notAuth: boolean }) => {
+const Cart_Section = ({ notAuth, countries, address, email }: { email: string, address: addressType, countries: { name: string; idd: { root: string, suffixes: string[] }; nameAndSymbol: string; population: number; }[] | [], notAuth: boolean }) => {
     const searchParams = useSearchParams()
     const { cart, removeFromCart, emptyCart } = useStore()
+    const { user } = useContext(userContext)
     const removeAction = (id: string) => {
         removeFromCart(id);
     }
@@ -30,6 +33,26 @@ const Cart_Section = ({ notAuth }: { notAuth: boolean }) => {
     const [withCoupon, setWithCoupon] = useState<number>(total)
     const checkout = searchParams.get('checkout')
     const [orderplaced, setOrderPlaced] = useState<boolean>(false)
+    const [allCountries, setAllCountries] = useState(countries)
+    const [loadError, setLoadError] = useState('')
+    const [selectedOption, setSelectedOption] = useState<String>("");
+
+    const onOptionChangeHandler = (
+        event: ChangeEvent<HTMLSelectElement>
+    ): void => {
+        const data = event.target.value
+        console.log("User is from - ", event.target.value);
+        setSelectedOption(data);
+    };
+    useEffect(() => {
+
+    }, [selectedOption])
+    useEffect(() => {
+        setAllCountries(countries)
+        if (allCountries.length === 0) {
+            setLoadError("Error loading all countries")
+        }
+    }, [countries])
 
     useEffect(() => {
         if (checkout === 'true') {
@@ -233,7 +256,7 @@ const Cart_Section = ({ notAuth }: { notAuth: boolean }) => {
                                             <div className='flex flex-col md:flex-row justify-between gap-y-5'>
                                                 <div className='md:w-[48%] flex flex-col'>
                                                     <label htmlFor="block">First name</label>
-                                                    <input placeholder="Your first name" type="text" className="py-[10px] bg-transparent px-[10px] w-full border-gray-300 border-b-[1px]" />
+                                                    <input placeholder="Your first name" defaultValue={user.userData.fullName} type="text" className="py-[10px] bg-transparent px-[10px] w-full border-gray-300 border-b-[1px]" />
                                                 </div>
                                                 <div className='md:w-[48%] flex flex-col'>
                                                     <label htmlFor="block">Surname</label>
@@ -244,13 +267,13 @@ const Cart_Section = ({ notAuth }: { notAuth: boolean }) => {
                                             <div className=''>
                                                 <div className='flex flex-col'>
                                                     <label htmlFor="block">Phone number</label>
-                                                    <input placeholder="Your phone number" type="phone" className="py-[10px] bg-transparent px-[10px] w-full border-gray-300 border-b-[1px]" />
+                                                    <input defaultValue={address.billing.phone||''} placeholder="Your phone number" type="phone" className="py-[10px] bg-transparent px-[10px] w-full border-gray-300 border-b-[1px]" />
                                                 </div>
                                             </div>
                                             <div className=''>
                                                 <div className='flex flex-col'>
                                                     <label htmlFor="block">Email:</label>
-                                                    <input placeholder="Your Email address" type="email" className="py-[10px] bg-transparent px-[10px] w-full border-gray-300 border-b-[1px]" />
+                                                    <input defaultValue={email || ''} placeholder="Your Email address" type="email" className="py-[10px] bg-transparent px-[10px] w-full border-gray-300 border-b-[1px]" />
                                                 </div>
                                             </div>
                                         </div>
@@ -264,20 +287,33 @@ const Cart_Section = ({ notAuth }: { notAuth: boolean }) => {
                                             <div className=''>
                                                 <div className='flex flex-col'>
                                                     <label htmlFor="block">Street address</label>
-                                                    <input placeholder="Your street address" type="address" className="py-[10px] bg-transparent px-[10px] w-full border-gray-300 border-b-[1px]" />
+                                                    <input defaultValue={address.shipping.address || ''} placeholder="Your street address" type="address" className="py-[10px] bg-transparent px-[10px] w-full border-gray-300 border-b-[1px]" />
                                                 </div>
                                             </div>
                                             <div className=''>
                                                 <div className='flex flex-col'>
                                                     <label htmlFor="block">Country</label>
-                                                    <input placeholder="Your street address" type="text" className="py-[10px] bg-transparent px-[10px] w-full border-gray-300 border-b-[1px]" />
+                                                    {/* <input placeholder="Your street address" type="text" className="py-[10px] bg-transparent px-[10px] w-full border-gray-300 border-b-[1px]" /> */}
+                                                    <select
+                                                        onChange={e => onOptionChangeHandler(e)}
+                                                        defaultValue={'Nigeria 🇳🇬'}
+                                                        className="custom-select mt-5 outline-none bg-transparent border-gray-300 border-b-[1px]"
+                                                        style={{ width: "100%", padding: '10px 10px', color: 'gray', border: '1px solid #eef5ff' }}
+                                                    >
+                                                        {
+                                                            allCountries.map((country, i) => (<option key={i}>{country.nameAndSymbol}</option>))
+                                                        }
+                                                    </select>
+                                                </div> 
+                                                <div>
+                                                    <div className='w-full mt-3 pt-3 my-0 flex justify-end text-red-700'>{loadError}</div>
                                                 </div>
                                             </div>
 
                                             <div className=''>
                                                 <div className='flex flex-col'>
                                                     <label htmlFor="block">Phone number</label>
-                                                    <input placeholder="Your phone number" type="phone" className="py-[10px] bg-transparent px-[10px] w-full border-gray-300 border-b-[1px]" />
+                                                    <input defaultValue={address.shipping.phone || ''} placeholder="Your phone number" type="phone" className="py-[10px] bg-transparent px-[10px] w-full border-gray-300 border-b-[1px]" />
                                                 </div>
 
                                             </div>
@@ -362,7 +398,7 @@ const Cart_Section = ({ notAuth }: { notAuth: boolean }) => {
                                                         />
                                                     </div>
                                                     <div className='flex flex-col gap-y-4 justify-center basis-[40%] max-w-[45%]'>
-                                                        <h2 className='font-semibold md:text-xl text-left'>{x.item.title.slice(0, 13)+"..."}</h2>
+                                                        <h2 className='font-semibold md:text-xl text-left'>{x.item.title.slice(0, 13) + "..."}</h2>
                                                         <h2 className='text-sm text-gray-400 text-left whitespace-nowrap'>Color: green</h2>
                                                         <div className='md:flex items-center hidden'>
                                                             <span className='text-xl mr-3'>&times;</span>

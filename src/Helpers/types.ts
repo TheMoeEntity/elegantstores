@@ -160,3 +160,14 @@ export type wishList = {
     price:number
     title:string
 }
+export interface Countries {
+    name: {
+        common: string
+    }
+    flag: string
+    population: number
+    idd: {
+        root: string,
+        suffixes: string[]
+    }
+}
