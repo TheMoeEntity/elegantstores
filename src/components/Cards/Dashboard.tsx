@@ -22,7 +22,7 @@ const Dashboard = ({ getSession, email, getAddress, wishlist, uid, url }: { url:
     const searchParams = useSearchParams()
     const [step, setStep] = useState(0)
     const [status, setStatus] = useState('Upload image')
-    const [currProfile, setCurrProfile] = useState<any>(url)
+    const [currProfile, setCurrProfile] = useState<any>(avatar)
     const [quantity, setQuantity] = useState<number>(1)
     const link = searchParams.get('link')
     const [userFile, setUserFile] = useState<File | null>(null);
@@ -102,7 +102,7 @@ const Dashboard = ({ getSession, email, getAddress, wishlist, uid, url }: { url:
         const supabase = await createSupabaseServerClientCSR()
         try {
             setDidSave(true)
-            await deleteProfilePicture(url,supabase)
+            await deleteProfilePicture(url, supabase)
             const file = userFile
             const fileExt = userFile?.name.split('.').pop()
             const filePath = `${uid}-${Math.random()}.${fileExt}`
@@ -154,7 +154,9 @@ const Dashboard = ({ getSession, email, getAddress, wishlist, uid, url }: { url:
     }
 
     useEffect(() => {
-        if (url) setCurrProfile(url)
+        if (url && url !== '') {
+            setCurrProfile(url)
+        }
     }, [url])
     return (
         <div className='flex my-8 flex-row gap-3 gap-x-7 md:gap-x-3 lg:gap-x-7 flex-wrap mx-auto w-[90%] md:w-[97%] lg:w-[85%]'>
