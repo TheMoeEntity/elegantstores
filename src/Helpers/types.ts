@@ -171,3 +171,7 @@ export interface Countries {
         suffixes: string[]
     }
 }
+export interface PriceRange {
+    min: number;
+    max: number;
+}

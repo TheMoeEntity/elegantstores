@@ -1,7 +1,7 @@
 'use client'
 import Image from 'next/image'
 import hero from '../../../public/images/furniture-2.jpeg'
-import { ISBProducts, fakeProductType } from '@/src/Helpers/types'
+import { ISBProducts, PriceRange, fakeProductType } from '@/src/Helpers/types'
 import Link from 'next/link'
 import CategoryModal from '../Cards/CategoryModal'
 import { useEffect, useState } from 'react'
@@ -10,7 +10,13 @@ import { useSnackbar } from 'notistack'
 import { Helpers } from '@/src/Helpers'
 import { useSearchParams } from 'next/navigation'
 
-
+const priceRanges: PriceRange[] = [
+    { min: 5000, max: 10000 },
+    { min: 10000, max: 15000 },
+    { min: 20000, max: 30000 },
+    { min: 30000, max: 50000 },
+    { min: 50000, max: 300000 },
+];
 const ShopPage = ({ products }: { products: ISBProducts[] }) => {
     const { enqueueSnackbar } = useSnackbar()
     const searchParams = useSearchParams()
@@ -40,6 +46,13 @@ const ShopPage = ({ products }: { products: ISBProducts[] }) => {
     const [search, setSearch] = useState<boolean>(false)
     const categoryFilter = (category: string) => {
         setActive(category)
+        setLoading(true)
+        setTimeout(() => {
+            setItems(searchAction(category ?? "all"))
+        }, 2500);
+    }
+    const priceFilter = (min: number, max: number, items: ISBProducts[]) => {
+        // setActive(category)
         setLoading(true)
         setTimeout(() => {
             setItems(searchAction(category ?? "all"))
@@ -95,38 +108,50 @@ const ShopPage = ({ products }: { products: ISBProducts[] }) => {
                         <h2 className='text-2xl font-semibold'>PRICE</h2>
                     </div>
                     <div>
-                        <ul className='text-gray-600 gap-y-5 flex-col flex'>
+                        <form className='text-gray-600 gap-y-5 flex-col flex'>
                             <li className='w-full flex justify-between items-center'>
                                 <span>All Prices</span>
                                 <span>
-                                    <input className='w-6 h-6' type="checkbox" name="" id="" />
+                                    <input className='w-6 h-6' defaultChecked type="checkbox" name="" id="" />
                                 </span>
                             </li>
                             <li className='w-full flex justify-between items-center'>
-                                <span>$100.00 - 199.99</span>
+                                <span>₦5,000.00 - ₦10,000</span>
                                 <span>
                                     <input className='w-6 h-6' type="checkbox" name="" id="" />
                                 </span>
                             </li>
                             <li className='w-full flex justify-between items-center'>
-                                <span>$200.00 - 299.99</span>
+                                <span>₦10,000.00 - ₦15,000</span>
                                 <span>
                                     <input className='w-6 h-6' type="checkbox" name="" id="" />
                                 </span>
                             </li>
                             <li className='w-full flex justify-between items-center'>
-                                <span>$300.00 - 399.99</span>
+                                <span>₦15,000.00 - ₦20,000</span>
                                 <span>
                                     <input className='w-6 h-6' type="checkbox" name="" id="" />
                                 </span>
                             </li>
                             <li className='w-full flex justify-between items-center'>
-                                <span>$400.00+</span>
+                                <span>₦20,000.00 - ₦30,000</span>
                                 <span>
-                                    <input className='w-6 h-6' type="checkbox" defaultChecked name="" id="" />
+                                    <input className='w-6 h-6' type="checkbox" name="" id="" />
                                 </span>
                             </li>
-                        </ul>
+                            <li className='w-full flex justify-between items-center'>
+                                <span>₦30,000.00 - ₦50,000</span>
+                                <span>
+                                    <input className='w-6 h-6' type="checkbox" name="" id="" />
+                                </span>
+                            </li>
+                            <li className='w-full flex justify-between items-center'>
+                                <span>₦30,000.00 and above</span>
+                                <span>
+                                    <input className='w-6 h-6' type="checkbox" name="" id="" />
+                                </span>
+                            </li>
+                        </form>
                     </div>
                 </div>
                 <div className='md:basis-[72%] basis-full'>
