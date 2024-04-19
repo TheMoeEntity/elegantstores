@@ -7,13 +7,11 @@ import { ISession, productType } from '@/src/Helpers/types'
 import { UserMetadata } from '@supabase/supabase-js'
 import Modal from '../Cards/Welcome_Modal'
 import { useSearchParams } from 'next/navigation'
-import { userContext } from '@/src/Helpers/ContextAPI/usercontext'
 
 const Arrivals = ({ justIn, signedIn }: { justIn: productType[], signedIn: UserMetadata | null }) => {
     const [isSignedIn, setSignedIn] = useState(false)
     const [metaData, setMetaData] = useState<null | UserMetadata>(null)
     const searchParams = useSearchParams().get('newlogin')
-    const { setUser } = useContext(userContext)
     useEffect(() => {
         if (signedIn !== null) {
             if (!searchParams) {

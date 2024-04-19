@@ -14,7 +14,8 @@ export type userSession = {
 export type userContex = {
     user: userSession
     setUser: Dispatch<SetStateAction<userSession>>
-
+    setStore: Dispatch<SetStateAction<ISBProducts[]>>
+    store: ISBProducts[]
 }
 export type UserProviderType = {
     children: ReactNode
@@ -156,9 +157,9 @@ export type addressType = {
     }
 }
 export type wishList = {
-    image:string,
-    price:number
-    title:string
+    image: string,
+    price: number
+    title: string
 }
 export interface Countries {
     name: {
@@ -174,4 +175,6 @@ export interface Countries {
 export interface PriceRange {
     min: number;
     max: number;
+    isChecked:boolean
+    id:number
 }

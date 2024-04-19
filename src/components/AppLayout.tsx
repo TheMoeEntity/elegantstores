@@ -1,7 +1,7 @@
 'use client'
-import React, { ReactNode } from 'react'
+import React, { ReactNode, useContext, useEffect } from 'react'
 import { useScrollTop } from '../Helpers/Hooks';
-import { UserProvider } from '../Helpers/ContextAPI/usercontext';
+import { UserProvider, userContext } from '../Helpers/ContextAPI/usercontext';
 import { SnackbarProvider } from 'notistack';
 import Header from './Header';
 import Footer from './Footer';
@@ -9,10 +9,15 @@ import Script from 'next/script';
 import { scrollTopView } from '../Helpers/Views';
 import { UserMetadata } from '@supabase/supabase-js';
 import { Toaster } from 'react-hot-toast';
+import { ISBProducts } from '../Helpers/types';
 
 
-const AppLayout = ({ children, session, url }: {url:string, children: ReactNode, session: UserMetadata | null }) => {
+const AppLayout = ({ children, session, url, products }: { products: ISBProducts[], url: string, children: ReactNode, session: UserMetadata | null }) => {
     const { scrollBtn, scrollTop } = useScrollTop();
+    const { setStore } = useContext(userContext)
+    useEffect(() => {
+        setStore(products)
+    }, [])
 
     return (
         <UserProvider>
@@ -28,7 +33,7 @@ const AppLayout = ({ children, session, url }: {url:string, children: ReactNode,
                         }
                     }}
                 />
-                <Header url={url} getSession={session} />
+                <Header products={products} url={url} getSession={session} />
                 {children}
                 <Footer />
                 <Script

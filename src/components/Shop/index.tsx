@@ -1,7 +1,7 @@
 'use client'
 import Image from 'next/image'
 import hero from '../../../public/images/furniture-2.jpeg'
-import { ISBProducts, PriceRange, fakeProductType } from '@/src/Helpers/types'
+import { ISBProducts, PriceRange } from '@/src/Helpers/types'
 import Link from 'next/link'
 import CategoryModal from '../Cards/CategoryModal'
 import { useEffect, useState } from 'react'
@@ -10,15 +10,14 @@ import { useSnackbar } from 'notistack'
 import { Helpers } from '@/src/Helpers'
 import { useSearchParams } from 'next/navigation'
 
-const priceRanges: PriceRange[] = [
-    { min: 5000, max: 10000 },
-    { min: 10000, max: 15000 },
-    { min: 20000, max: 30000 },
-    { min: 30000, max: 50000 },
-    { min: 50000, max: 300000 },
-];
 const ShopPage = ({ products }: { products: ISBProducts[] }) => {
     const { enqueueSnackbar } = useSnackbar()
+    const [priceRanges, setPriceRanges] = useState([
+        { min: 10000, max: 15000, isChecked: false, id: 1 },
+        { min: 20000, max: 30000, isChecked: false, id: 2 },
+        { min: 30000, max: 50000, isChecked: false, id: 3 },
+        { min: 50000, max: 300000, isChecked: false, id: 4 },
+    ])
     const searchParams = useSearchParams()
     const [active, setActive] = useState<string>("all")
     let category = searchParams.get('category')
@@ -51,12 +50,11 @@ const ShopPage = ({ products }: { products: ISBProducts[] }) => {
             setItems(searchAction(category ?? "all"))
         }, 2500);
     }
-    const priceFilter = (min: number, max: number, items: ISBProducts[]) => {
-        // setActive(category)
-        setLoading(true)
-        setTimeout(() => {
-            setItems(searchAction(category ?? "all"))
-        }, 2500);
+    const priceFilterAction = () => {
+        let filtered: any = items
+        filtered = Helpers.filterProductsByPrice(products, selectedPriceRanges?.min, selectedPriceRanges.max)
+        setLoading(false)
+        return filtered
     }
     const searchAction = (categoryy: string) => {
         let filtered: any = items
@@ -64,6 +62,22 @@ const ShopPage = ({ products }: { products: ISBProducts[] }) => {
         setLoading(false)
         return filtered
     }
+    const [selectedPriceRanges, setSelectedPriceRanges] = useState<{ max: number, min: number }>({ min: 5000, max: 300000 });
+
+    const handleCheckboxChange = (min: number, max: number, id: number) => {
+        setSelectedPriceRanges({ min, max })
+        setPriceRanges(state => {
+            const newRange = state.map(range => range.id === id ? { ...range, isChecked: true } : { ...range, isChecked: false })
+            return newRange
+        })
+        console.log(selectedPriceRanges)
+    };
+    useEffect(() => {
+        setLoading(true)
+        setTimeout(() => {
+            setItems(priceFilterAction())
+        }, 2500);
+    }, [selectedPriceRanges])
     return (
         <section>
             <CategoryModal active={active} categoryFilter={categoryFilter} search={search} setSearch={() => setSearch(false)} />
@@ -109,48 +123,26 @@ const ShopPage = ({ products }: { products: ISBProducts[] }) => {
                     </div>
                     <div>
                         <form className='text-gray-600 gap-y-5 flex-col flex'>
+
                             <li className='w-full flex justify-between items-center'>
                                 <span>All Prices</span>
                                 <span>
-                                    <input className='w-6 h-6' defaultChecked type="checkbox" name="" id="" />
+                                    <input className='w-4 h-4' defaultChecked type="checkbox" name="" id=""
+                                        onChange={e => { e.target.checked && setSelectedPriceRanges({ min: 5000, max: 300000 });/*setPriceRanges(x => x.map(state => ({...state,isChecked:false})))*/ }}
+                                    />
                                 </span>
                             </li>
-                            <li className='w-full flex justify-between items-center'>
-                                <span>₦5,000.00 - ₦10,000</span>
-                                <span>
-                                    <input className='w-6 h-6' type="checkbox" name="" id="" />
-                                </span>
-                            </li>
-                            <li className='w-full flex justify-between items-center'>
-                                <span>₦10,000.00 - ₦15,000</span>
-                                <span>
-                                    <input className='w-6 h-6' type="checkbox" name="" id="" />
-                                </span>
-                            </li>
-                            <li className='w-full flex justify-between items-center'>
-                                <span>₦15,000.00 - ₦20,000</span>
-                                <span>
-                                    <input className='w-6 h-6' type="checkbox" name="" id="" />
-                                </span>
-                            </li>
-                            <li className='w-full flex justify-between items-center'>
-                                <span>₦20,000.00 - ₦30,000</span>
-                                <span>
-                                    <input className='w-6 h-6' type="checkbox" name="" id="" />
-                                </span>
-                            </li>
-                            <li className='w-full flex justify-between items-center'>
-                                <span>₦30,000.00 - ₦50,000</span>
-                                <span>
-                                    <input className='w-6 h-6' type="checkbox" name="" id="" />
-                                </span>
-                            </li>
-                            <li className='w-full flex justify-between items-center'>
-                                <span>₦30,000.00 and above</span>
-                                <span>
-                                    <input className='w-6 h-6' type="checkbox" name="" id="" />
-                                </span>
-                            </li>
+                            {priceRanges.map((range, index) => (
+                                <label className='w-full flex justify-between' key={index}>
+                                    {` ₦ ${range.min.toLocaleString()} - ₦ ${range.max.toLocaleString()}`}
+                                    <input
+                                        className='w-4 h-4'
+                                        type="checkbox"
+                                        checked={range.isChecked}
+                                        onChange={() => handleCheckboxChange(range.min, range.max, range.id)}
+                                    />
+                                </label>
+                            ))}
                         </form>
                     </div>
                 </div>

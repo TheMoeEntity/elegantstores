@@ -2,16 +2,39 @@
 import { ISBProducts, fakeProductType } from '@/src/Helpers/types'
 import Image from 'next/image'
 import Link from 'next/link'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import CategoryModal from './CategoryModal'
 import { Helpers } from '@/src/Helpers'
 import noimage from '../../../public/images/noimage.png'
+import { useStore } from '@/src/Helpers/zustand'
+import toast from 'react-hot-toast'
 
-const Search_Section = ({ products }: { products: ISBProducts[] }) => {
+const Search_Section = ({ products, searchTerm }: { searchTerm: string, products: ISBProducts[] }) => {
     const [search, setSearch] = useState<boolean>(false)
     const [active, setActive] = useState<string>("all")
+    const [currSearchTerm, setCurrSearch] = useState<string>(searchTerm)
     const [loading, setLoading] = useState<boolean>(false)
+    const { addToCart } = useStore()
     const [items, setItems] = useState(products)
+    const addAction = (item: ISBProducts, quantity: number = 1) => {
+        addToCart(item, quantity)
+        toast.success("Item has been added to cart")
+
+    }
+    useEffect(() => {
+
+    }, [])
+    useEffect(() => {
+        if (searchTerm.trim() !== '') {
+            const filteredResults = items.filter(
+                result =>
+                    result.title.toLowerCase().includes(searchTerm.toLowerCase())
+            )
+            setItems(filteredResults);
+        } else {
+            setItems([]);
+        }
+    }, [searchTerm]);
     const categoryFilter = (category: string) => {
         setActive(category)
         setLoading(true)
@@ -23,6 +46,7 @@ const Search_Section = ({ products }: { products: ISBProducts[] }) => {
         let filtered: any = items
         filtered = Helpers.filterCategory(categoryy, products)
         setLoading(false)
+
         return filtered
     }
     return (
@@ -39,51 +63,63 @@ const Search_Section = ({ products }: { products: ISBProducts[] }) => {
                             <h2 className='text-2xl font-semibold'>CATEGORIES</h2>
                         </div>
                         <div>
-                            <ul className='text-gray-600 gap-y-5 flex-col flex'>
-                                <li>All Products</li>
-                                <li className='text-black underline'>Shoes</li>
-                                <li>Miscellaneous</li>
-                                <li>Outdoor</li>
-                                <li>{`Men's`} Bags</li>
-                                <li>Leather wears</li>
+                            <ul className='text-gray-600 gap-y-5 flex-col flex w-fit'>
+                                <button className={`w-fit ${active === 'all' && 'text-black underline'}`} onClick={() => categoryFilter(('all'))}>All Products</button>
+                                <button className={`w-fit ${active === 'shoes' && 'text-black underline'}`} onClick={() => categoryFilter('shoes')}>Shoes</button>
+                                <button className={`w-fit ${active === 'shirts' && 'text-black underline'}`} onClick={() => categoryFilter(('shirts'))}>Shirts</button>
+                                <button className={`w-fit ${active === 'pants' && 'text-black underline'}`} onClick={() => categoryFilter(('pants'))}>Pants</button>
+                                <button className={`w-fit ${active === 'jackets' && 'text-black underline'}`} onClick={() => categoryFilter(('jackets'))}>Jackets</button>
+                                <button className={`w-fit ${active === 'hoodies' && 'text-black underline'}`} onClick={() => categoryFilter(('hoodies'))}>Hoodies</button>
                             </ul>
                         </div>
                         <div className='text-xl'>
                             <h2 className='text-2xl font-semibold'>PRICE</h2>
                         </div>
                         <div>
-                            <ul className='text-gray-600 gap-y-5 flex-col flex'>
+                            <form className='text-gray-600 gap-y-5 flex-col flex'>
                                 <li className='w-full flex justify-between items-center'>
                                     <span>All Prices</span>
                                     <span>
-                                        <input className='w-6 h-6' type="checkbox" name="" id="" />
+                                        <input className='w-6 h-6' defaultChecked type="checkbox" name="" id="" />
                                     </span>
                                 </li>
                                 <li className='w-full flex justify-between items-center'>
-                                    <span>$100.00 - 199.99</span>
+                                    <span>₦5,000.00 - ₦10,000</span>
                                     <span>
                                         <input className='w-6 h-6' type="checkbox" name="" id="" />
                                     </span>
                                 </li>
                                 <li className='w-full flex justify-between items-center'>
-                                    <span>$200.00 - 299.99</span>
+                                    <span>₦10,000.00 - ₦15,000</span>
                                     <span>
                                         <input className='w-6 h-6' type="checkbox" name="" id="" />
                                     </span>
                                 </li>
                                 <li className='w-full flex justify-between items-center'>
-                                    <span>$300.00 - 399.99</span>
+                                    <span>₦15,000.00 - ₦20,000</span>
                                     <span>
                                         <input className='w-6 h-6' type="checkbox" name="" id="" />
                                     </span>
                                 </li>
                                 <li className='w-full flex justify-between items-center'>
-                                    <span>$400.00+</span>
+                                    <span>₦20,000.00 - ₦30,000</span>
                                     <span>
-                                        <input className='w-6 h-6' type="checkbox" defaultChecked name="" id="" />
+                                        <input className='w-6 h-6' type="checkbox" name="" id="" />
                                     </span>
                                 </li>
-                            </ul>
+                                <li className='w-full flex justify-between items-center'>
+                                    <span>₦30,000.00 - ₦50,000</span>
+                                    <span>
+                                        <input className='w-6 h-6' type="checkbox" name="" id="" />
+                                    </span>
+                                </li>
+                                <li className='w-full flex justify-between items-center'>
+                                    <span>₦30,000.00 and above</span>
+                                    <span>
+                                        <input className='w-6 h-6' type="checkbox" name="" id="" />
+                                    </span>
+                                </li>
+                            </form>
                         </div>
                     </div>
                     <div className='md:basis-[72%]'>
@@ -101,32 +137,57 @@ const Search_Section = ({ products }: { products: ISBProducts[] }) => {
                         </div>
 
                         <div className='md:px-5 py-12 flex flex-col gap-10 w-full h-fit md:w-[100%] mx-auto'>
-                            <div className="flex flex-row gap-2 gap-y-7 md:gap-y-5 md:gap-4 justify-center flex-wrap mb-7">
+                            <div className='md:px-5 py-12 max-w-full flex flex-col gap-10 w-full h-fit md:w-[100%] mx-auto'>
                                 {
-                                    (products).slice(0, 8).map((x) => (
-                                        <div key={x.id} className='flex group overflow-y-hidden pb-4 md:min-h-auto shadow-md rounded-md flex-col gap-y-2 gap-x-0 h-fit md:min-w-[10%] basis-[47%] md:basis-[30%] lg:basis-[23%]'>
-                                            <Link href={'/products/' + x.title} className='w-full mt-0 mb-3 relative min-h-[250px] md:min-h-[200px] max-h-[auto]'>
-                                                <Image
-                                                    src={Helpers.isValidUrl(x.images[0]) ? x.images[0]:noimage}
-                                                    alt='Best sellers'
-                                                    quality={100}
-                                                    sizes='100vw'
-                                                    fill
-                                                    className='object-cover'
-                                                />
-                                            </Link>
-                                            <div className='px-3 flex gap-2'>
-                                                {[...Array(4)].map((_, i) => (
-                                                    <span key={i} className={`fa fa-star`}></span>
-                                                ))}
-                                            </div>
-                                            <div className='px-3 font-semibold'>{x.title}</div>
-                                            <div className='px-3 font-semibold'>${x.price}</div>
-                                            <div className='w-[90%] transition-transform duration-[0.55s] ease mx-auto group-hover:translate-y-0 translate-y-20'>
-                                                <button className='w-full px-3 py-2 bg-black text-white rounded-lg'>Add to cart</button>
-                                            </div>
+                                    loading ? (
+                                        <div className="flex flex-row gap-2 gap-y-7 md:gap-y-5 md:gap-4 justify-center flex-wrap mb-7">
+                                            {
+                                                [...Array(4)].map((_x, i) => (
+                                                    <div key={i} className='md:basis-[22%] basis-[43%] animate-pulse'>
+                                                        <div className="flex items-center justify-center w-full h-48 md:h-[400px] bg-gray-200 rounded sm:w-full">
+                                                            <svg className="w-10 h-10 md:h-[400px] text-gray-200" aria-hidden xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 18">
+                                                                <path d="M18 0H2a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2Zm-5.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm4.376 10.481A1 1 0 0 1 16 15H4a1 1 0 0 1-.895-1.447l3.5-7A1 1 0 0 1 7.468 6a.965.965 0 0 1 .9.5l2.775 4.757 1.546-1.887a1 1 0 0 1 1.618.1l2.541 4a1 1 0 0 1 .028 1.011Z" />
+                                                            </svg>
+                                                        </div>
+                                                    </div>
+                                                ))
+                                            }
                                         </div>
-                                    ))
+                                    ) : (
+                                        <div className="flex flex-row gap-2 gap-y-7 md:gap-y-5 md:gap-4 md:justify-start justify-start flex-wrap mb-7">
+                                            {
+                                                (items).map((x) => (
+                                                    <div key={x.id} className='flex group overflow-y-hidden pb-4 md:min-h-auto shadow-md rounded-md flex-col gap-y-2 gap-x-0 h-fit md:min-w-[10%] basis-[47%] md:basis-[30%] lg:basis-[23%]'>
+                                                        <div className='w-full mt-0 mb-3 relative max-h-[auto]'>
+                                                            <Image
+                                                                src={x.images[0]}
+                                                                alt='Our product'
+                                                                quality={100}
+                                                                sizes='100vw'
+                                                                width={200}
+                                                                height={300}
+                                                                className='object-cover'
+                                                            />
+                                                        </div>
+                                                        <div className='px-3 flex gap-2 mt-1'>
+                                                            {[...Array(x.rating)].map((_, i) => (
+                                                                <span key={i} className={`fa fa-star`}></span>
+                                                            ))}
+                                                        </div>
+                                                        <Link href={'/products/' + x.slug} className='font-semibold px-4 mt-1'>
+                                                            <span className='hover:text-[#377DFF]'>
+                                                                {x.title}
+                                                            </span>
+                                                        </Link>
+                                                        <div className='px-3 font-semibold mt-1'>₦{x.price.toLocaleString()}</div>
+                                                        <div className='w-[90%] mt-1 transition-transform duration-[0.55s] ease mx-auto group-hover:translate-y-0 translate-y-20'>
+                                                            <button onClick={() => addAction(x)} className='w-full px-3 py-2 bg-black text-white rounded-lg'>Add to cart</button>
+                                                        </div>
+                                                    </div>
+                                                ))
+                                            }
+                                        </div>
+                                    )
                                 }
                             </div>
                         </div>

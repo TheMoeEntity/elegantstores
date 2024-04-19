@@ -9,8 +9,10 @@ import { useContext, useEffect } from 'react'
 import { userContext } from '@/src/Helpers/ContextAPI/usercontext'
 import { UserMetadata } from '@supabase/supabase-js'
 import { useStore } from '@/src/Helpers/zustand'
+import SearchComponent from '../SearchComponent'
+import { ISBProducts } from '@/src/Helpers/types'
 
-const Header = ({ getSession, url }: { url: string, getSession: UserMetadata | null }) => {
+const Header = ({ getSession, url, products }: { products: ISBProducts[], url: string, getSession: UserMetadata | null }) => {
     const { setUser } = useContext(userContext)
     const { cartCount } = useStore()
     useEffect(() => {
@@ -63,15 +65,7 @@ const Header = ({ getSession, url }: { url: string, getSession: UserMetadata | n
 
                 {
                     search && (
-                        <motion.div
-                            initial={{ x: search ? '50%' : '-50%', opacity: 0 }}
-                            animate={{ x: 0, opacity: 1 }}
-                            transition={{ duration: 0.75, ease: 'anticipate' }}
-                            className='w-fit flex items-center mx-auto'
-                        >
-                            <input placeholder='Enter keywords' type="search" className='text-sm min-w-[300px] h-full rounded-tl-full rounded-bl-full outline-none px-4 bg-transparent border-[1px] py-1' name="" id="" />
-                            <button><i className='fa-solid fa-magnifying-glass bg-[#171D28] text-white px-5 py-[9px] rounded-tr-md rounded-br-md'></i></button>
-                        </motion.div>
+                        <SearchComponent items={products} search={search} />
                     )
                 }
 
