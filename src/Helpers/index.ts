@@ -56,9 +56,14 @@ export class Helpers {
         return discount
     }
     static async formatProducts() {
-        const insta = await this.getProducts('https://picsum.photos/v2/list') as loremPicsum[]
+        const insta = await this.getProducts('https://picsum.photos/v2/list').then(item => item).catch(() => []) as loremPicsum[]
+        console.log(insta)
+        if (!insta) {
+            return []
+        }
         return insta.map(prod => prod.download_url)
     }
+    static isBrowser = () => typeof window !== "undefined";
     static getSingle = async (slug: string) => {
         const data = await this.getProducts('https://fakestoreapi.com/products') as productType[]
         if (!data) return;
@@ -270,7 +275,7 @@ export class Helpers {
                 }
             })
             .catch((err) => {
-                return JSON.stringify(err);
+                return [];
             });
         return products;
     }

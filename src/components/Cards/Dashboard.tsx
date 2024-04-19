@@ -13,10 +13,22 @@ import toast from 'react-hot-toast';
 import { ISBProducts, addressType, wishList } from '@/src/Helpers/types'
 import { createSupabaseServerClientCSR } from '@/src/Helpers/supabase/superbaseCSR'
 import { useStore } from '@/src/Helpers/zustand'
+import { useClientMediaQuery } from '@/src/Helpers/Hooks'
 
 
 const Dashboard = ({ getSession, items, email, getAddress, wishlist, uid, url }: { items: ISBProducts[], url: string, uid: string | null, getSession: UserMetadata | null, email: string | null, getAddress: addressType, wishlist: wishList[] }) => {
     const { enqueueSnackbar } = useSnackbar()
+    const scrollTop = () => {
+        if (!Helpers.isBrowser()) return;
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    };
+    const isMD = useClientMediaQuery('(min-width: 768px)');
+    useEffect(() => {
+        if (isMD) {
+            setHideSideBar(false)
+        }
+    }, [isMD])
+    const [hideSideBar, setHideSideBar] = useState<boolean>(true)
     const addAction = (title: string) => {
         const item = items.find(item => item.title === title)
 
@@ -144,7 +156,10 @@ const Dashboard = ({ getSession, items, email, getAddress, wishlist, uid, url }:
             console.error('Error deleting old profile picture:', error);
         }
     }
-
+const hideAction = () => {
+    scrollTop()
+    setHideSideBar(true)
+}
     useEffect(() => {
         if (url && url !== '') {
             setCurrProfile(url)
@@ -152,6 +167,11 @@ const Dashboard = ({ getSession, items, email, getAddress, wishlist, uid, url }:
     }, [url])
     return (
         <div className='flex my-8 flex-row gap-3 gap-x-7 md:gap-x-3 lg:gap-x-7 flex-wrap mx-auto w-[90%] md:w-[97%] lg:w-[85%]'>
+            <div className='top-10 md:hidden flex w-full justify-end mb-5 right-2'>
+                <button onClick={() => { setHideSideBar(!hideSideBar) }}>
+                    <i className='fas fa-bars text-3xl'></i>
+                </button>
+            </div>
             {
                 didSave && (
                     <div className="fixed flex justify-center items-center w-full h-full bg-[rgba(0,0,0,0.7)] z-[100] top-0 left-0">
@@ -165,9 +185,13 @@ const Dashboard = ({ getSession, items, email, getAddress, wishlist, uid, url }:
                     </div>
                 )
             }
-            <div className='flex z-10 min-h-screen h-[1000px] overflow-auto top-0 left-0 md:w-auto w-[70%] shadow-2xl md:shadow-none basis-[100%] md:relative fixed md:basis-[30%] px-5 py-10 md:h-auto gap-y-9 flex-col bg-[#F3F5F7]'>
+            <div className={'flex z-10 left-0 min-h-screen trans h-[1000px] overflow-auto top-0 md:w-auto w-[300px] shadow-2xl md:shadow-none basis-[100%] md:relative fixed md:basis-[30%] px-5 py-10 md:h-auto gap-y-9 flex-col bg-[#F3F5F7] '
+                + (hideSideBar ? '-translate-x-[100%]' : 'translate-x-0')}>
+                <button onClick={() => setHideSideBar(!hideSideBar)} className='hidden text-4xl absolute top-2 right-3'>
+                    &times;
+                </button>
                 <div className='text-xl'>
-                    <button onClick={() => setStep(0)} className='text-2xl font-semibold'>ACCOUNT</button>
+                    <button onClick={() => { hideAction(); setStep(0) }} className='text-2xl font-semibold'>ACCOUNT</button>
                 </div>
                 <div className="w-24 h-24 relative text-white flex justify-center items-center">
                     <Image
@@ -210,7 +234,7 @@ const Dashboard = ({ getSession, items, email, getAddress, wishlist, uid, url }:
                     </ul>
                 </div>
                 <div className='text-xl'>
-                    <button onClick={() => setStep(1)} className='text-2xl font-semibold'>ADDRESS</button>
+                    <button onClick={() => { hideAction(); (true); setStep(1) }} className='text-2xl font-semibold'>ADDRESS</button>
                 </div>
                 <div>
                     <ul className='text-gray-600 gap-y-4 flex-col flex'>
@@ -223,7 +247,7 @@ const Dashboard = ({ getSession, items, email, getAddress, wishlist, uid, url }:
                     </ul>
                 </div>
                 <div className='text-xl'>
-                    <button onClick={() => setStep(2)} className='text-2xl font-semibold'>ORDER</button >
+                    <button onClick={() => { hideAction(); setStep(2) }} className='text-2xl font-semibold'>ORDER</button >
                 </div>
                 <div>
                     <ul className='text-gray-600 gap-y-4 flex-col flex'>
@@ -233,7 +257,7 @@ const Dashboard = ({ getSession, items, email, getAddress, wishlist, uid, url }:
                     </ul>
                 </div>
                 <div className='text-xl'>
-                    <button onClick={() => setStep(3)} className='text-2xl font-semibold'>WISHLIST</button>
+                    <button onClick={() => { hideAction(); setStep(3) }} className='text-2xl font-semibold'>WISHLIST</button>
                 </div>
                 <div>
                     <ul className='text-gray-600 gap-y-4 flex-col flex'>
@@ -509,6 +533,9 @@ const Dashboard = ({ getSession, items, email, getAddress, wishlist, uid, url }:
                                                                     <td className="whitespace-nowrap pl-8 py-4 text-xl table-cell md:hidden text-center">
                                                                         <span className='text-right'>${x.price.toLocaleString()}</span> <br />
                                                                         <span className='mt-5 block text-3xl'>&times;</span>
+                                                                        <div className='flex items-center gap-x-4 border-[1px] justify-between shadow-md w-[120px]'>
+                                                                            <button onClick={() => addAction(x.title)} className='w-full bg-black text-white rounded-lg text-sm px-2 py-2'>Add to cart</button>
+                                                                        </div>
                                                                     </td>
                                                                 </tr>
                                                             ))
