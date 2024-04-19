@@ -29,7 +29,7 @@ const Search = async ({
                 </div>
             </div>
             {
-                searchResult === "undefined" ? (<div><h1 className='text-3xl text-center py-8'>There's nothing in here</h1></div>) : (<Search_Section searchTerm={searchResult} products={products} />)
+                searchResult === "undefined" ? (<div><h1 className='text-3xl text-center py-8'>There&39;s nothing in here</h1></div>) : (<Search_Section searchTerm={searchResult} products={products} />)
             }
 
         </main>

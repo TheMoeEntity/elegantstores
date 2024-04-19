@@ -3,19 +3,30 @@ import stool from '../../../public/images/showcase.png'
 import Image from "next/image"
 import { motion } from 'framer-motion'
 import Link from "next/link"
-import { useEffect, useRef, useState } from "react"
+import { useContext, useEffect, useRef, useState } from "react"
 import { UserMetadata, createClient } from '@supabase/supabase-js'
 import avatar from '../../../public/images/avatar.png'
 import { useSearchParams } from 'next/navigation'
 import { Helpers } from '@/src/Helpers'
 import { useSnackbar } from 'notistack'
 import toast from 'react-hot-toast';
-import { addressType, wishList } from '@/src/Helpers/types'
+import { ISBProducts, addressType, wishList } from '@/src/Helpers/types'
 import { createSupabaseServerClientCSR } from '@/src/Helpers/supabase/superbaseCSR'
+import { useStore } from '@/src/Helpers/zustand'
 
-const Dashboard = ({ getSession, email, getAddress, wishlist, uid, url }: { url: string, uid: string | null, getSession: UserMetadata | null, email: string | null, getAddress: addressType, wishlist: wishList[] }) => {
 
+const Dashboard = ({ getSession, items, email, getAddress, wishlist, uid, url }: {items:ISBProducts[], url: string, uid: string | null, getSession: UserMetadata | null, email: string | null, getAddress: addressType, wishlist: wishList[] }) => {
     const { enqueueSnackbar } = useSnackbar()
+    const addAction = (title: string) => {
+        const item = items.find(item => item.title === title)
+      
+        if (!item) {
+            toast.error("Error adding to cart")
+            return
+        }
+        addToCart(item, 1)
+        toast.success("Item has been added to cart")
+    }
     const [didSave, setDidSave] = useState(false)
     const [isEditingBilling, setIsEditingBilling] = useState(false)
     const [isEditingShipping, setIsEditingShipping] = useState(false)
@@ -25,6 +36,7 @@ const Dashboard = ({ getSession, email, getAddress, wishlist, uid, url }: { url:
     const [currProfile, setCurrProfile] = useState<any>(avatar)
     const [quantity, setQuantity] = useState<number>(1)
     const link = searchParams.get('link')
+    const { addToCart } = useStore()
     const [userFile, setUserFile] = useState<File | null>(null);
     const [address, setAddress] = useState<addressType>({
         billing: {
@@ -40,26 +52,6 @@ const Dashboard = ({ getSession, email, getAddress, wishlist, uid, url }: { url:
     useEffect(() => {
         Helpers.handleImageChange(userFile, setCurrProfile)
     }, [userFile])
-    // useEffect(() => {
-
-    //     let isSubscribed = true;
-
-    //     // declare the async data fetching function
-    //     const fetchAddress = async () => {
-    //         const data = await Helpers.fetchSupabaseUsers()
-    //         if (isSubscribed) {
-    //             setAddress(data.addresss);
-    //         }
-
-    //     }
-
-
-    //     fetchAddress()
-    //         // make sure to catch any error
-    //         .catch(console.error);;
-
-    //     return () => { isSubscribed = false; }
-    // }, [getSession])
 
     useEffect(() => {
         switch (link) {
@@ -509,7 +501,7 @@ const Dashboard = ({ getSession, email, getAddress, wishlist, uid, url }: { url:
                                                                     </td>
                                                                     <td className="px-6 py-5  flex-col text-xl h-[160px] max-w-[100%] items-center justify-center hidden md:table-cell">
                                                                         <div className='flex items-center gap-x-4 border-[1px] justify-between shadow-md w-[120px]'>
-                                                                            <button className='w-full bg-black text-white rounded-lg text-sm px-2 py-2'>Add to cart</button>
+                                                                            <button onClick={() => addAction(x.title)} className='w-full bg-black text-white rounded-lg text-sm px-2 py-2'>Add to cart</button>
                                                                         </div>
                                                                     </td>
                                                                     <td className="whitespace-nowrap px-6 py-4 text-xl hidden md:table-cell">${x.price.toLocaleString()}</td>

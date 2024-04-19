@@ -11,9 +11,8 @@ import { useStore } from '@/src/Helpers/zustand'
 import { Helpers } from '@/src/Helpers'
 import { userContext } from '@/src/Helpers/ContextAPI/usercontext'
 import Link from 'next/link'
-import { update } from '@/src/actions/updateWishList'
 import toast from 'react-hot-toast'
-import axios from 'axios'
+
 
 const ProductsPage = ({ justIn, item, revalidate, oldwishlist }: { oldwishlist: wishList[], justIn: productType[], item: ISBProducts, revalidate: () => void }) => {
   const { enqueueSnackbar } = useSnackbar()
