@@ -3,7 +3,6 @@ import { ISBProducts, fakeProductType } from '@/src/Helpers/types'
 import Image from 'next/image'
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
-import CategoryModal from './CategoryModal'
 import { Helpers } from '@/src/Helpers'
 import noimage from '../../../public/images/noimage.png'
 import { useStore } from '@/src/Helpers/zustand'
@@ -51,7 +50,6 @@ const Search_Section = ({ products, searchTerm }: { searchTerm: string, products
     }
     return (
         <>
-            <CategoryModal active={active} categoryFilter={categoryFilter} search={search} setSearch={() => setSearch(false)} />
             <div className='md:px-5 py-0 md:py-12 flex flex-col gap-10 w-full h-fit md:w-[100%] mx-auto'>
                 <div className='flex my-8 flex-row gap-3 flex-wrap mx-auto w-[95%]'>
                     <div className='hidden md:flex basis-[23%] h-[800px] gap-y-9 flex-col'>

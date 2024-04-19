@@ -3,26 +3,34 @@ import Image from 'next/image'
 import hero from '../../../public/images/furniture-2.jpeg'
 import { ISBProducts, PriceRange } from '@/src/Helpers/types'
 import Link from 'next/link'
-import CategoryModal from '../Cards/CategoryModal'
 import { useEffect, useState } from 'react'
 import { useStore } from '@/src/Helpers/zustand'
 import { useSnackbar } from 'notistack'
 import { Helpers } from '@/src/Helpers'
 import { useSearchParams } from 'next/navigation'
+import { useClientMediaQuery } from '@/src/Helpers/Hooks'
 
 const ShopPage = ({ products }: { products: ISBProducts[] }) => {
     const { enqueueSnackbar } = useSnackbar()
     const [priceRanges, setPriceRanges] = useState([
         { min: 10000, max: 15000, isChecked: false, id: 1 },
+        { min: 15000, max: 20000, isChecked: false, id: 6 },
         { min: 20000, max: 30000, isChecked: false, id: 2 },
         { min: 30000, max: 50000, isChecked: false, id: 3 },
         { min: 50000, max: 300000, isChecked: false, id: 4 },
     ])
+    const isMD = useClientMediaQuery('(min-width: 768px)');
+    useEffect(() => {
+        if (isMD) {
+            setHideSideBar(false)
+        }
+    }, [isMD])
     const searchParams = useSearchParams()
     const [active, setActive] = useState<string>("all")
     let category = searchParams.get('category')
     const [items, setItems] = useState(products)
     const { addToCart } = useStore()
+    const [hideSideBar, setHideSideBar] = useState<boolean>(true)
     const [loading, setLoading] = useState<boolean>(false)
     const addAction = (item: ISBProducts, quantity: number = 1) => {
         addToCart(item, quantity)
@@ -52,13 +60,13 @@ const ShopPage = ({ products }: { products: ISBProducts[] }) => {
     }
     const priceFilterAction = () => {
         let filtered: any = items
-        filtered = Helpers.filterProductsByPrice(products, selectedPriceRanges?.min, selectedPriceRanges.max)
+        filtered = Helpers.filterProductsByPrice(products, selectedPriceRanges?.min, selectedPriceRanges.max).filter(item => active === 'all' ? item : item.category === active)
         setLoading(false)
         return filtered
     }
     const searchAction = (categoryy: string) => {
         let filtered: any = items
-        filtered = Helpers.filterCategory(categoryy, products)
+        filtered = Helpers.filterCategory(categoryy, products).filter(item => item.price >= selectedPriceRanges.min && item.price <= selectedPriceRanges.max)
         setLoading(false)
         return filtered
     }
@@ -80,7 +88,6 @@ const ShopPage = ({ products }: { products: ISBProducts[] }) => {
     }, [selectedPriceRanges])
     return (
         <section>
-            <CategoryModal active={active} categoryFilter={categoryFilter} search={search} setSearch={() => setSearch(false)} />
             <div className="hero w-full relative h-[300px] md:h-[500px]">
                 <div className='absolute left-0 top-0 z-10 w-full h-full bg-[rgba(0,0,0,0.6)] flex items-center justify-center'></div>
                 <Image
@@ -100,7 +107,10 @@ const ShopPage = ({ products }: { products: ISBProducts[] }) => {
             </div>
 
             <div className='flex my-8 flex-row gap-3 flex-wrap mx-auto w-[95%]'>
-                <div className='hidden md:flex basis-[23%] h-[800px] gap-y-9 flex-col'>
+                <div className={(hideSideBar ? '-translate-x-[100%]' : 'translate-x-0') + ' trans shadow-2xl top-0 w-[250px] px-5 md:px-0 md:w-auto h-screen flex pt-10 md:pt-0 overflow-y-scroll left-0 bg-[#F9FBFD] md:bg-transparent md:shadow-none z-[10000] fixed md:static md:flex basis-[23%] md:h-[800px] gap-y-9 flex-col'}>
+                    <button onClick={() => setHideSideBar(true)} className='md:hidden text-4xl absolute top-5 right-5'>
+                        &times;
+                    </button>
                     <div className='text-xl'>
                         <i className='fa-solid fa-filter mr-3'></i>
                         Filter
@@ -133,7 +143,7 @@ const ShopPage = ({ products }: { products: ISBProducts[] }) => {
                                 </span>
                             </li>
                             {priceRanges.map((range, index) => (
-                                <label className='w-full flex justify-between' key={index}>
+                                <label className='w-full md:text-sm lg:text-[18px] flex justify-between' key={index}>
                                     {` ₦ ${range.min.toLocaleString()} - ₦ ${range.max.toLocaleString()}`}
                                     <input
                                         className='w-4 h-4'
@@ -150,7 +160,7 @@ const ShopPage = ({ products }: { products: ISBProducts[] }) => {
                     <div className='my-8 flex md:hidden justify-between border-b-[1px] border-t-[1px] border-gray-300 py-6 mx-auto w-[90%]'>
                         <div className='text-xl'>
                             <i className='fa-solid fa-filter mr-3'></i>
-                            <button onClick={() => setSearch(true)}>
+                            <button onClick={() => setHideSideBar(false)}>
                                 Filter
                             </button>
                         </div>
@@ -188,35 +198,38 @@ const ShopPage = ({ products }: { products: ISBProducts[] }) => {
                             ) : (
                                 <div className="flex flex-row gap-2 gap-y-7 md:gap-y-5 md:gap-4 md:justify-center justify-start flex-wrap mb-7">
                                     {
-                                        (items).map((x) => (
-                                            <div key={x.id} className='flex group overflow-y-hidden pb-4 md:min-h-auto shadow-md rounded-md flex-col gap-y-2 gap-x-0 h-fit md:min-w-[10%] basis-[47%] md:basis-[30%] lg:basis-[23%]'>
-                                                <div className='w-full mt-0 mb-3 relative max-h-[auto]'>
-                                                    <Image
-                                                        src={x.images[0]}
-                                                        alt='Our product'
-                                                        quality={100}
-                                                        sizes='100vw'
-                                                        width={200}
-                                                        height={300}
-                                                        className='object-cover'
-                                                    />
+                                        items.length === 0 ? (
+                                            <div className='text-4xl text-center min-h-[400px] flex items-center justify-center font-semibold'>
+                                                No items match this filter
+                                            </div>) : (items).map((x) => (
+                                                <div key={x.id} className='flex group overflow-y-hidden pb-4 md:min-h-auto shadow-md rounded-md flex-col gap-y-2 gap-x-0 h-fit md:min-w-[10%] basis-[47%] md:basis-[30%] lg:basis-[23%]'>
+                                                    <div className='w-full mt-0 mb-3 relative max-h-[auto]'>
+                                                        <Image
+                                                            src={x.images[0]}
+                                                            alt='Our product'
+                                                            quality={100}
+                                                            sizes='100vw'
+                                                            width={200}
+                                                            height={300}
+                                                            className='object-cover'
+                                                        />
+                                                    </div>
+                                                    <div className='px-3 flex gap-2 mt-1'>
+                                                        {[...Array(x.rating)].map((_, i) => (
+                                                            <span key={i} className={`fa fa-star`}></span>
+                                                        ))}
+                                                    </div>
+                                                    <Link href={'/products/' + x.slug} className='font-semibold px-4 mt-1'>
+                                                        <span className='hover:text-[#377DFF]'>
+                                                            {x.title}
+                                                        </span>
+                                                    </Link>
+                                                    <div className='px-3 font-semibold mt-1'>₦{x.price.toLocaleString()}</div>
+                                                    <div className='w-[90%] mt-1 transition-transform duration-[0.55s] ease mx-auto group-hover:translate-y-0 translate-y-20'>
+                                                        <button onClick={() => addAction(x)} className='w-full px-3 py-2 bg-black text-white rounded-lg'>Add to cart</button>
+                                                    </div>
                                                 </div>
-                                                <div className='px-3 flex gap-2 mt-1'>
-                                                    {[...Array(x.rating)].map((_, i) => (
-                                                        <span key={i} className={`fa fa-star`}></span>
-                                                    ))}
-                                                </div>
-                                                <Link href={'/products/' + x.slug} className='font-semibold px-4 mt-1'>
-                                                    <span className='hover:text-[#377DFF]'>
-                                                        {x.title}
-                                                    </span>
-                                                </Link>
-                                                <div className='px-3 font-semibold mt-1'>₦{x.price.toLocaleString()}</div>
-                                                <div className='w-[90%] mt-1 transition-transform duration-[0.55s] ease mx-auto group-hover:translate-y-0 translate-y-20'>
-                                                    <button onClick={() => addAction(x)} className='w-full px-3 py-2 bg-black text-white rounded-lg'>Add to cart</button>
-                                                </div>
-                                            </div>
-                                        ))
+                                            ))
                                     }
                                 </div>
                             )
@@ -224,9 +237,9 @@ const ShopPage = ({ products }: { products: ISBProducts[] }) => {
 
 
                     </div>
-                    <div className='mx-auto w-fit mt-10'>
+                    {/* <div className='mx-auto w-fit mt-10'>
                         <button className='rounded-full border-[1px] border-black px-6 py-2 text-xl'>Load more</button>
-                    </div>
+                    </div> */}
                 </div>
             </div>
         </section>

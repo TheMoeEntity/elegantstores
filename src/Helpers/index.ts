@@ -57,7 +57,6 @@ export class Helpers {
     }
     static async formatProducts() {
         const insta = await this.getProducts('https://picsum.photos/v2/list').then(item => item).catch(() => []) as loremPicsum[]
-        console.log(insta)
         if (!insta) {
             return []
         }
