@@ -15,11 +15,11 @@ import { createSupabaseServerClientCSR } from '@/src/Helpers/supabase/superbaseC
 import { useStore } from '@/src/Helpers/zustand'
 
 
-const Dashboard = ({ getSession, items, email, getAddress, wishlist, uid, url }: {items:ISBProducts[], url: string, uid: string | null, getSession: UserMetadata | null, email: string | null, getAddress: addressType, wishlist: wishList[] }) => {
+const Dashboard = ({ getSession, items, email, getAddress, wishlist, uid, url }: { items: ISBProducts[], url: string, uid: string | null, getSession: UserMetadata | null, email: string | null, getAddress: addressType, wishlist: wishList[] }) => {
     const { enqueueSnackbar } = useSnackbar()
     const addAction = (title: string) => {
         const item = items.find(item => item.title === title)
-      
+
         if (!item) {
             toast.error("Error adding to cart")
             return
@@ -165,7 +165,7 @@ const Dashboard = ({ getSession, items, email, getAddress, wishlist, uid, url }:
                     </div>
                 )
             }
-            <div className='flex basis-[100%] md:basis-[30%] px-5 py-10 h-auto gap-y-9 flex-col bg-[#F3F5F7]'>
+            <div className='flex z-10 min-h-screen h-[1000px] overflow-auto top-0 left-0 md:w-auto w-[70%] shadow-2xl md:shadow-none basis-[100%] md:relative fixed md:basis-[30%] px-5 py-10 md:h-auto gap-y-9 flex-col bg-[#F3F5F7]'>
                 <div className='text-xl'>
                     <button onClick={() => setStep(0)} className='text-2xl font-semibold'>ACCOUNT</button>
                 </div>
