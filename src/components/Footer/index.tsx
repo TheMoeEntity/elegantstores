@@ -26,7 +26,7 @@ const Footer = () => {
 
         <Link href={'/'} className='text-sm text-gray-700'>Home</Link>
         <Link href={'/shop'} className='text-sm text-gray-700'>Shop</Link>
-        <Link href={'/shop'} className='text-sm text-gray-700'>Products</Link>
+        <Link href={'/cart'} className='text-sm text-gray-700'>My Cart</Link>
         <Link href={'/blog'} className='text-sm text-gray-700'>Articles</Link>
         <Link href={'/contact'} className='text-sm text-gray-700'>Contact Us</Link>
       </div>

@@ -16,7 +16,7 @@ import { userContext } from '@/src/Helpers/ContextAPI/usercontext'
 
 const Cart_Section = ({ notAuth, countries, address, email }: { email: string, address: addressType, countries: { name: string; idd: { root: string, suffixes: string[] }; nameAndSymbol: string; population: number; }[] | [], notAuth: boolean }) => {
     const searchParams = useSearchParams()
-    const { cart, removeFromCart, emptyCart } = useStore()
+    const { cart, removeFromCart, updateItemQuantity } = useStore()
     const { user } = useContext(userContext)
     const removeAction = (id: string) => {
         removeFromCart(id);
@@ -163,7 +163,7 @@ const Cart_Section = ({ notAuth, countries, address, email }: { email: string, a
                                                                                 </div>
                                                                                 <div className='flex flex-col gap-y-4 justify-center basis-[40%] max-w-[45%]'>
                                                                                     <h2 className='font-extrabold text-left'>{x.item.title}</h2>
-                                                                                    <h2 className='text-sm text-gray-400 text-left whitespace-nowrap'>Color: green</h2>
+                                                                                    <h2 className='text-sm text-gray-400 text-left whitespace-nowrap'>Color: {x.item.colors[0]} | {x.item.sizes[0]}</h2>
                                                                                     <button onClick={() => removeAction(x.item.id)} className='md:flex items-center hidden'>
                                                                                         <span className='text-xl mr-3'>&times;</span>
                                                                                         Remove
@@ -176,7 +176,7 @@ const Cart_Section = ({ notAuth, countries, address, email }: { email: string, a
                                                                         </td>
                                                                         <td className="px-6 py-5  flex-col text-xl h-[160px] max-w-[100%] items-center justify-center hidden md:table-cell">
                                                                             <div className='flex items-center rounded-lg gap-x-4 border-[1px] border-black justify-between py-1 px-6 shadow-md w-[120px]'>
-                                                                                <button onClick={() => setQuantity(quantity === 1 ? 1 : quantity - 1)}>-</button><span className='font-extrabold'>{x.quantity}</span><button onClick={() => setQuantity(quantity + 1)}>+</button>
+                                                                                <button onClick={() => updateItemQuantity(x.item.id, 'reduce')}>-</button><span className='font-extrabold'>{x.quantity}</span><button onClick={() => updateItemQuantity(x.item.id, 'add')}>+</button>
                                                                             </div>
                                                                         </td>
                                                                         <td className="whitespace-nowrap px-6 py-4 text-xl hidden md:table-cell">₦{x.item.price.toLocaleString()}</td>
@@ -267,7 +267,7 @@ const Cart_Section = ({ notAuth, countries, address, email }: { email: string, a
                                             <div className=''>
                                                 <div className='flex flex-col'>
                                                     <label htmlFor="block">Phone number</label>
-                                                    <input defaultValue={address.billing.phone||''} placeholder="Your phone number" type="phone" className="py-[10px] bg-transparent px-[10px] w-full border-gray-300 border-b-[1px]" />
+                                                    <input defaultValue={address.billing.phone || ''} placeholder="Your phone number" type="phone" className="py-[10px] bg-transparent px-[10px] w-full border-gray-300 border-b-[1px]" />
                                                 </div>
                                             </div>
                                             <div className=''>
@@ -304,7 +304,7 @@ const Cart_Section = ({ notAuth, countries, address, email }: { email: string, a
                                                             allCountries.map((country, i) => (<option key={i}>{country.nameAndSymbol}</option>))
                                                         }
                                                     </select>
-                                                </div> 
+                                                </div>
                                                 <div>
                                                     <div className='w-full mt-3 pt-3 my-0 flex justify-end text-red-700'>{loadError}</div>
                                                 </div>
@@ -399,7 +399,8 @@ const Cart_Section = ({ notAuth, countries, address, email }: { email: string, a
                                                     </div>
                                                     <div className='flex flex-col gap-y-4 justify-center basis-[40%] max-w-[45%]'>
                                                         <h2 className='font-semibold md:text-xl text-left'>{x.item.title.slice(0, 13) + "..."}</h2>
-                                                        <h2 className='text-sm text-gray-400 text-left whitespace-nowrap'>Color: green</h2>
+                                                        <h2 className='text-sm text-gray-400 text-left whitespace-nowrap'>Color: {x.item.colors[0]}</h2>
+                                                        <h2 className='text-sm text-gray-400 text-left whitespace-nowrap'>Size: {x.item.sizes[0]}</h2>
                                                         <div className='md:flex items-center hidden'>
                                                             <span className='text-xl mr-3'>&times;</span>
                                                             Remove

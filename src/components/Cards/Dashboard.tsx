@@ -156,10 +156,11 @@ const Dashboard = ({ getSession, items, email, getAddress, wishlist, uid, url }:
             console.error('Error deleting old profile picture:', error);
         }
     }
-const hideAction = () => {
-    scrollTop()
-    setHideSideBar(true)
-}
+    const hideAction = () => {
+        if (isMD) return
+        scrollTop()
+        setHideSideBar(true)
+    }
     useEffect(() => {
         if (url && url !== '') {
             setCurrProfile(url)

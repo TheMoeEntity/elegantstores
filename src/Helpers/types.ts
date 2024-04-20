@@ -1,7 +1,6 @@
 import { UserMetadata } from "@supabase/supabase-js";
 import { StaticImageData } from "next/image";
 import { Dispatch, ReactNode, SetStateAction } from "react";
-import { StringLiteral } from "typescript";
 
 export type featuresContent = {
     index: number
@@ -112,6 +111,7 @@ export interface ISession {
 export interface IStore {
     cart: cartItem[];
     cartCount: number;
+    updateItemQuantity: (id: string, action: 'add' | 'reduce') => void
     emptyCart: () => void,
     addToCart: (item: ISBProducts, quantity: number) => void
     removeFromCart: (id: string) => void
@@ -175,6 +175,6 @@ export interface Countries {
 export interface PriceRange {
     min: number;
     max: number;
-    isChecked:boolean
-    id:number
+    isChecked: boolean
+    id: number
 }

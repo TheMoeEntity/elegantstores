@@ -85,7 +85,7 @@ const Catgories = () => {
                     />
                     <div className="absolute bottom-[40px] left-7 text-white z-10 flex flex-col gap-5">
                         <span className='text-3xl'>Cashmere Sets</span>
-                        <button className='text-sm underline underline-offset-4 md:text-left'>Shopp now! &rarr;</button>
+                        <Link href={'/products/cashmere-sweater'} className='text-sm hover:text-[#377DFF] underline underline-offset-4 md:text-left'>Shopp now! &rarr;</Link>
                     </div>
                 </div>
                 <div className='h-auto relative md:max-w-[43%] w-[100%]'>
@@ -111,7 +111,7 @@ const Catgories = () => {
                     />
                     <div className="absolute bottom-[40px] left-7 text-white z-10 flex flex-col gap-5">
                         <span className='text-3xl'>The {`men's`} leather</span>
-                        <button className='text-sm underline underline-offset-4 md:text-left'>Shopp now! &rarr;</button>
+                        <Link href='/products/classic-mens-leather' className='text-sm hover:text-[#377DFF] underline underline-offset-4 md:text-left'>Shopp now! &rarr;</Link>
                     </div>
                 </div>
             </div>

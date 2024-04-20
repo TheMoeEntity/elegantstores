@@ -17,6 +17,16 @@ import toast from 'react-hot-toast'
 const ProductsPage = ({ justIn, item, revalidate, oldwishlist }: { oldwishlist: wishList[], justIn: productType[], item: ISBProducts, revalidate: () => void }) => {
   const { enqueueSnackbar } = useSnackbar()
   const { user } = useContext(userContext)
+  const formatSizes = (items: string[]): { item: string, isActive: boolean }[] => {
+    return items.map((item) => {
+      return {
+        item,
+        isActive: false
+      }
+    })
+  }
+  const [selectSize, setSelectSize] = useState(formatSizes(item.sizes))
+  const [selectColor, setSelectColor] = useState(formatSizes(item.colors))
   const [additional, setAdditional] = useState<boolean>(true)
   const [question, setQuestion] = useState<boolean>(false)
   const [quantity, setQuantity] = useState<number>(1)
@@ -36,7 +46,14 @@ const ProductsPage = ({ justIn, item, revalidate, oldwishlist }: { oldwishlist: 
     }
   }
   const addAction = () => {
-    addToCart(item, quantity)
+    const color = selectColor.find(x => x.isActive === true)
+    const size = selectSize.find(x => x.isActive === true)
+    const choice: ISBProducts = {
+      ...item,
+      colors: [color?.item ?? item.colors[0]],
+      sizes: [size?.item ?? item.sizes[0]]
+    }
+    addToCart(choice, quantity)
     enqueueSnackbar({
       message: "Item has been added to cart",
       variant: 'success'
@@ -155,7 +172,8 @@ const ProductsPage = ({ justIn, item, revalidate, oldwishlist }: { oldwishlist: 
           <div><h1 className='font-extrabold text-4xl md:text-5xl'>{item.title}</h1></div>
           <div className='text-gray-500 pb-5 border-b-[1px] border-slate-200 flex flex-col gap-y-3'>
             <span>{item.description}.</span>
-            <span className='font-extrabold text-3xl md:text-4xl text-black'>₦ {item.price.toLocaleString()}</span> {item.in_Stock ? (<span>In stock</span>) : (<span className=' text-red-400'>Out of stock</span>)}
+            <span className='font-extrabold text-3xl mt-5 md:text-4xl text-black'>₦ {item.price.toLocaleString()}</span>
+            {item.in_Stock ? (<span className='font-semibold text-green-500'>In stock</span>) : (<span className='font-semibold text-red-500'>Out of stock</span>)}
           </div>
           <div className='text-gray-500 border-b-[1px] pb-5'>
             Offer expires in:
@@ -174,13 +192,27 @@ const ProductsPage = ({ justIn, item, revalidate, oldwishlist }: { oldwishlist: 
               </div>
             </div>
           </div>
+
           <div className='text-gray-500'>
             Sizes:
             <div className='flex flex-wrap gap-y-1 gap-x-4 mt-0'>
               {
-                item.sizes.map((x, i) => (
-                  <div key={i} className='w-16 px-3 h-16 rounded-md flex flex-col items-center justify-center text-black'>
-                    <span className='text-lg font-bold'>{x}</span>
+                selectSize.map((x, i) => (
+                  <div key={i} className='w-16 px-3 h-16 rounded-md flex flex-col items-center justify-center'>
+                    <button onClick={() => setSelectSize(state => state.map(currItem => x.item == currItem.item ? { item: currItem.item, isActive: true } : { item: currItem.item, isActive: false }))} className={'text-lg trans ' + (x.isActive && 'border-black text-black border-[2px] font-bold py-1 px-2 rounded-md')}>{x.item}</button>
+                  </div>
+                ))
+              }
+            </div>
+          </div>
+
+          <div className='text-gray-500'>
+            Colors:
+            <div className='flex flex-wrap gap-y-1 gap-x-4 mt-0'>
+              {
+                selectColor.map((x, i) => (
+                  <div key={i} className='w-16 px-3 h-16 rounded-md flex flex-col items-center justify-center'>
+                    <button onClick={() => setSelectColor(state => state.map(currItem => x.item == currItem.item ? { item: currItem.item, isActive: true } : { item: currItem.item, isActive: false }))} className={'text-lg trans ' + (x.isActive && 'border-black text-black border-[2px] font-bold py-1 px-2 rounded-md')}>{x.item}</button>
                   </div>
                 ))
               }

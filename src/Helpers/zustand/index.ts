@@ -13,14 +13,19 @@ export const useStore = create<IStore>()(
                 const updatedTotal = calculateTotal(cart);
                 set({ cart: updatedCart, cartCount: cart.length - 1 });
             },
+            updateItemQuantity(id, action) {
+                const { cart } = get();
+                const updatedCart = updateItemNumber(id, action, cart);
+                set({ cart: updatedCart, cartCount: cart.length })
+            },
             addToCart(item, quantity) {
                 const { cart } = get();
                 const updatedCart = updateCart(item, cart, quantity)
                 const updatedTotal = calculateTotal(cart)
-                set({ cart: updatedCart, cartCount: cart.length,});
+                set({ cart: updatedCart, cartCount: cart.length, });
             },
             emptyCart() {
-                set({ cart: [], cartCount: 0})
+                set({ cart: [], cartCount: 0 })
             }
         }),
         {
@@ -48,7 +53,22 @@ const updateCart = (product: ISBProducts, cart: cartItem[], quantity: number): c
 
     return cart;
 }
-
+const updateItemNumber = (id: string, action: 'add' | 'reduce', cart: cartItem[]): cartItem[] => {
+    switch (action) {
+        case 'add':
+            return cart.map(item => {
+                if (item.item.id === id)
+                    return { item: item.item, quantity: item.quantity + 1 }
+                return item;
+            })
+        case 'reduce':
+            return cart.map(item => {
+                if (item.item.id === id)
+                    return { item: item.item, quantity: item.quantity === 1 ? 1 : item.quantity - 1 }
+                return item;
+            })
+    }
+}
 function removeCart(idProduct: string, cart: cartItem[]): cartItem[] {
     // return cart.map(item => {
     //     if (item.item.id === idProduct)
