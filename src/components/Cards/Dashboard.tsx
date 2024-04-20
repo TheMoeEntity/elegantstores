@@ -186,7 +186,7 @@ const Dashboard = ({ getSession, items, email, getAddress, wishlist, uid, url }:
                     </div>
                 )
             }
-            <div className={'flex z-10 left-0 min-h-screen trans h-[1000px] overflow-auto top-0 md:w-auto w-[300px] shadow-2xl md:shadow-none basis-[100%] md:relative fixed md:basis-[30%] px-5 py-10 md:h-auto gap-y-9 flex-col bg-[#F3F5F7] '
+            <div className={'flex z-10 no-scrollbar left-0 xs:w-[240px] trans h-full overflow-y-scroll overflow-auto top-0 md:w-auto xm:w-[280px] shadow-2xl md:shadow-none basis-[100%] md:relative fixed md:basis-[30%] px-5 py-10 md:h-auto gap-y-9 flex-col bg-[#F3F5F7] '
                 + (hideSideBar ? '-translate-x-[100%]' : 'translate-x-0')}>
                 <button onClick={() => setHideSideBar(!hideSideBar)} className='hidden text-4xl absolute top-2 right-3'>
                     &times;
@@ -199,9 +199,10 @@ const Dashboard = ({ getSession, items, email, getAddress, wishlist, uid, url }:
                         src={currProfile}
                         alt="avatar"
                         quality={100}
-                        fill
+                        width={96}
+                        height={96}
                         sizes={'100vw'}
-                        className="object-cover rounded-full w-full h-auto"
+                        className="object-cover rounded-full w-24 h-24"
                     />
                     <input onChange={(e) =>
                         Helpers.handleFileSelected(
