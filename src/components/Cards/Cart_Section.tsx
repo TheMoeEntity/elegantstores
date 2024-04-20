@@ -1,6 +1,5 @@
 'use client'
 import OrderComplete from '@/src/components/Cards/orderComplete'
-import stool from '../../../public/images/showcase.png'
 import Image from "next/image"
 import { motion } from 'framer-motion'
 import { ChangeEvent, FormEvent, useContext, useEffect, useMemo, useState } from "react"
@@ -28,7 +27,7 @@ const Cart_Section = ({ notAuth, countries, address, email }: { email: string, a
         [cart],
     )
     const [couponStatus, setCouponStatus] = useState('')
-    const [quantity, setQuantity] = useState<number>(1)
+    const [_quantity, setQuantity] = useState<number>(1)
     const [step, setStep] = useState<number>(0)
     const [withCoupon, setWithCoupon] = useState<number>(total)
     const checkout = searchParams.get('checkout')
@@ -138,7 +137,7 @@ const Cart_Section = ({ notAuth, countries, address, email }: { email: string, a
                                                                     </td>
                                                                     <td className="px-6 py-5  flex-col text-xl  max-w-[100%] items-center justify-center hidden md:table-cell">
                                                                         <div className='flex items-center rounded-lg gap-x-4 border-[1px] border-black justify-between py-1 px-6 shadow-md w-[120px]'>
-                                                                            <button className='invisible' onClick={() => setQuantity(quantity === 1 ? 1 : quantity - 1)}>-</button><span className='font-extrabold'>0</span><button className='invisible' onClick={() => setQuantity(quantity + 1)}>+</button>
+                                                                            <button className='invisible' onClick={() => setQuantity(0)}>-</button><span className='font-extrabold'>0</span><button className='invisible' onClick={() => setQuantity(0)}>+</button>
                                                                         </div>
                                                                     </td>
                                                                     <td className="whitespace-nowrap px-6 py-4 text-xl hidden md:table-cell">-</td>
@@ -169,7 +168,7 @@ const Cart_Section = ({ notAuth, countries, address, email }: { email: string, a
                                                                                         Remove
                                                                                     </button>
                                                                                     <div className='flex items-center md:hidden rounded-lg gap-x-4 border-[1px] border-black justify-between py-1 px-3 shadow-md'>
-                                                                                        <button onClick={() => setQuantity(quantity === 1 ? 1 : quantity - 1)}>-</button><span className='font-extrabold'>{x.quantity}</span><button onClick={() => setQuantity(quantity + 1)}>+</button>
+                                                                                        <button onClick={() => updateItemQuantity(x.item.id, 'reduce')}>-</button><span className='font-extrabold'>{x.quantity}</span><button onClick={() => updateItemQuantity(x.item.id, 'add')}>+</button>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
@@ -179,10 +178,10 @@ const Cart_Section = ({ notAuth, countries, address, email }: { email: string, a
                                                                                 <button onClick={() => updateItemQuantity(x.item.id, 'reduce')}>-</button><span className='font-extrabold'>{x.quantity}</span><button onClick={() => updateItemQuantity(x.item.id, 'add')}>+</button>
                                                                             </div>
                                                                         </td>
-                                                                        <td className="whitespace-nowrap px-6 py-4 text-xl hidden md:table-cell">₦{x.item.price.toLocaleString()}</td>
-                                                                        <td className="whitespace-nowrap px-6 font-extrabold text-xl py-4 hidden md:table-cell">₦{x.item.price.toLocaleString()}</td>
+                                                                        <td className="whitespace-nowrap px-6 py-4 text-xl hidden md:table-cell">₦{(x.item.price * x.quantity).toLocaleString()}</td>
+                                                                        <td className="whitespace-nowrap px-6 font-extrabold text-xl py-4 hidden md:table-cell">₦{(x.item.price * x.quantity).toLocaleString()}</td>
                                                                         <td className="whitespace-nowrap pl-8 py-4 text-xl table-cell md:hidden text-center">
-                                                                            <span className='text-right'>₦{x.item.price.toLocaleString()}</span> <br />
+                                                                            <span className='text-right'>₦{(x.item.price * x.quantity).toLocaleString()}</span> <br />
                                                                             <span className='mt-5 block text-3xl'>
                                                                                 <button onClick={() => removeAction(x.item.id)}>
                                                                                     &times;
@@ -403,10 +402,10 @@ const Cart_Section = ({ notAuth, countries, address, email }: { email: string, a
                                                         <h2 className='text-sm text-gray-400 text-left whitespace-nowrap'>Size: {x.item.sizes[0]}</h2>
                                                         <div className='md:flex items-center hidden'>
                                                             <span className='text-xl mr-3'>&times;</span>
-                                                            Remove
+                                                            <button onClick={()=> removeAction(x.item.id)}>Remove</button>
                                                         </div>
                                                         <div className='flex items-center md:hidden rounded-lg gap-x-4 border-[1px] border-black justify-between py-1 px-3 shadow-md'>
-                                                            <button onClick={() => setQuantity(quantity === 1 ? 1 : quantity - 1)}>-</button><span className='font-extrabold'>{quantity}</span><button onClick={() => setQuantity(quantity + 1)}>+</button>
+                                                            <button onClick={() => updateItemQuantity(x.item.id, 'reduce')}>-</button><span className='font-extrabold'>{x.quantity}</span><button onClick={() => updateItemQuantity(x.item.id, 'add')}>+</button>
                                                         </div>
                                                     </div>
                                                 </div>
