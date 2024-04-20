@@ -13,6 +13,7 @@ import { useClientMediaQuery } from '@/src/Helpers/Hooks'
 const ShopPage = ({ products }: { products: ISBProducts[] }) => {
     const { enqueueSnackbar } = useSnackbar()
     const [priceRanges, setPriceRanges] = useState([
+        { min: 5000, max: 300000, isChecked: true, id: 7 },
         { min: 10000, max: 15000, isChecked: false, id: 1 },
         { min: 15000, max: 20000, isChecked: false, id: 6 },
         { min: 20000, max: 30000, isChecked: false, id: 2 },
@@ -51,10 +52,10 @@ const ShopPage = ({ products }: { products: ISBProducts[] }) => {
         }
     }, [category])
     useEffect(() => {
-            setLoading(true)
-            setTimeout(() => {
-                setItems(searchAction(active ?? "all"))
-            }, 2500);
+        setLoading(true)
+        setTimeout(() => {
+            setItems(searchAction(active ?? "all"))
+        }, 2500);
     }, [active])
     const categoryFilter = (categoryyyyyy: string) => {
         setActive(categoryyyyyy)
@@ -138,16 +139,17 @@ const ShopPage = ({ products }: { products: ISBProducts[] }) => {
                     </div>
                     <div>
                         <form className='text-gray-600 gap-y-5 flex-col flex'>
-
-                            <li className='w-full flex justify-between items-center'>
-                                <span>All Prices</span>
-                                <span>
-                                    <input className='w-4 h-4' type="checkbox" name="" id=""
-                                        onChange={e => { e.target.checked && setSelectedPriceRanges({ min: 5000, max: 300000 });setPriceRanges(x => x.map(state => ({...state,isChecked:false}))) }}
+                            {priceRanges.map((range, index) => index === 0 ? (
+                                <label className='w-full md:text-sm lg:text-[18px] flex justify-between' key={index}>
+                                    All Prices
+                                    <input
+                                        className='w-4 h-4'
+                                        type="checkbox"
+                                        checked={range.isChecked}
+                                        onChange={() => handleCheckboxChange(range.min, range.max, range.id)}
                                     />
-                                </span>
-                            </li>
-                            {priceRanges.map((range, index) => (
+                                </label>
+                            ) : (
                                 <label className='w-full md:text-sm lg:text-[18px] flex justify-between' key={index}>
                                     {` ₦ ${range.min.toLocaleString()} - ₦ ${range.max.toLocaleString()}`}
                                     <input

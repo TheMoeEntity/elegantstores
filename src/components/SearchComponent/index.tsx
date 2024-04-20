@@ -1,5 +1,5 @@
 'use client'
-import React, { FormEvent, useContext, useEffect, useState } from 'react'
+import React, { FormEvent, MutableRefObject, useContext, useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import { useRouter } from 'next/navigation';
 import { userContext } from '@/src/Helpers/ContextAPI/usercontext';
@@ -11,7 +11,12 @@ interface SearchResult {
 
 const SearchComponent = ({ search, items }: { items: ISBProducts[], search: boolean }) => {
     const { push } = useRouter()
-
+    const ref = useRef<HTMLInputElement | null>(null)
+    useEffect(() => {
+        if (ref.current) {
+            ref.current.focus()
+        }
+    }, [])
     const [searchTerm, setSearchTerm] = useState('');
     const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
 
@@ -24,7 +29,6 @@ const SearchComponent = ({ search, items }: { items: ISBProducts[], search: bool
         setSearchTerm(value);
         console.log(items)
     }
-
     useEffect(() => {
         if (searchTerm.trim() !== '') {
             const filteredResults = items.filter(
@@ -38,6 +42,7 @@ const SearchComponent = ({ search, items }: { items: ISBProducts[], search: bool
     }, [searchTerm, items]);
     const submitSearchTerm = (e: FormEvent<HTMLFormElement>): void => {
         e.preventDefault();
+        searchResults.length = 0
         push(`/search?item=${encodeURIComponent(searchTerm)}`);
     }
     return (
@@ -45,20 +50,21 @@ const SearchComponent = ({ search, items }: { items: ISBProducts[], search: bool
             initial={{ x: search ? '50%' : '-50%', opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             transition={{ duration: 0.75, ease: 'anticipate' }}
-            className='hidden w-fit md:flex items-center mx-auto relative'
+            className='hidden w-fit z-[9999999999999999999999999999999] md:flex items-center mx-auto relative'
         >
             <form onSubmit={e => submitSearchTerm(e)} className="w-full h-full">
                 <input
+                    autoFocus
                     value={searchTerm}
                     onChange={handleInputChange}
                     placeholder='Search for products' type="search" className='text-sm min-w-[300px] h-full rounded-tl-lg rounded-bl-lg outline-none px-4 bg-transparent border-[1px] py-2' name="" id="" />
                 <button><i className='fa-solid fa-magnifying-glass bg-[#171D28] text-white px-5 py-[9px] rounded-tr-md rounded-br-md'></i></button>
                 {searchResults.length > 0 && (
-                    <div className='w-full px-4 shadow-xl py-4 rounded-lg' style={{ position: 'absolute', top: '100%', left: 0, zIndex: 1000000000, backgroundColor: 'white' }}>
+                    <div className='w-full text-left bg-white px-4 shadow-xl py-4 rounded-lg' style={{ position: 'absolute', top: '100%', left: 0, zIndex: 9999, backgroundColor: 'white' }}>
                         <ul>
                             {searchResults.map(result => (
-                                <li key={result.id} >
-                                    <button onClick={() => handleSearch(result.title)}>
+                                <li className='w-full' key={result.id} >
+                                    <button className='w-full text-left' onClick={() => handleSearch(result.title)}>
                                         {result.title}
                                     </button>
                                 </li>
