@@ -28,7 +28,7 @@ const ShopPage = ({ products }: { products: ISBProducts[] }) => {
     const searchParams = useSearchParams()
     const [active, setActive] = useState<string>("all")
     let category = searchParams.get('category')
-    const [items, setItems] = useState(products)
+    const [items, setItems] = useState<ISBProducts[]>([])
     const { addToCart } = useStore()
     const [hideSideBar, setHideSideBar] = useState<boolean>(true)
     const [loading, setLoading] = useState<boolean>(false)
@@ -42,6 +42,7 @@ const ShopPage = ({ products }: { products: ISBProducts[] }) => {
     }
     useEffect(() => {
         if (category) {
+            console.log(category)
             setLoading(true)
             setActive(category ?? "all")
             setTimeout(() => {
@@ -49,13 +50,17 @@ const ShopPage = ({ products }: { products: ISBProducts[] }) => {
             }, 2500);
         }
     }, [category])
-
-    const [search, setSearch] = useState<boolean>(false)
-    const categoryFilter = (category: string) => {
-        setActive(category)
+    useEffect(() => {
+            setLoading(true)
+            setTimeout(() => {
+                setItems(searchAction(active ?? "all"))
+            }, 2500);
+    }, [active])
+    const categoryFilter = (categoryyyyyy: string) => {
+        setActive(categoryyyyyy)
         setLoading(true)
         setTimeout(() => {
-            setItems(searchAction(category ?? "all"))
+            setItems(searchAction(categoryyyyyy ?? "all"))
         }, 2500);
     }
     const priceFilterAction = () => {
@@ -137,8 +142,8 @@ const ShopPage = ({ products }: { products: ISBProducts[] }) => {
                             <li className='w-full flex justify-between items-center'>
                                 <span>All Prices</span>
                                 <span>
-                                    <input className='w-4 h-4' defaultChecked type="checkbox" name="" id=""
-                                        onChange={e => { e.target.checked && setSelectedPriceRanges({ min: 5000, max: 300000 });/*setPriceRanges(x => x.map(state => ({...state,isChecked:false})))*/ }}
+                                    <input className='w-4 h-4' type="checkbox" name="" id=""
+                                        onChange={e => { e.target.checked && setSelectedPriceRanges({ min: 5000, max: 300000 });setPriceRanges(x => x.map(state => ({...state,isChecked:false}))) }}
                                     />
                                 </span>
                             </li>
