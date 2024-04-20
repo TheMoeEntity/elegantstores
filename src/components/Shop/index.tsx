@@ -112,7 +112,7 @@ const ShopPage = ({ products }: { products: ISBProducts[] }) => {
                         &times;
                     </button>
                     <div className='text-xl'>
-                        <i className='fa-solid fa-filter mr-3'></i>
+                        <i className='fas fa-list mr-3'></i>
                         Filter
                     </div>
                     <div className='text-xl'>
@@ -159,7 +159,7 @@ const ShopPage = ({ products }: { products: ISBProducts[] }) => {
                 <div className='md:basis-[72%] basis-full'>
                     <div className='my-8 flex md:hidden justify-between border-b-[1px] border-t-[1px] border-gray-300 py-6 mx-auto w-[90%]'>
                         <div className='text-xl'>
-                            <i className='fa-solid fa-filter mr-3'></i>
+                            <i className='fa-solid fa-list mr-3'></i>
                             <button onClick={() => setHideSideBar(false)}>
                                 Filter
                             </button>
@@ -175,8 +175,13 @@ const ShopPage = ({ products }: { products: ISBProducts[] }) => {
                             Shop
                         </div>
                         <div>
-                            Sort by
-                            <i className='fa-solid fa-angle-down ml-3'></i>
+                            <select
+                                className="custom-select outline-none w-full px-2 py-2 text-[black] font-semiold border-[1px] border-[#eef5ff]"
+                            >
+                                <option>--Sort By--</option>
+                                <option>Newest</option>
+                                <option>Older</option>
+                            </select>
                         </div>
                     </div>
                     <div className='md:px-5 py-12 max-w-full flex flex-col gap-10 w-full h-fit md:w-[100%] mx-auto'>

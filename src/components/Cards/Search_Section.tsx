@@ -123,7 +123,7 @@ const Search_Section = ({ products, searchTerm }: { searchTerm: string, products
                     <div className='md:basis-[72%]'>
                         <div className='my-8 flex md:hidden justify-between border-b-[1px] border-t-[1px] border-gray-300 py-6 mx-auto w-[90%]'>
                             <div className='text-xl'>
-                                <i className='fa-solid fa-filter mr-3'></i>
+                                <i className='fas fa-list-alt mr-3'></i>
                                 <button onClick={() => setSearch(true)}>
                                     Filter
                                 </button>
