@@ -112,7 +112,7 @@ const ShopPage = ({ products }: { products: ISBProducts[] }) => {
             </div>
 
             <div className='flex my-8 flex-row gap-3 flex-wrap mx-auto w-[95%]'>
-                <div className={(hideSideBar ? '-translate-x-[100%]' : 'translate-x-0') + ' trans shadow-2xl top-0 w-[250px] px-5 md:px-0 md:w-auto h-screen flex pt-10 md:pt-0 overflow-y-scroll left-0 bg-[#F9FBFD] md:bg-transparent md:shadow-none z-[10000] fixed md:static md:flex basis-[23%] md:h-[800px] gap-y-9 flex-col'}>
+                <div className={(hideSideBar ? '-translate-x-[100%]' : 'translate-x-0') + ' trans shadow-2xl top-0 w-[250px] px-5 md:px-0 md:w-auto h-full flex pt-10 md:pt-0 overflow-y-scroll left-0 bg-[#F9FBFD] md:bg-transparent md:shadow-none z-[10000] fixed md:static md:flex basis-[23%] md:h-[800px] gap-y-9 flex-col'}>
                     <button onClick={() => setHideSideBar(true)} className='md:hidden text-4xl absolute top-5 right-5'>
                         &times;
                     </button>
@@ -182,7 +182,7 @@ const ShopPage = ({ products }: { products: ISBProducts[] }) => {
                         </div>
                         <div>
                             <select
-                                className="custom-select outline-none w-full px-2 py-2 text-[black] font-semiold border-[1px] border-[#eef5ff]"
+                                className="custom-select text-sm outline-none w-full px-2 py-2 text-[black] font-semiold border-[1px] border-[#eef5ff]"
                             >
                                 <option>--Sort By--</option>
                                 <option>Newest</option>
