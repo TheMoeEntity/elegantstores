@@ -4,37 +4,33 @@ import catimg from '../../../public/images/catimg.png'
 import catimg2 from '../../../public/images/catimg2.png'
 import catimg3 from '../../../public/images/catimg3.png'
 import catimg4 from '../../../public/images/catimg4.png'
-import img from '../../../public/images/img.png'
-import img2 from '../../../public/images/img2.png'
-import img3 from '../../../public/images/img3.png'
-import img4 from '../../../public/images/img4.png'
-import img5 from '../../../public/images/img5.png'
-import img6 from '../../../public/images/img6.png'
+import shoes from '../../../public/images/shoes.webp'
+import jacket from '../../../public/images/winter.jpeg'
+import hoodie from '../../../public/images/boy.jpeg'
+import shirt from '../../../public/images/shirtss.webp'
+import pants from '../../../public/images/joggers.webp'
+import Link from 'next/link'
 
 const assets: { img: StaticImageData, text: string }[] = [
     {
-        img: img,
-        text: "Puffers"
+        img: shirt,
+        text: "Shirts"
     },
     {
-        img: img2,
-        text: "Bombers"
+        img: hoodie,
+        text: "hoodies"
     },
     {
-        img: img3,
+        img: jacket,
         text: "Jackets"
     },
     {
-        img: img4,
-        text: "Gilets"
+        img: shoes,
+        text: "Shoes"
     },
     {
-        img: img5,
-        text: "Coats"
-    },
-    {
-        img: img6,
-        text: "Rainwears"
+        img: pants,
+        text: "Pants"
     }
 ]
 const Catgories = () => {
@@ -43,19 +39,23 @@ const Catgories = () => {
             <div>
                 <h2 className='text-4xl font-[500] text-center leading-tight'>Shop by Categories</h2>
             </div>
-            <div className='flex gap-y-7 md:gap-4 md:flex-row w-full md:w-[90%] justify-center mx-auto mb-7 flex-wrap'>
+            <div className='flex gap-y-7 md:gap-4 md:flex-row w-full md:w-[80%] justify-center md:justify-center mx-auto mb-7 flex-wrap'>
                 {
                     assets.map((x, i) => (
                         <div key={i} className='w-full flex md:justify-center gap-7 justify-center flex-[40%] basis-[40%] md:basis-[10%]'>
-                            <div className='gap-4 max:h-[160px] min-w-[130px]  flex flex-col justify-center md:w-auto md:min-w-[auto] rounded-full'>
-                                <Image
-                                    src={x.img}
-                                    alt="category"
-                                    quality={100}
-                                    sizes={'100vw'}
-                                    className="object-cover rounded-full w-full h-auto"
-                                />
-                                <span className='text-center md:text-sm'>{x.text}</span>
+                            <div className='gap-4 flex flex-col justify-center rounded-full'>
+                                <div className='w-[80px] h-[80px] relative'>
+                                    <Image
+                                        src={x.img}
+                                        alt="category"
+                                        quality={100}
+                                        fill
+                                        sizes={'100vw'}
+                                        className="object-cover rounded-full w-full h-auto"
+                                    />
+                                </div>
+
+                                <Link href={'/shop?category=' + x.text.toLowerCase()} className='text-center md:text-sm'>{x.text}</Link>
                             </div>
                         </div>
                     ))
