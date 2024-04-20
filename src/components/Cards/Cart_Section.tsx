@@ -431,13 +431,13 @@ const Cart_Section = ({ notAuth, countries, address, email }: { email: string, a
                                     <div className='flex gap-x-3 py-3'>
                                         Subtotal
                                     </div>
-                                    <span>₦{withCoupon}</span>
+                                    <span>₦{withCoupon.toLocaleString()}</span>
                                 </div>
                                 <div className='flex rounded-md justify-between items-center px-4 border-b-[1px] border-gray-200'>
                                     <h2 className='flex gap-x-3 py-3 text-xl font-semibold'>
                                         Total
                                     </h2>
-                                    <span>₦{withCoupon}</span>
+                                    <span>₦{withCoupon.toLocaleString()}</span>
                                 </div>
                                 <div>
                                     <button disabled={notAuth ? true : cart.length === 0 ? true : false} className='bg-black text-white w-full py-3 rounded-md disabled:bg-slate-300'>Place order</button>
