@@ -42,14 +42,15 @@ const Profile = ({ profileOpen = false, forceClose, url }: { url: string, profil
         <div
             style={{
                 top: profileOpen === true ? "130px" : "-380px",
-                visibility: !profileOpen ? 'hidden' : 'visible'
+                visibility: !profileOpen ? 'hidden' : 'visible',
+                zIndex:'99999999999'
             }}
             className={styles.profile}
         >
             {showModal && (
                 <div className="fixed">
                     <div
-                        className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none"
+                        className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-[99999999999] outline-none focus:outline-none"
                     >
                         <div className="relative w-auto my-6 mx-auto max-w-3xl">
                             {/*content*/}
