@@ -45,7 +45,7 @@ const Header = ({ getSession, url, products }: { products: ISBProducts[], url: s
                 forceClose={() => setProfileOpen(false)}
                 profileOpen={profileOpen}
             />
-            <Sidebar profileOpen={profileOpen} setProfileOpen={setProfileOpen} cartOpen={cartOpen} setCartOpen={setCartOpen} isOpen={isOpen} setOpen={setOpen} product={product} setProduct={setProduct} company={company} setCompany={setCompany} />
+            <Sidebar products={products} profileOpen={profileOpen} setProfileOpen={setProfileOpen} cartOpen={cartOpen} setCartOpen={setCartOpen} isOpen={isOpen} setOpen={setOpen} product={product} setProduct={setProduct} company={company} setCompany={setCompany} />
 
             <div className={`transition-all ease-in duration-1000 w-full bg-[#377DFF]  text-white gap-x-4 flex overflow-hidden justify-center items-center px-4 ${sales === true ? 'overflow-auto max-h-fit py-3' : 'max-h-0'} sales`}>
                 <span>30% off storewide - limited time!</span>
@@ -65,7 +65,7 @@ const Header = ({ getSession, url, products }: { products: ISBProducts[], url: s
 
                 {
                     search && (
-                        <SearchComponent items={products} search={search} />
+                        <SearchComponent sidebar={false} items={products} search={search} />
                     )
                 }
 

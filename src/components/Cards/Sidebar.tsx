@@ -1,10 +1,13 @@
 'use client'
 import { userContext } from "@/src/Helpers/ContextAPI/usercontext"
+import { ISBProducts } from "@/src/Helpers/types"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { useContext } from "react"
+import { useContext, useState } from "react"
+import { motion, AnimatePresence } from 'framer-motion'
+import SearchComponent from "../SearchComponent"
 
-const Sidebar = ({ setOpen, isOpen, setProduct, product, company, setCompany, cartOpen, profileOpen, setCartOpen, setProfileOpen }:
+const Sidebar = ({ setOpen, isOpen, products, setProduct, product, company, setCompany, cartOpen, profileOpen, setCartOpen, setProfileOpen }:
     {
         setOpen: (state: React.SetStateAction<boolean>) => void,
         setProduct: (state: React.SetStateAction<boolean>) => void,
@@ -15,9 +18,11 @@ const Sidebar = ({ setOpen, isOpen, setProduct, product, company, setCompany, ca
         isOpen: boolean
         company: boolean,
         cartOpen: boolean,
-        profileOpen: boolean
+        profileOpen: boolean,
+        products: ISBProducts[]
     }) => {
     const { push } = useRouter()
+    const [search, setSearch] = useState(true)
     const { user } = useContext(userContext)
     return (
         <div className={`md:hidden shadow-2xl overflow-y-scroll w-[80%] h-full fixed duration-500 ease z-[999999999999999999999999999999] bg-white top-0 ${isOpen == !true ? 'left-[-100%]' : 'left-0'} no-scrollbar`}>
@@ -28,11 +33,10 @@ const Sidebar = ({ setOpen, isOpen, setProduct, product, company, setCompany, ca
                         &times;
                     </button>
                 </div>
-
-                <input type="search" name="" id="" className='w-full text-xl outline-none rounded-xl border-[1px] px-3 py-2' placeholder='Search' />
-
             </div>
-
+            <div className="px-4 trans my-3 h-auto z-[10000] mx-auto w-full">
+                <SearchComponent sidebar={true} items={products} search={search} />
+            </div>
             <div className='mt-5 flex flex-col h-full'>
 
                 <div className='flex flex-col gap-9 mx-auto px-9 mb-10 w-full'>
