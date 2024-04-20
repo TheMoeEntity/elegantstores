@@ -179,7 +179,12 @@ const Cart_Section = ({ notAuth, countries, address, email }: { email: string, a
                                                                             </div>
                                                                         </td>
                                                                         <td className="whitespace-nowrap px-6 py-4 text-xl hidden md:table-cell">₦{(x.item.price * x.quantity).toLocaleString()}</td>
-                                                                        <td className="whitespace-nowrap px-6 font-extrabold text-xl py-4 hidden md:table-cell">₦{(x.item.price * x.quantity).toLocaleString()}</td>
+                                                                        <td className="whitespace-nowrap px-6 font-extrabold text-xl py-4 hidden md:table-cell">
+                                                                            <TextTransition springConfig={presets.wobbly}>
+                                                                                ₦{(x.item.price * x.quantity).toLocaleString()}
+                                                                            </TextTransition>
+
+                                                                        </td>
                                                                         <td className="whitespace-nowrap pl-8 py-4 text-xl table-cell md:hidden text-center">
                                                                             <span className='text-right'>₦{(x.item.price * x.quantity).toLocaleString()}</span> <br />
                                                                             <span className='mt-5 block text-3xl'>
@@ -225,13 +230,19 @@ const Cart_Section = ({ notAuth, countries, address, email }: { email: string, a
                                     <div className='flex gap-x-3 py-3'>
                                         Subtotal
                                     </div>
-                                    <span>₦{total.toLocaleString()}</span>
+
+                                    <TextTransition springConfig={presets.wobbly}>
+                                        ₦{total.toLocaleString()}
+                                    </TextTransition>
+
                                 </div>
                                 <div className='flex rounded-md justify-between items-center px-4 border-b-[1px] border-gray-200'>
                                     <h2 className='flex gap-x-3 py-3 text-xl font-semibold'>
                                         Total
                                     </h2>
-                                    <span>₦{total.toLocaleString()}</span>
+                                    <TextTransition springConfig={presets.wobbly}>
+                                        ₦{total.toLocaleString()}
+                                    </TextTransition>
                                 </div>
                                 <div>
                                     <button onClick={() => setStep(1)} className='bg-black text-white w-full py-3 rounded-md'>Checkout</button>
@@ -402,7 +413,7 @@ const Cart_Section = ({ notAuth, countries, address, email }: { email: string, a
                                                         <h2 className='text-sm text-gray-400 text-left whitespace-nowrap'>Size: {x.item.sizes[0]}</h2>
                                                         <div className='md:flex items-center hidden'>
                                                             <span className='text-xl mr-3'>&times;</span>
-                                                            <button onClick={()=> removeAction(x.item.id)}>Remove</button>
+                                                            <button onClick={() => removeAction(x.item.id)}>Remove</button>
                                                         </div>
                                                         <div className='flex items-center md:hidden rounded-lg gap-x-4 border-[1px] border-black justify-between py-1 px-3 shadow-md'>
                                                             <button onClick={() => updateItemQuantity(x.item.id, 'reduce')}>-</button><span className='font-extrabold'>{x.quantity}</span><button onClick={() => updateItemQuantity(x.item.id, 'add')}>+</button>
