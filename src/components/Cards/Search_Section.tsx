@@ -12,7 +12,6 @@ import { useSnackbar } from 'notistack'
 
 const Search_Section = ({ products, searchTerm }: { searchTerm: string, products: ISBProducts[] }) => {
     const [active, setActive] = useState<string>(searchTerm)
-    console.log(searchTerm)
     useEffect(() => {
         setLoading(true)
         setActive(searchTerm)
@@ -32,7 +31,7 @@ const Search_Section = ({ products, searchTerm }: { searchTerm: string, products
             const newRange = state.map(range => range.id === id ? { ...range, isChecked: true } : { ...range, isChecked: false })
             return newRange
         })
-        console.log(selectedPriceRanges)
+
     };
     const { enqueueSnackbar } = useSnackbar()
     const [priceRanges, setPriceRanges] = useState([

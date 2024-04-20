@@ -68,7 +68,6 @@ const ProductsPage = ({ justIn, item, revalidate, oldwishlist }: { oldwishlist: 
       title: item.title
     }
     const itemExists = oldwishlist.find(item => item.title == wishList.title)
-    console.log(itemExists)
     if (itemExists) {
       enqueueSnackbar('Item already in wishlist', { variant: 'error' })
       return

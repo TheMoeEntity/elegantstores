@@ -43,7 +43,6 @@ const ShopPage = ({ products }: { products: ISBProducts[] }) => {
     }
     useEffect(() => {
         if (category) {
-            console.log(category)
             setLoading(true)
             setActive(category ?? "all")
             setTimeout(() => {

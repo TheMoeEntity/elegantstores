@@ -29,7 +29,6 @@ export async function update(wishList: wishList, setDidReview: (bool: boolean) =
         // toast.error("Error adding item to wishlist." + error)
         throw new Error('Failed to create task')
     }
-    console.log("hello")
     revalidatePath('/account')
     return { success: true }
 }
