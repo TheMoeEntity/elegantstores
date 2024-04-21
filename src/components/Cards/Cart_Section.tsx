@@ -12,6 +12,9 @@ import { Helpers } from '@/src/Helpers'
 import { enqueueSnackbar } from 'notistack'
 import { addressType } from '@/src/Helpers/types'
 import { userContext } from '@/src/Helpers/ContextAPI/usercontext'
+import { PayPalBtn } from '@/src/Helpers/Views'
+import { PayPalButton } from 'react-paypal-button-v2'
+
 
 
 const Cart_Section = ({ notAuth, countries, address, email }: { email: string, address: addressType, countries: { name: string; idd: { root: string, suffixes: string[] }; nameAndSymbol: string; population: number; }[] | [], notAuth: boolean }) => {
@@ -20,6 +23,10 @@ const Cart_Section = ({ notAuth, countries, address, email }: { email: string, a
     const { user } = useContext(userContext)
     const removeAction = (id: string) => {
         removeFromCart(id);
+    }
+    const convertToUSD = ():number => { 
+        const usd = total * 0.00086957
+        return usd
     }
     const produceExtraCost = (): number => {
         return shippingOptions == 0 ? 0 : shippingOptions == 1 ? 3200 : (total * 0.1730)
@@ -40,7 +47,7 @@ const Cart_Section = ({ notAuth, countries, address, email }: { email: string, a
     const [allCountries, setAllCountries] = useState(countries)
     const [loadError, setLoadError] = useState('')
     const [selectedOption, setSelectedOption] = useState<String>("");
-    const [extraCost, setExtraCost] = useState<number>(0)
+    const [paymentOption, setPaymentOption] = useState<number>(0)
 
     const onOptionChangeHandler = (
         event: ChangeEvent<HTMLSelectElement>
@@ -231,9 +238,9 @@ const Cart_Section = ({ notAuth, countries, address, email }: { email: string, a
 
                                                     </div>
                                                 </div>
-                                                <button onClick={() => setShippingOptions(1)}>Express Shipping</button>
+                                                <button onClick={() => setShippingOptions(1)}>Express shipping</button>
                                             </div>
-                                            <span className='text-red-600'>+ ₦3,200.00</span>
+                                            <span className='text-red-500'>+ ₦3400</span>
                                         </div>
                                         <div className={'flex rounded-md justify-between items-center px-4 border-[1px] border-black trans ' + (shippingOptions == 2 && 'bg-[#F3F5F7]')}>
                                             <div className='flex items-center gap-x-3 py-3'>
@@ -373,12 +380,35 @@ const Cart_Section = ({ notAuth, countries, address, email }: { email: string, a
 
                                 <div className='flex-1 border-[1px] max-w-full border-black rounded-md px-4 md:px-8 py-5 flex flex-col gap-y-5'>
                                     <h2 className='font-semibold text-2xl'>Payment method</h2>
-                                    <div className='flex rounded-md bg-[#F3F5F7] justify-between items-center px-4 border-[1px] border-black'>
-                                        <div className='flex gap-x-3 items-center py-3'>
-                                            <div className='w-4 h-4 flex items-center justify-center border-[1px] border-black rounded-full'>
-                                                <div className='w-2 h-2 bg-black rounded-full'></div>
+                                    <div className='flex rounded-md bg-[#F3F5F7] justify-between flex-col px-4 border-[1px] border-black'>
+                                        <div className='flex items-center gap-x-3 py-3'>
+                                            <div className='w-4 h-4 flex items-center justify-center border-[1px] rounded-full border-black'>
+                                                <div className={'w-2 h-2 rounded-full trans ' + (paymentOption === 1 ? 'bg-black' : 'bg-transparent')}>
+
+                                                </div>
                                             </div>
-                                            <div>Paypal</div>
+                                            <button onClick={() => setPaymentOption(1)}>PayPal</button>
+                                        </div>
+                                        <div className={'overflow-hidden trans ' + (paymentOption === 1 ? 'max-h-fit py-1 h-fit' : 'max-h-0 h-0 py-0')}>
+                                            <PayPalButton
+                                                amount={total}
+                                                // shippingPreference="NO_SHIPPING" // default is "GET_FROM_FILE"
+                                                onSuccess={(details: any, data: any) => {
+                                                    alert("Transaction completed by " + details.payer.name.given_name);
+
+                                                    // OPTIONAL: Call your server to save the transaction
+                                                    return fetch("/paypal-transaction-complete", {
+                                                        method: "post",
+                                                        body: JSON.stringify({
+                                                            orderId: data.orderID
+                                                        })
+                                                    });
+                                                }}
+                                                options={{
+                                                    clientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID!,
+                                                    currency: "USD"
+                                                }}
+                                            />
                                         </div>
                                     </div>
                                     <div className='flex rounded-md bg-[#F3F5F7] justify-between items-center px-4 border-[1px] border-black'>
@@ -402,13 +432,12 @@ const Cart_Section = ({ notAuth, countries, address, email }: { email: string, a
                                         </div>
                                     </div>
                                     <div className='flex rounded-md bg-[#F3F5F7] justify-between items-center px-4 border-[1px] border-black'>
-                                        <div className='flex gap-x-3 items-center py-3'>
-                                            <div className='w-4 h-4 flex items-center justify-center border-[1px] border-black rounded-full'>
-                                                {
-                                                    false && (<div className='w-2 h-2 bg-black rounded-full'></div>)
-                                                }
+                                        <div className='flex items-center gap-x-3 py-3'>
+                                            <div className='w-4 h-4 flex items-center justify-center border-[1px] rounded-full border-black'>
+                                                <div className={'w-2 h-2 rounded-full trans ' + (paymentOption === 3 ? 'bg-black' : 'bg-transparent')}>
+                                                </div>
                                             </div>
-                                            <div>Flutterwave</div>
+                                            <button onClick={() => setPaymentOption(3)}>Flutterwave</button>
                                         </div>
                                     </div>
                                 </div>
@@ -444,10 +473,10 @@ const Cart_Section = ({ notAuth, countries, address, email }: { email: string, a
                                                     </div>
                                                 </div>
                                             </div>
-                                            <td className="whitespace-nowrap align-middle pl-8 pt-10 text-xl table-cell text-center">
+                                            <div className="whitespace-nowrap align-middle pl-8 pt-10 text-xl table-cell text-center">
                                                 <span className='text-right '>₦{x.item.price.toLocaleString()}</span> <br />
                                                 <span className='mt-5 md:hidden text-3xl block'>&times;</span>
-                                            </td>
+                                            </div>
                                         </div>
                                     ))
                                 }

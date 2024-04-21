@@ -1,7 +1,7 @@
 import client from "@/src/Helpers/paypal";
 import { NextRequest, NextResponse } from "next/server";
 import paypal from '@paypal/checkout-server-sdk'
-
+import { RequestData } from "next/dist/server/web/types";
 
 export async function POST(req: NextRequest, _res: NextResponse) {
     const { order_ID } = await req.json()
@@ -12,7 +12,8 @@ export async function POST(req: NextRequest, _res: NextResponse) {
         const PaypalClient = client()
         const request = new paypal.orders.OrdersCaptureRequest(order_ID)
         // request.requestBody({
-            
+
+        //     url:''
         // })
         const response = await PaypalClient.execute(request)
         if (!response) {

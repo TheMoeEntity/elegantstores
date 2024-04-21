@@ -1,5 +1,6 @@
-import { motion } from "framer-motion";
+import { PayPalScriptProvider, PayPalButtons } from '@paypal/react-paypal-js'
 import { StaticImageData } from "next/image";
+import { OnApproveData, OnApproveActions } from "@paypal/paypal-js/types/components/buttons";
 export const scrollTopView = (scrollBtn: React.MutableRefObject<HTMLDivElement | null>, scrollTop: () => void): JSX.Element => {
     return (
         <div ref={scrollBtn} onClick={scrollTop} className="scrollTop">
@@ -105,3 +106,42 @@ export const CartView = (
         </div>
     );
 };
+const onApprove = async (data: OnApproveData, actions: OnApproveActions) => {
+    if (actions.order) {
+        return actions.order.capture().then(function (details) {
+            const { payment_source } = details;
+            // setBillingDetails(payer);
+            // setSucceeded(true);
+        }).catch(err => console.log('error')
+            // setPaypalErrorMessage("Something went wrong.")
+        );
+    }
+
+};
+export const PayPalBtn = (paypalCreateOrder: () => Promise<any>): JSX.Element => {
+    return (
+        <PayPalScriptProvider
+            options={{
+                clientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID!,
+                currency: 'USD',
+                dataClientToken:'EAZ_vmzC_Ftt6VoBxwEhZ5iadc6IYsTNqfMGWeuM6Lr027KxaG9E8kGwHNijda9bCvkbafpF3j64KzEd',
+                intent: 'capture'
+            }}
+        >
+            <PayPalButtons
+                style={{
+                    color: 'gold',
+                    shape: 'rect',
+                    label: 'pay',
+                    height: 50
+                }}
+                createOrder={async (data, actions) => {
+                    let order_id = await paypalCreateOrder()
+                    return order_id + ''
+                }}
+                onApprove={onApprove}
+            />
+        </PayPalScriptProvider>
+    )
+
+}
