@@ -13,7 +13,7 @@ import { enqueueSnackbar } from 'notistack'
 import { addressType } from '@/src/Helpers/types'
 import { userContext } from '@/src/Helpers/ContextAPI/usercontext'
 import { PayPalBtn } from '@/src/Helpers/Views'
-import { PayPalButton } from 'react-paypal-button-v2'
+// import { PayPalButton } from 'react-paypal-button-v2'
 
 
 
@@ -390,7 +390,7 @@ const Cart_Section = ({ notAuth, countries, address, email }: { email: string, a
                                             <button onClick={() => setPaymentOption(1)}>PayPal</button>
                                         </div>
                                         <div className={'overflow-hidden trans ' + (paymentOption === 1 ? 'max-h-fit py-1 h-fit' : 'max-h-0 h-0 py-0')}>
-                                            <PayPalButton
+                                            {/* <PayPalButton
                                                 amount={total}
                                                 // shippingPreference="NO_SHIPPING" // default is "GET_FROM_FILE"
                                                 onSuccess={(details: any, data: any) => {
@@ -408,7 +408,7 @@ const Cart_Section = ({ notAuth, countries, address, email }: { email: string, a
                                                     clientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID!,
                                                     currency: "USD"
                                                 }}
-                                            />
+                                            /> */}
                                         </div>
                                     </div>
                                     <div className='flex rounded-md bg-[#F3F5F7] justify-between items-center px-4 border-[1px] border-black'>
