@@ -21,6 +21,9 @@ const Cart_Section = ({ notAuth, countries, address, email }: { email: string, a
     const removeAction = (id: string) => {
         removeFromCart(id);
     }
+    const produceExtraCost = (): number => {
+        return shippingOptions == 0 ? 0 : shippingOptions == 1 ? 3200 : (total * 0.1730)
+    }
     const total = useMemo(
         () => {
             return Helpers.CalculateTotal(cart)
@@ -30,12 +33,14 @@ const Cart_Section = ({ notAuth, countries, address, email }: { email: string, a
     const [couponStatus, setCouponStatus] = useState('')
     const [_quantity, setQuantity] = useState<number>(1)
     const [step, setStep] = useState<number>(0)
+    const [shippingOptions, setShippingOptions] = useState<number>(0)
     const [withCoupon, setWithCoupon] = useState<number>(total)
     const checkout = searchParams.get('checkout')
     const [orderplaced, setOrderPlaced] = useState<boolean>(false)
     const [allCountries, setAllCountries] = useState(countries)
     const [loadError, setLoadError] = useState('')
     const [selectedOption, setSelectedOption] = useState<String>("");
+    const [extraCost, setExtraCost] = useState<number>(0)
 
     const onOptionChangeHandler = (
         event: ChangeEvent<HTMLSelectElement>
@@ -208,26 +213,38 @@ const Cart_Section = ({ notAuth, countries, address, email }: { email: string, a
                                 cart.length > 0 && (
                                     <div className='flex-1 border-[1px] md:w-[60%] max-w-full border-black rounded-md px-4 py-5 flex flex-col gap-y-5'>
                                         <h2 className='font-semibold text-2xl'>Cart summary</h2>
-                                        <div className='flex rounded-md bg-[#F3F5F7] justify-between items-center px-4 border-[1px] border-black'>
-                                            <div className='flex gap-x-3 py-3'>
-                                                <div></div>
-                                                <div>Free Shipping</div>
+                                        <div className={'flex rounded-md justify-between items-center px-4 border-[1px] border-black trans ' + (shippingOptions == 0 && 'bg-[#F3F5F7]')}>
+                                            <div className='flex items-center gap-x-3 py-3'>
+                                                <div className='w-4 h-4 flex items-center justify-center border-[1px] rounded-full border-black'>
+                                                    <div className={'w-2 h-2 rounded-full trans ' + (shippingOptions === 0 ? 'bg-black' : 'bg-transparent')}>
+
+                                                    </div>
+                                                </div>
+                                                <button onClick={() => setShippingOptions(0)}>Free Shipping</button>
                                             </div>
                                             <span>₦0.00</span>
                                         </div>
-                                        <div className='flex rounded-md justify-between items-center px-4 border-[1px] border-black'>
-                                            <div className='flex gap-x-3 py-3'>
-                                                <div></div>
-                                                <div>Express Shipping</div>
+                                        <div className={'flex rounded-md justify-between items-center px-4 border-[1px] border-black trans ' + (shippingOptions == 1 && 'bg-[#F3F5F7]')}>
+                                            <div className='flex items-center gap-x-3 py-3'>
+                                                <div className='w-4 h-4 flex items-center justify-center border-[1px] rounded-full border-black'>
+                                                    <div className={'w-2 h-2 rounded-full trans ' + (shippingOptions === 1 ? 'bg-black' : 'bg-transparent')}>
+
+                                                    </div>
+                                                </div>
+                                                <button onClick={() => setShippingOptions(1)}>Express Shipping</button>
                                             </div>
-                                            <span>₦0.00</span>
+                                            <span className='text-red-600'>+ ₦3,200.00</span>
                                         </div>
-                                        <div className='flex rounded-md justify-between items-center px-4 border-[1px] border-black'>
-                                            <div className='flex gap-x-3 py-3'>
-                                                <div></div>
-                                                <div>Pick up</div>
+                                        <div className={'flex rounded-md justify-between items-center px-4 border-[1px] border-black trans ' + (shippingOptions == 2 && 'bg-[#F3F5F7]')}>
+                                            <div className='flex items-center gap-x-3 py-3'>
+                                                <div className='w-4 h-4 flex items-center justify-center border-[1px] rounded-full border-black'>
+                                                    <div className={'w-2 h-2 rounded-full trans ' + (shippingOptions === 2 ? 'bg-black' : 'bg-transparent')}>
+
+                                                    </div>
+                                                </div>
+                                                <button onClick={() => setShippingOptions(2)}>Pick up</button>
                                             </div>
-                                            <span>₦0.00</span>
+                                            <span className='text-red-500'>+ 17.30%</span>
                                         </div>
                                         <div className='flex rounded-md justify-between items-center px-4 border-b-[1px] border-gray-200'>
                                             <div className='flex gap-x-3 py-3'>
@@ -244,7 +261,7 @@ const Cart_Section = ({ notAuth, countries, address, email }: { email: string, a
                                                 Total
                                             </h2>
                                             <TextTransition springConfig={presets.wobbly}>
-                                                ₦{total.toLocaleString()}
+                                                ₦{(total + produceExtraCost()).toLocaleString()}
                                             </TextTransition>
                                         </div>
                                         <div>
@@ -414,7 +431,7 @@ const Cart_Section = ({ notAuth, countries, address, email }: { email: string, a
                                                         />
                                                     </div>
                                                     <div className='flex flex-col gap-y-4 justify-center basis-[40%] max-w-[45%]'>
-                                                        <h2 className='font-semibold md:text-xl text-left'>{x.item.title.slice(0, 13) + "..."}</h2>
+                                                        <h2 className='font-semibold text-left'>{x.item.title.slice(0, 13) + "..."}</h2>
                                                         <h2 className='text-sm text-gray-400 text-left whitespace-nowrap'>Color: {x.item.colors[0]}</h2>
                                                         <h2 className='text-sm text-gray-400 text-left whitespace-nowrap'>Size: {x.item.sizes[0]}</h2>
                                                         <div className='md:flex items-center hidden'>
@@ -428,13 +445,13 @@ const Cart_Section = ({ notAuth, countries, address, email }: { email: string, a
                                                 </div>
                                             </div>
                                             <td className="whitespace-nowrap align-middle pl-8 pt-10 text-xl table-cell text-center">
-                                                <span className='text-right text-sm md:text-xl'>₦{x.item.price.toLocaleString()}</span> <br />
+                                                <span className='text-right '>₦{x.item.price.toLocaleString()}</span> <br />
                                                 <span className='mt-5 md:hidden text-3xl block'>&times;</span>
                                             </td>
                                         </div>
                                     ))
                                 }
-
+                                <hr />
                                 <form onSubmit={e => couponAction(e)} className='flex gap-x-3 w-full items-between justify-between'>
                                     <input placeholder='coupon code' type="text" readOnly={notAuth ? true : cart.length === 0 ? true : false} className='py-2 border-[1px] outline-none rounded-md pl-2 w-[60%]' />
                                     <button type='submit' className='bg-black text-white w-[35%] rounded-md py-2 disabled:bg-slate-300' disabled={notAuth ? true : cart.length === 0 ? true : false} >Apply</button>
@@ -454,7 +471,9 @@ const Cart_Section = ({ notAuth, countries, address, email }: { email: string, a
                                     <h2 className='flex gap-x-3 py-3 text-xl font-semibold'>
                                         Total
                                     </h2>
-                                    <span>₦{withCoupon.toLocaleString()}</span>
+                                    <span>
+                                        ₦{(total + produceExtraCost()).toLocaleString()}
+                                    </span>
                                 </div>
                                 <div>
                                     <button disabled={notAuth ? true : cart.length === 0 ? true : false} className='bg-black text-white w-full py-3 rounded-md disabled:bg-slate-300'>Place order</button>

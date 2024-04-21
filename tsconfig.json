@@ -33,7 +33,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts"
-  ],
+, "src/Helpers/paypal/index.ts"  ],
   "exclude": [
     "node_modules"
   ]

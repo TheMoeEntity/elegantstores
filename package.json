@@ -9,6 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@paypal/checkout-server-sdk": "^1.0.3",
+    "@paypal/react-paypal-js": "^8.2.0",
     "@supabase/auth-helpers-nextjs": "^0.9.0",
     "@supabase/ssr": "^0.1.0",
     "@supabase/supabase-js": "^2.42.0",
@@ -27,6 +29,7 @@
   },
   "devDependencies": {
     "@types/node": "^20",
+    "@types/paypal__checkout-server-sdk": "^1.0.8",
     "@types/probe-image-size": "^7.2.4",
     "@types/react": "^18",
     "@types/react-dom": "^18",
