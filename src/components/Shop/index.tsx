@@ -9,6 +9,7 @@ import { useSnackbar } from 'notistack'
 import { Helpers } from '@/src/Helpers'
 import { useSearchParams } from 'next/navigation'
 import { useClientMediaQuery } from '@/src/Helpers/Hooks'
+import toast from 'react-hot-toast'
 
 const ShopPage = ({ products }: { products: ISBProducts[] }) => {
     const { enqueueSnackbar } = useSnackbar()
@@ -35,10 +36,7 @@ const ShopPage = ({ products }: { products: ISBProducts[] }) => {
     const [loading, setLoading] = useState<boolean>(false)
     const addAction = (item: ISBProducts, quantity: number = 1) => {
         addToCart(item, quantity)
-        enqueueSnackbar({
-            message: "Item has been added to cart",
-            variant: 'success'
-        })
+        toast.success("Item has been added to cart")
 
     }
     useEffect(() => {

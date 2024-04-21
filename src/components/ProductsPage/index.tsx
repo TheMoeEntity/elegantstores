@@ -199,7 +199,7 @@ const ProductsPage = ({ justIn, item, revalidate, oldwishlist }: { oldwishlist: 
               {
                 selectSize.map((x, i) => (
                   <div key={i} className='w-16 px-3 h-16 rounded-md flex flex-col items-center justify-center'>
-                    <button onClick={() => setSelectSize(state => state.map(currItem => x.item == currItem.item ? { item: currItem.item, isActive: true } : { item: currItem.item, isActive: false }))} className={'text-lg trans ' + (x.isActive && 'border-black text-black border-[2px] font-bold py-1 px-2 rounded-md')}>{x.item}</button>
+                    <button onClick={() => setSelectSize(state => state.map(currItem => x.item == currItem.item ? { item: currItem.item, isActive: true } : { item: currItem.item, isActive: false }))} className={'text-lg trans px-3 ' + (x.isActive && 'border-black text-black border-[2px] font-bold py-1 px-2 rounded-md')}>{x.item}</button>
                   </div>
                 ))
               }

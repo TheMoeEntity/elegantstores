@@ -2,8 +2,9 @@ import styles from "./cart.module.css";
 import Image from "next/image";
 import Link from "next/link";
 import { useStore } from "@/src/Helpers/zustand";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 import { Helpers } from "@/src/Helpers";
+import empty from '../../../public/images/empty.webp'
 
 const CartModal = ({ cartOpen, closeCart, forceClose }: { cartOpen: boolean, closeCart: () => void, forceClose: () => void }) => {
     const { cart, removeFromCart } = useStore()
@@ -29,7 +30,16 @@ const CartModal = ({ cartOpen, closeCart, forceClose }: { cartOpen: boolean, clo
             <h2 className="font-extrabold">Shopping Cart</h2>
             {cart.length == 0 ? (
                 <div className={styles.nocart}>
-                    <h4>You have no items in your cart</h4>
+                    <h4>Darn it, cart is empty</h4>
+                    <div className="lg:w-[75%] mx-auto flex items-center justify-center">
+                        <Image
+                            src={empty}
+                            alt="Cart is empty"
+                            quality={100}
+                            sizes={'100vw'}
+                            className={`object-contain w-full md:w-full h-auto`}
+                        />
+                    </div>
                 </div>
             ) : (
                 <ul>
@@ -72,11 +82,18 @@ const CartModal = ({ cartOpen, closeCart, forceClose }: { cartOpen: boolean, clo
                 }}
                 className={styles.bottom}
             >
-                <div className={styles.prices}>
-                    <h3>Cart total</h3>
-                    <h4>₦{Helpers.CalculateTotal(cart).toLocaleString()}</h4>
-                </div>
-                <p>shipping total calculated at checkout</p>
+                {
+                    cart.length > 0 && (
+                        <>
+                            <div className={styles.prices}>
+                                <h3>Cart total</h3>
+                                <h4>₦{Helpers.CalculateTotal(cart).toLocaleString()}</h4>
+                            </div>
+                            <p>shipping total calculated at checkout</p>
+                        </>
+                    )
+                }
+
                 <div className={styles.bottomControls}>
                     <Link href={"/cart"}>
                         <button onClick={closeCart}>View cart</button>

@@ -5,6 +5,7 @@ import { motion } from 'framer-motion'
 import { ChangeEvent, FormEvent, useContext, useEffect, useMemo, useState } from "react"
 import TextTransition, { presets } from 'react-text-transition';
 import Link from 'next/link'
+import empty from '../../../public/images/empty-cart (1).png'
 import { useSearchParams } from 'next/navigation'
 import { useStore } from '@/src/Helpers/zustand'
 import { Helpers } from '@/src/Helpers'
@@ -113,141 +114,146 @@ const Cart_Section = ({ notAuth, countries, address, email }: { email: string, a
                                     <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
                                         <div className="inline-block min-w-full py-2 sm:px-6 lg:px-8">
                                             <div className="overflow-hidden">
-                                                <table
-                                                    className="min-w-full text-left text-sm font-light text-surface border-spacing-5">
-                                                    <thead
-                                                        className="border-b border-neutral-200 bg-white font-semibold">
-                                                        <tr>
-                                                            <th scope="col" className="px-6 py-4 w-[55%]" colSpan={2}>Product</th>
-                                                            <th scope="col" className="px-6 py-4 text-center hidden md:table-cell">Quantity</th>
-                                                            <th scope="col" className="px-6 py-4 text-center hidden md:table-cell">Price</th>
-                                                            <th scope="col" className="px-6 py-4 text-center hidden md:table-cell">Subtotal</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        {
-                                                            cart.length == 0 ? (
-                                                                <tr className='w-full mx-auto text-xl'>
-                                                                    <td className="px-0 min-w-[65%] md:min-w-[55%] md:max-w-[55%] py-0 font-medium" colSpan={2}>
-                                                                        <div className="w-full flex items-center gap-x-4 md:gap-x-6">
-                                                                            <div>
-                                                                                - Empty Cart -
-                                                                            </div>
-                                                                        </div>
-                                                                    </td>
-                                                                    <td className="px-6 py-5  flex-col text-xl  max-w-[100%] items-center justify-center hidden md:table-cell">
-                                                                        <div className='flex items-center rounded-lg gap-x-4 border-[1px] border-black justify-between py-1 px-6 shadow-md w-[120px]'>
-                                                                            <button className='invisible' onClick={() => setQuantity(0)}>-</button><span className='font-extrabold'>0</span><button className='invisible' onClick={() => setQuantity(0)}>+</button>
-                                                                        </div>
-                                                                    </td>
-                                                                    <td className="whitespace-nowrap px-6 py-4 text-xl hidden md:table-cell">-</td>
-                                                                    <td className="whitespace-nowrap px-6 font-extrabold text-xl py-4 hidden md:table-cell">-</td>
-                                                                    <td className="whitespace-nowrap pl-8 py-4 text-xl table-cell md:hidden text-center">
-                                                                        <span className='text-right'>-</span> <br />
-                                                                        <span className='mt-5 block text-3xl'>&times;</span>
-                                                                    </td>
-                                                                </tr>) : cart.map((x) => (
-                                                                    <tr key={x.item.id} className="border-b border-neutral-200 border-b-gray-200 h-auto">
-                                                                        <td className="px-0 min-w-[65%] md:min-w-[55%] md:max-w-[55%] py-0 font-medium align-top" colSpan={2}>
-                                                                            <div className="w-full h-[190px] md:min-h-[160px] flex items-center gap-x-4 md:gap-x-6">
-                                                                                <div className="md:basis-[40%] w-full md:min-w-[auto] min-h-[160px] relative">
-                                                                                    <Image
-                                                                                        src={x.item.images[0]}
-                                                                                        alt="product main image"
-                                                                                        quality={100}
-                                                                                        sizes={'100vw'}
-                                                                                        fill
-                                                                                        className="object-contain w-full h-auto"
-                                                                                    />
-                                                                                </div>
-                                                                                <div className='flex flex-col gap-y-4 justify-center basis-[40%] max-w-[45%]'>
-                                                                                    <h2 className='font-extrabold text-left'>{x.item.title}</h2>
-                                                                                    <h2 className='text-sm text-gray-400 text-left whitespace-nowrap'>Color: {x.item.colors[0]} | {x.item.sizes[0]}</h2>
-                                                                                    <button onClick={() => removeAction(x.item.id)} className='md:flex items-center hidden'>
-                                                                                        <span className='text-xl mr-3'>&times;</span>
-                                                                                        Remove
-                                                                                    </button>
-                                                                                    <div className='flex items-center md:hidden rounded-lg gap-x-4 border-[1px] border-black justify-between py-1 px-3 shadow-md'>
-                                                                                        <button onClick={() => updateItemQuantity(x.item.id, 'reduce')}>-</button><span className='font-extrabold'>{x.quantity}</span><button onClick={() => updateItemQuantity(x.item.id, 'add')}>+</button>
+                                                {
+                                                    cart.length == 0 && (
+                                                        <div className={'flex flex-col items-center mx-auto w-full lg:w-[70%]'}>
+                                                            <div className="lg:w-[75%] w-full mx-auto flex items-center justify-center">
+                                                                <Image
+                                                                    src={empty}
+                                                                    alt="Cart is empty"
+                                                                    quality={100}
+                                                                    sizes={'100vw'}
+                                                                    className={`object-cover w-full h-auto`}
+                                                                />
+                                                            </div>
+                                                            <h4 className='md:text-2xl font-semibold text-center'>Darn it, cart is empty. <Link className='underline md:text-xl text-[#377DFF]' href={'/shop'}>Keep shopping.</Link></h4>
+                                                        </div>
+                                                    )
+                                                }
+                                                {
+                                                    cart.length > 0 && (
+                                                        <table
+                                                            className="min-w-full text-left text-sm font-light text-surface border-spacing-5">
+                                                            <thead
+                                                                className="border-b border-neutral-200 bg-white font-semibold">
+                                                                <tr>
+                                                                    <th scope="col" className="px-6 py-4 w-[55%]" colSpan={2}>Product</th>
+                                                                    <th scope="col" className="px-6 py-4 text-center hidden md:table-cell">Quantity</th>
+                                                                    <th scope="col" className="px-6 py-4 text-center hidden md:table-cell">Price</th>
+                                                                    <th scope="col" className="px-6 py-4 text-center hidden md:table-cell">Subtotal</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                {
+                                                                    cart.map((x) => (
+                                                                        <tr key={x.item.id} className="border-b border-neutral-200 border-b-gray-200 h-auto">
+                                                                            <td className="px-0 min-w-[65%] md:min-w-[55%] md:max-w-[55%] py-0 font-medium align-top" colSpan={2}>
+                                                                                <div className="w-full h-[190px] md:min-h-[160px] flex items-center gap-x-4 md:gap-x-6">
+                                                                                    <div className="md:basis-[40%] w-full md:min-w-[auto] min-h-[160px] relative">
+                                                                                        <Image
+                                                                                            src={x.item.images[0]}
+                                                                                            alt="product main image"
+                                                                                            quality={100}
+                                                                                            sizes={'100vw'}
+                                                                                            fill
+                                                                                            className="object-contain w-full h-auto"
+                                                                                        />
+                                                                                    </div>
+                                                                                    <div className='flex flex-col gap-y-4 justify-center basis-[40%] max-w-[45%]'>
+                                                                                        <h2 className='font-extrabold text-left'>{x.item.title}</h2>
+                                                                                        <h2 className='text-sm text-gray-400 text-left whitespace-nowrap'>Color: {x.item.colors[0]} | {x.item.sizes[0]}</h2>
+                                                                                        <button onClick={() => removeAction(x.item.id)} className='md:flex items-center hidden'>
+                                                                                            <span className='text-xl mr-3'>&times;</span>
+                                                                                            Remove
+                                                                                        </button>
+                                                                                        <div className='flex items-center md:hidden rounded-lg gap-x-4 border-[1px] border-black justify-between py-1 px-3 shadow-md'>
+                                                                                            <button onClick={() => updateItemQuantity(x.item.id, 'reduce')}>-</button><span className='font-extrabold'>{x.quantity}</span><button onClick={() => updateItemQuantity(x.item.id, 'add')}>+</button>
+                                                                                        </div>
                                                                                     </div>
                                                                                 </div>
-                                                                            </div>
-                                                                        </td>
-                                                                        <td className="px-6 py-5  flex-col text-xl h-[160px] max-w-[100%] items-center justify-center hidden md:table-cell">
-                                                                            <div className='flex items-center rounded-lg gap-x-4 border-[1px] border-black justify-between py-1 px-6 shadow-md w-[120px]'>
-                                                                                <button onClick={() => updateItemQuantity(x.item.id, 'reduce')}>-</button><span className='font-extrabold'>{x.quantity}</span><button onClick={() => updateItemQuantity(x.item.id, 'add')}>+</button>
-                                                                            </div>
-                                                                        </td>
-                                                                        <td className="whitespace-nowrap px-6 py-4 text-xl hidden md:table-cell">₦{(x.item.price * x.quantity).toLocaleString()}</td>
-                                                                        <td className="whitespace-nowrap px-6 font-extrabold text-xl py-4 hidden md:table-cell">
-                                                                            <TextTransition springConfig={presets.wobbly}>
-                                                                                ₦{(x.item.price * x.quantity).toLocaleString()}
-                                                                            </TextTransition>
+                                                                            </td>
+                                                                            <td className="px-6 py-5  flex-col text-xl h-[160px] max-w-[100%] items-center justify-center hidden md:table-cell">
+                                                                                <div className='flex items-center rounded-lg gap-x-4 border-[1px] border-black justify-between py-1 px-6 shadow-md w-[120px]'>
+                                                                                    <button onClick={() => updateItemQuantity(x.item.id, 'reduce')}>-</button><span className='font-extrabold'>{x.quantity}</span><button onClick={() => updateItemQuantity(x.item.id, 'add')}>+</button>
+                                                                                </div>
+                                                                            </td>
+                                                                            <td className="whitespace-nowrap px-6 py-4 text-xl hidden md:table-cell">₦{(x.item.price * x.quantity).toLocaleString()}</td>
+                                                                            <td className="whitespace-nowrap px-6 font-extrabold text-xl py-4 hidden md:table-cell">
+                                                                                <TextTransition springConfig={presets.wobbly}>
+                                                                                    ₦{(x.item.price * x.quantity).toLocaleString()}
+                                                                                </TextTransition>
 
-                                                                        </td>
-                                                                        <td className="whitespace-nowrap pl-8 py-4 text-xl table-cell md:hidden text-center">
-                                                                            <span className='text-right'>₦{(x.item.price * x.quantity).toLocaleString()}</span> <br />
-                                                                            <span className='mt-5 block text-3xl'>
-                                                                                <button onClick={() => removeAction(x.item.id)}>
-                                                                                    &times;
-                                                                                </button>
-                                                                            </span>
-                                                                        </td>
-                                                                    </tr>
-                                                                ))
-                                                        }
-                                                    </tbody>
-                                                </table>
+                                                                            </td>
+                                                                            <td className="whitespace-nowrap pl-8 py-4 text-xl table-cell md:hidden text-center">
+                                                                                <span className='text-right'>₦{(x.item.price * x.quantity).toLocaleString()}</span> <br />
+                                                                                <span className='mt-5 block text-3xl'>
+                                                                                    <button onClick={() => removeAction(x.item.id)}>
+                                                                                        &times;
+                                                                                    </button>
+                                                                                </span>
+                                                                            </td>
+                                                                        </tr>
+                                                                    ))
+                                                                }
+                                                            </tbody>
+                                                        </table>
+                                                    )
+                                                }
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div className='flex-1 border-[1px] md:w-[60%] max-w-full border-black rounded-md px-4 py-5 flex flex-col gap-y-5'>
-                                <h2 className='font-semibold text-2xl'>Cart summary</h2>
-                                <div className='flex rounded-md bg-[#F3F5F7] justify-between items-center px-4 border-[1px] border-black'>
-                                    <div className='flex gap-x-3 py-3'>
-                                        <div></div>
-                                        <div>Free Shipping</div>
-                                    </div>
-                                    <span>₦0.00</span>
-                                </div>
-                                <div className='flex rounded-md justify-between items-center px-4 border-[1px] border-black'>
-                                    <div className='flex gap-x-3 py-3'>
-                                        <div></div>
-                                        <div>Express Shipping</div>
-                                    </div>
-                                    <span>₦0.00</span>
-                                </div>
-                                <div className='flex rounded-md justify-between items-center px-4 border-[1px] border-black'>
-                                    <div className='flex gap-x-3 py-3'>
-                                        <div></div>
-                                        <div>Pick up</div>
-                                    </div>
-                                    <span>₦0.00</span>
-                                </div>
-                                <div className='flex rounded-md justify-between items-center px-4 border-b-[1px] border-gray-200'>
-                                    <div className='flex gap-x-3 py-3'>
-                                        Subtotal
-                                    </div>
+                            {
+                                cart.length > 0 && (
+                                    <div className='flex-1 border-[1px] md:w-[60%] max-w-full border-black rounded-md px-4 py-5 flex flex-col gap-y-5'>
+                                        <h2 className='font-semibold text-2xl'>Cart summary</h2>
+                                        <div className='flex rounded-md bg-[#F3F5F7] justify-between items-center px-4 border-[1px] border-black'>
+                                            <div className='flex gap-x-3 py-3'>
+                                                <div></div>
+                                                <div>Free Shipping</div>
+                                            </div>
+                                            <span>₦0.00</span>
+                                        </div>
+                                        <div className='flex rounded-md justify-between items-center px-4 border-[1px] border-black'>
+                                            <div className='flex gap-x-3 py-3'>
+                                                <div></div>
+                                                <div>Express Shipping</div>
+                                            </div>
+                                            <span>₦0.00</span>
+                                        </div>
+                                        <div className='flex rounded-md justify-between items-center px-4 border-[1px] border-black'>
+                                            <div className='flex gap-x-3 py-3'>
+                                                <div></div>
+                                                <div>Pick up</div>
+                                            </div>
+                                            <span>₦0.00</span>
+                                        </div>
+                                        <div className='flex rounded-md justify-between items-center px-4 border-b-[1px] border-gray-200'>
+                                            <div className='flex gap-x-3 py-3'>
+                                                Subtotal
+                                            </div>
 
-                                    <TextTransition springConfig={presets.wobbly}>
-                                        ₦{total.toLocaleString()}
-                                    </TextTransition>
+                                            <TextTransition springConfig={presets.wobbly}>
+                                                ₦{total.toLocaleString()}
+                                            </TextTransition>
 
-                                </div>
-                                <div className='flex rounded-md justify-between items-center px-4 border-b-[1px] border-gray-200'>
-                                    <h2 className='flex gap-x-3 py-3 text-xl font-semibold'>
-                                        Total
-                                    </h2>
-                                    <TextTransition springConfig={presets.wobbly}>
-                                        ₦{total.toLocaleString()}
-                                    </TextTransition>
-                                </div>
-                                <div>
-                                    <button onClick={() => setStep(1)} className='bg-black text-white w-full py-3 rounded-md'>Checkout</button>
-                                </div>
-                            </div>
+                                        </div>
+                                        <div className='flex rounded-md justify-between items-center px-4 border-b-[1px] border-gray-200'>
+                                            <h2 className='flex gap-x-3 py-3 text-xl font-semibold'>
+                                                Total
+                                            </h2>
+                                            <TextTransition springConfig={presets.wobbly}>
+                                                ₦{total.toLocaleString()}
+                                            </TextTransition>
+                                        </div>
+                                        <div>
+                                            <button onClick={() => setStep(1)} className='bg-black text-white w-full py-3 rounded-md'>Checkout</button>
+                                        </div>
+                                    </div>
+                                )
+                            }
+
                         </motion.div>
                     )
                 }
