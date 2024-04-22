@@ -23,15 +23,17 @@ export async function POST(req: NextRequest) {
             currency: paymentIntent.currency,
             status: paymentIntent.status,
             payment_method_types: paymentIntent.payment_method_types,
-            shipping:paymentIntent.shipping,
+            shipping: paymentIntent.shipping,
             description: paymentIntent.description,
 
         }
+        if (paymentIntent.status !== 'requires_capture') {
+            console.log("error")
+            return NextResponse.json({ success: false, data: order, message: paymentIntent.cancellation_reason }, { status: 400 });
+        }
         return NextResponse.json({ success: true, data: order }, { status: 200 });
-        
+
     } catch (error: any) {
-        return new NextResponse(error, {
-            status: 400,
-        });
+        return NextResponse.json({ error: "Error occured with payment " + error, message:error }, { status: 500 });
     }
 }

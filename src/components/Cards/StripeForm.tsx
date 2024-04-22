@@ -11,37 +11,68 @@ const StripeForm = ({ total, toast, setOrderPlaced, setStep }: { setOrderPlaced:
 
         const cardElement = elements?.getElement("card");
 
-        if (cardElement) {
-
-        }
-
         try {
             if (!stripe || !cardElement) return null;
         } catch (error) {
+            toast.error(error)
             console.log(error);
         }
-        const data = await axios.post("/api/stripe", {
+        const body = {
             data: { amount: total },
-        }).then(async x => {
-            console.log(x)
-            toast.success("Payment successful")
-            setOrderPlaced(true)
-            setStep(2)
-            const clientSecret = data.data.data.secret;
-            await stripe?.confirmCardPayment(clientSecret, {
-                payment_method: { card: cardElement! },
-            });
-            return x
-        }).catch(x => {
-            console.log(x)
-            toast.error('Error accepting payment')
-            setOrderPlaced(false)
-            return x.data
-        })
-        if (!data.data) {
-            toast.error('Error accepting payment')
-            console.log(data.data)
         }
+        // try {
+        //     const data = await axios.post("/api/stripe", body)
+
+        //     if (data.data.success) {
+        //         toast.success("Payment successful")
+        //         setOrderPlaced(true)
+        //         setStep(2)
+        //         const clientSecret = data.data.data.secret;
+        //         await stripe?.confirmCardPayment(clientSecret, {
+        //             payment_method: { card: cardElement! },
+        //         });
+        //     }
+        // } catch (error) {
+        //     console.log(error)
+        //     // toast.error(error)
+        // }
+
+        await fetch(('/api/stripe'), {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(body)
+        })
+            .then(async res => {
+                const isJson = res.headers.get('content-type')?.includes('application/json')
+                const data = isJson ? await res.json() : null
+
+                if (!res.ok) {
+                    const error = (data && data.message) || res.status;
+                    toast.error(
+                        error
+                    );
+                    return Promise.reject(error)
+
+                } else if (res.ok) {
+                    toast.success("Payment successful")
+                    setOrderPlaced(true)
+                    setStep(2)
+                    const clientSecret = data.data.data.secret;
+                    await stripe?.confirmCardPayment(clientSecret, {
+                        payment_method: { card: cardElement! },
+                    });
+                    return data
+                }
+            })
+            .catch(err => {
+                // toast.error(err)
+                console.log(err)
+            })
+
+
 
 
     }
