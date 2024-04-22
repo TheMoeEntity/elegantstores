@@ -15,11 +15,14 @@ import { userContext } from '@/src/Helpers/ContextAPI/usercontext'
 import { Elements } from "@stripe/react-stripe-js";
 import StripeForm from './StripeForm'
 import Stripe from 'stripe'
+import { loadStripe } from '@stripe/stripe-js'
+import getStripe from '@/src/Helpers/stripe'
+import toast from 'react-hot-toast'
 // import { PayPalButton } from 'react-paypal-button-v2'
 
 
 
-const Cart_Section = ({ notAuth, countries, mainstripe, address, email }: { mainstripe:any, email: string, address: addressType, countries: { name: string; idd: { root: string, suffixes: string[] }; nameAndSymbol: string; population: number; }[] | [], notAuth: boolean }) => {
+const Cart_Section = ({ notAuth, countries, mainstripe, address, email }: { mainstripe: any, email: string, address: addressType, countries: { name: string; idd: { root: string, suffixes: string[] }; nameAndSymbol: string; population: number; }[] | [], notAuth: boolean }) => {
     const searchParams = useSearchParams()
     const { cart, removeFromCart, updateItemQuantity } = useStore()
     const { user } = useContext(userContext)
@@ -35,6 +38,7 @@ const Cart_Section = ({ notAuth, countries, mainstripe, address, email }: { main
         },
         [cart],
     )
+    const [stripePromise, _setStripePromise] = useState(() => getStripe())
     const [couponStatus, setCouponStatus] = useState('')
     const [_quantity, setQuantity] = useState<number>(1)
     const [step, setStep] = useState<number>(0)
@@ -107,7 +111,7 @@ const Cart_Section = ({ notAuth, countries, mainstripe, address, email }: { main
                     </div>
                     <div className={`gap-x-3 flex items-center mr-7 text-left px-2 border-b-[2px] pb-2 ${step === 2 ? 'border-black' : 'text-[#0D141F99] border-transparent'}  w-fit`}>
                         <span className={`w-6 h-6 text-white ${step === 2 ? 'bg-black' : 'bg-[#0D141F99]'} items-center justify-center flex rounded-full text-xs`}>3</span>
-                        <button disabled={(notAuth) ? true : !orderplaced ? true : false} onClick={() => setStep(2)}>Order complete</button>
+                        <button disabled={(notAuth) ? true : orderplaced ? true : false} onClick={() => setStep(2)}>Order complete</button>
                     </div>
                 </div>
             </div>
@@ -385,15 +389,16 @@ const Cart_Section = ({ notAuth, countries, mainstripe, address, email }: { main
 
                                                 </div>
                                             </div>
-                                            <button onClick={() => setPaymentOption(1)}>PayPal</button>
+                                            <button onClick={() => setPaymentOption(1)}>Stripe</button>
                                         </div>
                                         <div
                                             className={'overflow-hidden trans ' + (paymentOption === 1 ? 'max-h-fit py-1 h-fit' : 'max-h-0 h-0 py-0')}
                                         >
-                                            <Elements stripe={mainstripe}>
-                                                <StripeForm total={total} />
+                                            <Elements stripe={stripePromise}>
+                                                <StripeForm setStep={setStep} setOrderPlaced={setOrderPlaced} toast={toast} total={total} />
                                             </Elements>
-                                            {/* <PayPalButton
+                                            <div>
+                                                {/* <PayPalButton
                                                 amount={total}
                                                 // shippingPreference="NO_SHIPPING" // default is "GET_FROM_FILE"
                                                 onSuccess={(details: any, data: any) => {
@@ -412,6 +417,7 @@ const Cart_Section = ({ notAuth, countries, mainstripe, address, email }: { main
                                                     currency: "USD"
                                                 }}
                                             /> */}
+                                            </div>
                                         </div>
                                     </div>
                                     <div className='flex rounded-md bg-[#F3F5F7] justify-between items-center px-4 border-[1px] border-black'>
@@ -528,7 +534,7 @@ const Cart_Section = ({ notAuth, countries, mainstripe, address, email }: { main
                             animate={{ x: 0, opacity: 1 }}
                             transition={{ duration: 0.35, ease: 'anticipate', }}
                             className='flex flex-col gap-x-5 lg:flex-row md:items-center lg:items-start gap-y-7'>
-                            <OrderComplete />
+                            <OrderComplete cart={cart} />
                         </motion.div>
                     )
                 }

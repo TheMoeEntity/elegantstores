@@ -178,3 +178,15 @@ export interface PriceRange {
     isChecked: boolean
     id: number
 }
+export type OrderType = {
+    created_at: string
+    order_items: {
+        product: {
+            id: number
+            title: string
+            image: string
+            price: number
+            quantity: number
+        }
+    }
+}

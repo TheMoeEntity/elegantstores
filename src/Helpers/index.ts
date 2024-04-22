@@ -55,6 +55,19 @@ export class Helpers {
         }, 3000);
         return discount
     }
+    static formatUnixTimestamp(timestamp: number): string {
+        const date = new Date(timestamp * 1000); // Multiply by 1000 to convert to milliseconds
+        const options: Intl.DateTimeFormatOptions = {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+            hour: 'numeric',
+            minute: 'numeric',
+            second: 'numeric',
+            timeZoneName: 'short'
+        };
+        return date.toLocaleDateString('en-US', options);
+    }
     static async formatProducts() {
         const insta = await this.getProducts('https://picsum.photos/v2/list').then(item => item).catch(() => []) as loremPicsum[]
         if (!insta) {

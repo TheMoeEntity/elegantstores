@@ -438,8 +438,8 @@ const Dashboard = ({ getSession, items, email, getAddress, wishlist, uid, url }:
                                     <thead
                                         className="border-b border-neutral-200 font-medium ">
                                         <tr>
-                                            <th scope="col" className="px-6 py-4">NUMBER ID</th>
-                                            <th scope="col" className="px-6 py-4">Dates</th>
+                                            <th scope="col" className="px-6 py-4">Order ID</th>
+                                            <th scope="col" className="px-6 py-4">Created at</th>
                                             <th scope="col" className="px-6 py-4">Status</th>
                                             <th scope="col" className="px-6 py-4">Price</th>
                                         </tr>
@@ -449,22 +449,8 @@ const Dashboard = ({ getSession, items, email, getAddress, wishlist, uid, url }:
                                             className="border-b border-neutral-200 transition duration-300 ease-in-out hover:bg-neutral-100">
                                             <td className="whitespace-nowrap px-6 py-4 font-medium">#3456_78w4dkpew</td>
                                             <td className="whitespace-nowrap px-6 py-4">October 23, 2024</td>
-                                            <td className="whitespace-nowrap px-6 py-4">Delivered</td>
-                                            <td className="whitespace-nowrap px-6 py-4">$123.45</td>
-                                        </tr>
-                                        <tr
-                                            className="border-b border-neutral-200 transition duration-300 ease-in-out hover:bg-neutral-100">
-                                            <td className="whitespace-nowrap px-6 py-4 font-medium">#3456_78w4dkpew</td>
-                                            <td className="whitespace-nowrap px-6 py-4">October 23, 2024</td>
-                                            <td className="whitespace-nowrap px-6 py-4">Delivered</td>
-                                            <td className="whitespace-nowrap px-6 py-4">$123.45</td>
-                                        </tr>
-                                        <tr
-                                            className="border-b border-neutral-200 transition duration-300 ease-in-out hover:bg-neutral-100">
-                                            <td className="whitespace-nowrap px-6 py-4 font-medium">#3456_78w4dkpew</td>
-                                            <td className="whitespace-nowrap px-6 py-4">October 23, 2024</td>
-                                            <td className="whitespace-nowrap px-6 py-4">Delivered</td>
-                                            <td className="whitespace-nowrap px-6 py-4">$123.45</td>
+                                            <td className="whitespace-nowrap px-6 py-4 text-green-800 font-semibold">Delivered</td>
+                                            <td className="whitespace-nowrap px-6 py-4">₦123.45</td>
                                         </tr>
                                     </tbody>
                                 </table>
