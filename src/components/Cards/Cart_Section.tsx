@@ -24,10 +24,6 @@ const Cart_Section = ({ notAuth, countries, address, email }: { email: string, a
     const removeAction = (id: string) => {
         removeFromCart(id);
     }
-    const convertToUSD = ():number => { 
-        const usd = total * 0.00086957
-        return usd
-    }
     const produceExtraCost = (): number => {
         return shippingOptions == 0 ? 0 : shippingOptions == 1 ? 3200 : (total * 0.1730)
     }
