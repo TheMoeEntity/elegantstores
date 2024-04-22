@@ -23,7 +23,7 @@ const OrderComplete = ({ cart }: { cart: cartItem[] }) => {
                     >
                         {
                             cart.map((x) => (
-                                <div className="w-[150px] h-[150px] relative mx-auto flex items-center justify-center">
+                                <div key={x.item.title} className="w-[150px] h-[150px] relative mx-auto flex items-center justify-center">
                                     <Image
                                         src={x.item.images[0]}
                                         alt="picture of item purchased"

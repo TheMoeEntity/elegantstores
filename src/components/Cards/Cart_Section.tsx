@@ -309,7 +309,7 @@ const Cart_Section = ({ notAuth, countries, mainstripe, address, email }: { main
                                             <div className=''>
                                                 <div className='flex flex-col'>
                                                     <label htmlFor="block">Phone number</label>
-                                                    <input defaultValue={address.billing.phone || ''} placeholder="Your phone number" type="phone" className="py-[10px] bg-transparent px-[10px] w-full border-gray-300 border-b-[1px]" />
+                                                    <input defaultValue={address?.billing?.phone || ''} placeholder="Your phone number" type="phone" className="py-[10px] bg-transparent px-[10px] w-full border-gray-300 border-b-[1px]" />
                                                 </div>
                                             </div>
                                             <div className=''>
@@ -329,7 +329,7 @@ const Cart_Section = ({ notAuth, countries, mainstripe, address, email }: { main
                                             <div className=''>
                                                 <div className='flex flex-col'>
                                                     <label htmlFor="block">Street address</label>
-                                                    <input defaultValue={address.shipping.address || ''} placeholder="Your street address" type="address" className="py-[10px] bg-transparent px-[10px] w-full border-gray-300 border-b-[1px]" />
+                                                    <input defaultValue={address?.shipping?.address || ''} placeholder="Your street address" type="address" className="py-[10px] bg-transparent px-[10px] w-full border-gray-300 border-b-[1px]" />
                                                 </div>
                                             </div>
                                             <div className=''>
@@ -355,7 +355,7 @@ const Cart_Section = ({ notAuth, countries, mainstripe, address, email }: { main
                                             <div className=''>
                                                 <div className='flex flex-col'>
                                                     <label htmlFor="block">Phone number</label>
-                                                    <input defaultValue={address.shipping.phone || ''} placeholder="Your phone number" type="phone" className="py-[10px] bg-transparent px-[10px] w-full border-gray-300 border-b-[1px]" />
+                                                    <input defaultValue={address?.shipping?.phone || ''} placeholder="Your phone number" type="phone" className="py-[10px] bg-transparent px-[10px] w-full border-gray-300 border-b-[1px]" />
                                                 </div>
 
                                             </div>
