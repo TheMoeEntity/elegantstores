@@ -12,12 +12,14 @@ import { Helpers } from '@/src/Helpers'
 import { enqueueSnackbar } from 'notistack'
 import { addressType } from '@/src/Helpers/types'
 import { userContext } from '@/src/Helpers/ContextAPI/usercontext'
-import { PayPalBtn } from '@/src/Helpers/Views'
+import { Elements } from "@stripe/react-stripe-js";
+import StripeForm from './StripeForm'
+import Stripe from 'stripe'
 // import { PayPalButton } from 'react-paypal-button-v2'
 
 
 
-const Cart_Section = ({ notAuth, countries, address, email }: { email: string, address: addressType, countries: { name: string; idd: { root: string, suffixes: string[] }; nameAndSymbol: string; population: number; }[] | [], notAuth: boolean }) => {
+const Cart_Section = ({ notAuth, countries, mainstripe, address, email }: { mainstripe:any, email: string, address: addressType, countries: { name: string; idd: { root: string, suffixes: string[] }; nameAndSymbol: string; population: number; }[] | [], notAuth: boolean }) => {
     const searchParams = useSearchParams()
     const { cart, removeFromCart, updateItemQuantity } = useStore()
     const { user } = useContext(userContext)
@@ -385,7 +387,12 @@ const Cart_Section = ({ notAuth, countries, address, email }: { email: string, a
                                             </div>
                                             <button onClick={() => setPaymentOption(1)}>PayPal</button>
                                         </div>
-                                        <div className={'overflow-hidden trans ' + (paymentOption === 1 ? 'max-h-fit py-1 h-fit' : 'max-h-0 h-0 py-0')}>
+                                        <div
+                                            className={'overflow-hidden trans ' + (paymentOption === 1 ? 'max-h-fit py-1 h-fit' : 'max-h-0 h-0 py-0')}
+                                        >
+                                            <Elements stripe={mainstripe}>
+                                                <StripeForm total={total} />
+                                            </Elements>
                                             {/* <PayPalButton
                                                 amount={total}
                                                 // shippingPreference="NO_SHIPPING" // default is "GET_FROM_FILE"
