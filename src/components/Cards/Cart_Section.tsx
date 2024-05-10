@@ -159,7 +159,8 @@ const Cart_Section = ({ notAuth, countries, mainstripe, address, email }: { main
                                                             </thead>
                                                             <tbody>
                                                                 {
-                                                                    cart.map((x) => (
+                                                                    cart.map((x) =>
+                                                                    (
                                                                         <tr key={x.item.id} className="border-b border-neutral-200 border-b-gray-200 h-auto">
                                                                             <td className="px-0 min-w-[65%] md:min-w-[55%] md:max-w-[55%] py-0 font-medium align-top" colSpan={2}>
                                                                                 <div className="w-full h-[190px] md:min-h-[160px] flex items-center gap-x-4 md:gap-x-6">
@@ -192,10 +193,10 @@ const Cart_Section = ({ notAuth, countries, mainstripe, address, email }: { main
                                                                                 </div>
                                                                             </td>
                                                                             <td className="whitespace-nowrap px-6 py-4 text-xl hidden md:table-cell">₦{(x.item.price * x.quantity).toLocaleString()}</td>
-                                                                            <td className="whitespace-nowrap px-6 font-extrabold text-xl py-4 hidden md:table-cell">
-                                                                                <TextTransition springConfig={presets.wobbly}>
+                                                                            <td className="whitespace-nowrap relative px-6 font-extrabold text-xl py-4 hidden md:table-cell">
+                                                                                <span className='absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2'>
                                                                                     ₦{(x.item.price * x.quantity).toLocaleString()}
-                                                                                </TextTransition>
+                                                                                </span>
 
                                                                             </td>
                                                                             <td className="whitespace-nowrap pl-8 py-4 text-xl table-cell md:hidden text-center">
@@ -207,7 +208,8 @@ const Cart_Section = ({ notAuth, countries, mainstripe, address, email }: { main
                                                                                 </span>
                                                                             </td>
                                                                         </tr>
-                                                                    ))
+                                                                    )
+                                                                    )
                                                                 }
                                                             </tbody>
                                                         </table>
