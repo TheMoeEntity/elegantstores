@@ -27,13 +27,15 @@ export async function POST(req: NextRequest) {
             description: paymentIntent.description,
 
         }
-        if (paymentIntent.status !== 'requires_capture') {
-            console.log("error")
-            return NextResponse.json({ success: false, data: order, message: paymentIntent.cancellation_reason }, { status: 400 });
-        }
+        console.log(paymentIntent.status)
+        // if (paymentIntent.status !== 'requires_capture') {
+        //     return NextResponse.json({ success: false, data: order, message: paymentIntent.cancellation_reason }, { status: 400 });
+        // }
         return NextResponse.json({ success: true, data: order }, { status: 200 });
 
     } catch (error: any) {
-        return NextResponse.json({ error: "Error occured with payment " + error, message:error }, { status: 500 });
+        return new NextResponse(error, {
+            status: 400,
+        });
     }
 }

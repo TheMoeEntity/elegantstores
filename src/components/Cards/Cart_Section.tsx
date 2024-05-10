@@ -389,34 +389,15 @@ const Cart_Section = ({ notAuth, countries, mainstripe, address, email }: { main
 
                                                 </div>
                                             </div>
-                                            <button onClick={() => setPaymentOption(1)}>Stripe</button>
+                                            <button onClick={() => setPaymentOption(1)}>Stripe (unavailable)</button>
                                         </div>
                                         <div
                                             className={'overflow-hidden trans ' + (paymentOption === 1 ? 'max-h-fit py-1 h-fit' : 'max-h-0 h-0 py-0')}
                                         >
-                                            <Elements stripe={stripePromise}>
+                                            {/* <Elements stripe={stripePromise}>
                                                 <StripeForm setStep={setStep} setOrderPlaced={setOrderPlaced} toast={toast} total={total} />
-                                            </Elements>
+                                            </Elements> */}
                                             <div>
-                                                {/* <PayPalButton
-                                                amount={total}
-                                                // shippingPreference="NO_SHIPPING" // default is "GET_FROM_FILE"
-                                                onSuccess={(details: any, data: any) => {
-                                                    alert("Transaction completed by " + details.payer.name.given_name);
-
-                                                    // OPTIONAL: Call your server to save the transaction
-                                                    return fetch("/paypal-transaction-complete", {
-                                                        method: "post",
-                                                        body: JSON.stringify({
-                                                            orderId: data.orderID
-                                                        })
-                                                    });
-                                                }}
-                                                options={{
-                                                    clientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID!,
-                                                    currency: "USD"
-                                                }}
-                                            /> */}
                                             </div>
                                         </div>
                                     </div>
@@ -427,17 +408,7 @@ const Cart_Section = ({ notAuth, countries, mainstripe, address, email }: { main
                                                     false && (<div className='w-2 h-2 bg-black rounded-full'></div>)
                                                 }
                                             </div>
-                                            <div>PayStack</div>
-                                        </div>
-                                    </div>
-                                    <div className='flex rounded-md bg-[#F3F5F7] justify-between items-center px-4 border-[1px] border-black'>
-                                        <div className='flex gap-x-3 items-center py-3'>
-                                            <div className='w-4 h-4 flex items-center justify-center border-[1px] border-black rounded-full'>
-                                                {
-                                                    false && (<div className='w-2 h-2 bg-black rounded-full'></div>)
-                                                }
-                                            </div>
-                                            <div>Pay with credit card</div>
+                                            <div>PayStack (unavailable)</div>
                                         </div>
                                     </div>
                                     <div className='flex rounded-md bg-[#F3F5F7] justify-between items-center px-4 border-[1px] border-black'>
@@ -446,7 +417,16 @@ const Cart_Section = ({ notAuth, countries, mainstripe, address, email }: { main
                                                 <div className={'w-2 h-2 rounded-full trans ' + (paymentOption === 3 ? 'bg-black' : 'bg-transparent')}>
                                                 </div>
                                             </div>
-                                            <button onClick={() => setPaymentOption(3)}>Flutterwave</button>
+                                            <button onClick={() => setPaymentOption(3)}>Flutterwave (unavailable)</button>
+                                        </div>
+                                    </div>
+                                    <div className='flex rounded-md bg-[#F3F5F7] justify-between items-center px-4 border-[1px] border-black'>
+                                        <div className='flex items-center gap-x-3 py-3'>
+                                            <div className='w-4 h-4 flex items-center justify-center border-[1px] rounded-full border-black'>
+                                                <div className={'w-2 h-2 rounded-full trans ' + (paymentOption === 4 ? 'bg-black' : 'bg-transparent')}>
+                                                </div>
+                                            </div>
+                                            <button onClick={() => setPaymentOption(4)}>Pay on delivery</button>
                                         </div>
                                     </div>
                                 </div>

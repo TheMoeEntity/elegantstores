@@ -50,7 +50,7 @@ const SearchComponent = ({ search, items, sidebar }: { sidebar: boolean, items: 
                 autoFocus
                 value={searchTerm}
                 onChange={handleInputChange}
-                placeholder='Search for products' type="search" className='text-sm min-w-full h-full rounded-lg outline-none px-4 bg-transparent border-[1px] py-2' name="" id="" />
+                placeholder='Search for products' type="search" className='text-sm min-w-full h-full rounded-lg outline-none px-4 bg-transparent border-[1px] py-2' name="search"  />
             {searchResults.length > 0 && (
                 <div className='w-full shadow-sm trans text-left bg-white px-4 py-4 rounded-lg' style={{ top: '100%', left: 0, zIndex: 9999, backgroundColor: 'white' }}>
                     <ul>
@@ -79,7 +79,7 @@ const SearchComponent = ({ search, items, sidebar }: { sidebar: boolean, items: 
                         autoFocus
                         value={searchTerm}
                         onChange={handleInputChange}
-                        placeholder='Search for products' type="search" className='text-sm min-w-[300px] h-full rounded-tl-lg rounded-bl-lg outline-none px-4 bg-transparent border-[1px] py-2' name="" id="" />
+                        placeholder='Search for products' type="search" className='text-sm min-w-[300px] h-full rounded-tl-lg rounded-bl-lg outline-none px-4 bg-transparent border-[1px] py-2' name="search2" />
                     <button><i className='fa-solid fa-magnifying-glass bg-[#171D28] text-white px-5 py-[9px] rounded-tr-md rounded-br-md'></i></button>
                     {searchResults.length > 0 && (
                         <div className='w-full text-left bg-white px-4 shadow-xl py-4 rounded-lg' style={{ position: 'absolute', top: '100%', left: 0, zIndex: 9999, backgroundColor: 'white' }}>

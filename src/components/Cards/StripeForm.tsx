@@ -50,7 +50,7 @@ const StripeForm = ({ total, toast, setOrderPlaced, setStep }: { setOrderPlaced:
                 const data = isJson ? await res.json() : null
 
                 if (!res.ok) {
-                    const error = (data && data.message) || res.status;
+                    const error = (data && data.message) || res.statusText;
                     toast.error(
                         error
                     );
@@ -68,7 +68,6 @@ const StripeForm = ({ total, toast, setOrderPlaced, setStep }: { setOrderPlaced:
                 }
             })
             .catch(err => {
-                // toast.error(err)
                 console.log(err)
             })
 

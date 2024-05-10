@@ -13,7 +13,6 @@ const Template = async ({ children }: { children: ReactNode }) => {
         <AppLayout products={products} url={url} session={getSession}>
             {children}
         </AppLayout>
-
     );
 
 };

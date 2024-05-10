@@ -5,12 +5,13 @@ import CartModal from '../Cards/Cart'
 import Sidebar from '../Cards/Sidebar'
 import { useHeaderState } from '@/src/Helpers/Hooks'
 import { motion } from 'framer-motion'
-import { useContext, useEffect } from 'react'
+import { useContext, useEffect, useMemo } from 'react'
 import { userContext } from '@/src/Helpers/ContextAPI/usercontext'
 import { UserMetadata } from '@supabase/supabase-js'
 import { useStore } from '@/src/Helpers/zustand'
 import SearchComponent from '../SearchComponent'
 import { ISBProducts } from '@/src/Helpers/types'
+import TextTransition, { presets } from 'react-text-transition'
 
 const Header = ({ getSession, url, products }: { products: ISBProducts[], url: string, getSession: UserMetadata | null }) => {
     const { setUser } = useContext(userContext)
@@ -32,7 +33,18 @@ const Header = ({ getSession, url, products }: { products: ISBProducts[], url: s
         profileOpen, setProfileOpen,
         push, search, setSearch
     } = useHeaderState()
-
+    const cartNumber = useMemo(
+        () => {
+            return (
+                <TextTransition springConfig={presets.wobbly}>
+                    <b className='font-extrabold h-5 w-5 flex flex-col items-center justify-center rounded-full bg-black text-white text-xs'>
+                        {cartCount}
+                    </b>
+                </TextTransition>
+            )
+        },
+        [cartCount]
+    )
     return (
         <header className='flex flex-col relative'>
             <CartModal
@@ -133,7 +145,9 @@ const Header = ({ getSession, url, products }: { products: ISBProducts[], url: s
                             profileOpen ? setCartOpen(false) : setCartOpen(!cartOpen)
                         }
                         className='fa-solid fa-shopping-bag text-xl md:text-xl'></button>
-                    <b className='font-extrabold h-5 w-5 flex flex-col items-center justify-center rounded-full bg-black text-white text-xs'>{cartCount}</b>
+                 {
+                    cartNumber
+                 }
                 </div>
 
             </div>

@@ -1,6 +1,7 @@
 import { cartItem } from '@/src/Helpers/types';
 import styles from './cards.module.css'
 import Image from 'next/image';
+import Link from 'next/link';
 
 const OrderComplete = ({ cart }: { cart: cartItem[] }) => {
     return (
@@ -43,15 +44,9 @@ const OrderComplete = ({ cart }: { cart: cartItem[] }) => {
                 </div>
             </div>
 
-            <button
-                className="bg-black text-white rounded-md mt-8"
-                style={{ padding: "10px", fontSize: "small" }}
-                onClick={() => {
-                    window.location.href = "/myaccount";
-                }}
-            >
+            <Link className='bg-black text-white text-sm p-2 rounded-md hover:text-white' href={'/account?link=order'}>
                 Purchase History
-            </button>
+            </Link>
         </div>
     );
 }
