@@ -16,21 +16,21 @@ const LoginPage = () => {
     const [status, setStatus] = useState<string>("Log in")
     const { push } = useRouter()
     const { enqueueSnackbar } = useSnackbar()
-    useEffect(() => {
-        const supabase = createBrowserClient(
-            process.env.NEXT_PUBLIC_SUPABASE_URL!,
-            process.env.NEXT_PUBLIC_SUPABASE_API_KEY!,
-        )
-        const { data } = supabase.auth.onAuthStateChange((_event, session) => {
-            // if (session) {
-            //     setSession(session?.user || null);
-            // }
-        });
+    // useEffect(() => {
+    //     const supabase = createBrowserClient(
+    //         process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    //         process.env.NEXT_PUBLIC_SUPABASE_API_KEY!,
+    //     )
+    //     const { data } = supabase.auth.onAuthStateChange((_event, session) => {
+    //         // if (session) {
+    //         //     setSession(session?.user || null);
+    //         // }
+    //     });
 
-        return () => {
-            data.subscription?.unsubscribe();
-        };
-    }, [])
+    //     return () => {
+    //         data.subscription?.unsubscribe();
+    //     };
+    // }, [])
 
     const verify = useSearchParams().get('verify')
     const notAuth = useSearchParams().get('notAuth')

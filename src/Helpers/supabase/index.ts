@@ -10,8 +10,8 @@ export const createSupabaseServerClient = async () => {
   const cookieStore = cookies();
 
   const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_API_KEY!,
+    process.env.SUPABASE_URL!,
+    process.env.SUPABASE_API_KEY!,
     {
       cookies: {
         get(name: string) {
@@ -37,8 +37,8 @@ export const readUserSession = async () => {
 
 export const readUserSessionCLient = async () => {
   const supabase = createBrowserClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_API_KEY!
+    process.env.SUPABASE_URL!,
+    process.env.SUPABASE_API_KEY!
   );
   const user = supabase.auth.getUser();
 

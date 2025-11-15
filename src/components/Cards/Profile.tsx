@@ -29,8 +29,8 @@ const Profile = ({
   }, [user]);
   const signOutAction = async () => {
     const supabase = createBrowserClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_API_KEY!
+      process.env.SUPABASE_URL!,
+      process.env.SUPABASE_API_KEY!
     );
     await supabase.auth
       .signOut()
