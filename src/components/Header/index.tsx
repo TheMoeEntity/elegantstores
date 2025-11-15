@@ -1,158 +1,194 @@
-'use state'
-import Link from 'next/link'
-import Profile from '../Cards/Profile'
-import CartModal from '../Cards/Cart'
-import Sidebar from '../Cards/Sidebar'
-import { useHeaderState } from '@/src/Helpers/Hooks'
-import { motion } from 'framer-motion'
-import { useContext, useEffect, useMemo } from 'react'
-import { userContext } from '@/src/Helpers/ContextAPI/usercontext'
-import { UserMetadata } from '@supabase/supabase-js'
-import { useStore } from '@/src/Helpers/zustand'
-import SearchComponent from '../SearchComponent'
-import { ISBProducts } from '@/src/Helpers/types'
-import TextTransition, { presets } from 'react-text-transition'
+"use client";
+import React, { useContext, useEffect, useMemo } from "react";
+import Link from "next/link";
+import Profile from "../Cards/Profile";
+import CartModal from "../Cards/Cart";
+import Sidebar from "../Cards/Sidebar";
+import { useHeaderState } from "@/src/Helpers/Hooks";
+import { motion } from "framer-motion";
+import { userContext } from "@/src/Helpers/ContextAPI/usercontext";
+import { UserMetadata } from "@supabase/supabase-js";
+import { useStore } from "@/src/Helpers/zustand";
+import SearchComponent from "../SearchComponent";
+import { ISBProducts } from "@/src/Helpers/types";
+import TextTransition, { presets } from "react-text-transition";
+import { Menu, Search, ShoppingBag, User, X } from "lucide-react";
 
-const Header = ({ getSession, url, products }: { products: ISBProducts[], url: string, getSession: UserMetadata | null }) => {
-    const { setUser } = useContext(userContext)
-    const { cartCount } = useStore()
+const Header = React.memo(
+  ({
+    getSession,
+    url,
+    products,
+  }: {
+    products: ISBProducts[];
+    url: string;
+    getSession: UserMetadata | null;
+  }) => {
+    const { setUser } = useContext(userContext);
+    const { cartCount } = useStore();
+
     useEffect(() => {
-        if (getSession) {
-            setUser({
-                userData: getSession ?? {},
-                isSignedIn: true
-            })
-        }
+      if (getSession) {
+        setUser({
+          userData: getSession ?? {},
+          isSignedIn: true,
+        });
+      }
+    }, [getSession, setUser]);
 
-    }, [])
-    const { isOpen, setOpen,
-        product, setProduct,
-        company, setCompany,
-        sales, setSales,
-        cartOpen, setCartOpen,
-        profileOpen, setProfileOpen,
-        push, search, setSearch
-    } = useHeaderState()
-    const cartNumber = useMemo(
-        () => {
-            return (
-                <TextTransition springConfig={presets.wobbly}>
-                    <b className='font-extrabold h-5 w-5 flex flex-col items-center justify-center rounded-full bg-black text-white text-xs'>
-                        {cartCount}
-                    </b>
-                </TextTransition>
-            )
-        },
-        [cartCount]
-    )
+    const {
+      isOpen,
+      setOpen,
+      product,
+      setProduct,
+      company,
+      setCompany,
+      sales,
+      setSales,
+      cartOpen,
+      setCartOpen,
+      profileOpen,
+      setProfileOpen,
+      push,
+      search,
+      setSearch,
+    } = useHeaderState();
+
+    const cartNumber = useMemo(() => {
+      return (
+        <TextTransition springConfig={presets.wobbly}>
+          <b className="font-extrabold h-5 w-5 flex flex-col items-center justify-center rounded-full bg-black text-white text-xs">
+            {cartCount}
+          </b>
+        </TextTransition>
+      );
+    }, [cartCount]);
+
     return (
-        <header className='flex flex-col relative'>
-            <CartModal
-                forceClose={() => setCartOpen(false)}
-                closeCart={() => setCartOpen(false)}
-                cartOpen={cartOpen}
-            />
-            <Profile
-                url={url}
-                forceClose={() => setProfileOpen(false)}
-                profileOpen={profileOpen}
-            />
-            <Sidebar products={products} profileOpen={profileOpen} setProfileOpen={setProfileOpen} cartOpen={cartOpen} setCartOpen={setCartOpen} isOpen={isOpen} setOpen={setOpen} product={product} setProduct={setProduct} company={company} setCompany={setCompany} />
+      <header className="flex flex-col relative">
+        <CartModal
+          forceClose={() => setCartOpen(false)}
+          closeCart={() => setCartOpen(false)}
+          cartOpen={cartOpen}
+        />
+        <Profile
+          url={url}
+          forceClose={() => setProfileOpen(false)}
+          profileOpen={profileOpen}
+        />
+        <Sidebar
+          products={products}
+          profileOpen={profileOpen}
+          setProfileOpen={setProfileOpen}
+          cartOpen={cartOpen}
+          setCartOpen={setCartOpen}
+          isOpen={isOpen}
+          setOpen={setOpen}
+          product={product}
+          setProduct={setProduct}
+          company={company}
+          setCompany={setCompany}
+        />
 
-            <div className={`transition-all ease-in duration-1000 w-full bg-[#377DFF]  text-white gap-x-4 flex overflow-hidden justify-center items-center px-4 ${sales === true ? 'overflow-auto max-h-fit py-3' : 'max-h-0'} sales`}>
-                <span>30% off storewide - limited time!</span>
-                <button onClick={() => setSales(false)} className='text-2xl'>&times;</button>
-            </div>
+        <div
+          className={`transition-all ease-in duration-1000 w-full bg-[#377DFF] text-white gap-x-4 flex overflow-hidden justify-center items-center px-4 ${
+            sales ? "overflow-auto max-h-fit py-3" : "max-h-0"
+          } sales`}
+        >
+          <span>30% off storewide - limited time!</span>
+          <button onClick={() => setSales(false)} className="text-2xl">
+            &times;
+          </button>
+        </div>
 
+        <div className="bg-[#fafafa] flex justify-between lg:justify-around px-7 py-5 shadow-md">
+          <div className="flex gap-4 items-center">
+            <button className="md:hidden" onClick={() => setOpen(true)}>
+              <Menu />
+            </button>
+            <Link href={"/"} className="text-2xl font-extrabold">
+              3Legant.
+            </Link>
+          </div>
 
-            <div className='bg-[#fafafa] flex justify-between lg:justify-around px-7 py-5 shadow-md'>
+          {search && (
+            <SearchComponent sidebar={false} items={products} search={search} />
+          )}
 
-                <div className='flex gap-4 items-center'>
-                    <button className='md:hidden' onClick={() => setOpen(true)}>
-                        <i className='fa-solid fa-bars text-2xl block '></i>
-                    </button>
-                    <Link href={'/'} className='text-2xl font-extrabold'>3Legant.</Link>
+          {!search && (
+            <div className="z-[999999999]">
+              <motion.div
+                initial={{ x: search ? "50%" : "-50%", opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ duration: 0.75, ease: "anticipate" }}
+                className="md:flex lg:flex gap-8 hidden items-center"
+              >
+                <button onClick={() => push("/")}>Home</button>
+                <div className="relative">
+                  <button onClick={() => push("/shop")}>Shop</button>
                 </div>
-
-
-                {
-                    search && (
-                        <SearchComponent sidebar={false} items={products} search={search} />
-                    )
-                }
-
-                {
-                    !search && (
-                        <div className='z-[999999999]'>
-                            <motion.div
-                                initial={{ x: search ? '50%' : '-50%', opacity: 0 }}
-                                animate={{ x: 0, opacity: 1 }}
-                                transition={{ duration: 0.75, ease: 'anticipate' }}
-                                className='md:flex lg:flex gap-8 hidden items-center'>
-                                <button onClick={() => push('/')}>Home</button>
-                                <div className='relative'>
-                                    <button onClick={() => push('/shop')}>
-                                        Shop
-                                    </button>
-                                </div>
-                                <div className='relative group'>
-                                    <button>
-                                        Product <i className='transition duration-200 group-hover:rotate-180 rotate-0 fa-solid fa-angle-down ml-2'></i>
-                                    </button>
-                                    <div
-                                        className="invisible absolute -translate-x-5  z-[999999999] flex w-auto flex-col bg-white py-1 px-10 text-gray-800 shadow-xl group-hover:visible whitespace-nowrap overflow-hidden ">
-
-                                        <Link href={'/shop?category=shoes'} className="my-2  block border-gray-100 py-1 text-gray-500 md:mx-2">
-                                            Shoes
-                                        </Link>
-
-                                        <Link href={'/shop?category=hoodies'} className="my-2  block border-gray-100 py-1 text-gray-500 md:mx-2">
-                                            Hoodie
-                                        </Link>
-                                        <Link href={'/shop?category=jackets'} className="my-2  block border-gray-100 py-1 text-gray-500 md:mx-2">
-                                            Jackets
-                                        </Link>
-                                        <Link href={'/shop?category=shirts'} className="my-2  block border-gray-100 py-1 text-gray-500 md:mx-2">
-                                            Shirt
-                                        </Link>
-                                        <Link href={'/shop?category=pants'} className="my-2  block border-gray-100 py-1 text-gray-500 md:mx-2">
-                                            Pants
-                                        </Link>
-                                    </div>
-                                </div>
-                                <button onClick={() => push('/contact')}>Contact us</button>
-                            </motion.div>
-                        </div>
-                    )
-                }
-
-
-                <div className='flex gap-3 flex-row items-center'>
-                    <div className='flex gap-4'>
-                        <div className='hidden md:flex items-center'>
-                            <button onClick={() => setSearch(!search)} className={`fa-solid text-xl md:text-xl ${!search && 'fa-magnifying-glass'}`}>
-                                {
-                                    search && <span className='text-2xl'>&times;</span>
-                                }
-                            </button>
-                        </div>
-                        <button onClick={() =>
-                            cartOpen ? setProfileOpen(false) : setProfileOpen(!profileOpen)
-                        } className='fa-solid fa-user text-xl md:text-xl'></button>
-                    </div>
-                    <button
-                        onClick={() =>
-                            profileOpen ? setCartOpen(false) : setCartOpen(!cartOpen)
-                        }
-                        className='fa-solid fa-shopping-bag text-xl md:text-xl'></button>
-                 {
-                    cartNumber
-                 }
+                <div className="relative group">
+                  <button>
+                    Product{" "}
+                    <i className="transition duration-200 group-hover:rotate-180 rotate-0 fa-solid fa-angle-down ml-2"></i>
+                  </button>
+                  <div className="invisible absolute -translate-x-5 z-[999999999] flex w-auto flex-col bg-white py-1 px-10 text-gray-800 shadow-xl group-hover:visible whitespace-nowrap overflow-hidden">
+                    {["shoes", "hoodies", "jackets", "shirts", "pants"].map(
+                      (category) => (
+                        <Link
+                          key={category}
+                          href={`/shop?category=${category}`}
+                          className="my-2 block border-gray-100 py-1 text-gray-500 md:mx-2"
+                        >
+                          {category.charAt(0).toUpperCase() + category.slice(1)}
+                        </Link>
+                      )
+                    )}
+                  </div>
                 </div>
-
+                <button onClick={() => push("/contact")}>Contact us</button>
+              </motion.div>
             </div>
-        </header>
-    )
-}
+          )}
 
-export default Header
+          <div className="flex gap-3 flex-row items-center">
+            <div className="flex gap-4">
+              <div className="hidden md:flex items-center">
+                <button
+                  onClick={() => setSearch(!search)}
+                  aria-label={search ? "Close search" : "Open search"}
+                  className="text-xl md:text-xl"
+                >
+                  {search ? <X /> : <Search />}
+                </button>
+              </div>
+              <button
+                onClick={() =>
+                  cartOpen
+                    ? setProfileOpen(false)
+                    : setProfileOpen(!profileOpen)
+                }
+                className="text-xl md:text-xl"
+              >
+                <User />
+              </button>
+            </div>
+            <button
+              onClick={() =>
+                profileOpen ? setCartOpen(false) : setCartOpen(!cartOpen)
+              }
+              className=" text-xl md:text-xl"
+            >
+              <ShoppingBag />
+            </button>
+            {cartNumber}
+          </div>
+        </div>
+      </header>
+    );
+  }
+);
+
+Header.displayName = "Header";
+
+export default Header;
