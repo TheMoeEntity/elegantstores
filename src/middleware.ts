@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { createServerClient, type CookieOptions } from "@supabase/ssr";
 
 export async function middleware(req: NextRequest) {
-  const signup = "/signup";
+  const signup = "/signup/";
   const apisignup = "/api/signup";
   const account = "/account";
   const login = "/login";
