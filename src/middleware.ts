@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { createServerClient, type CookieOptions } from "@supabase/ssr";
 
 export async function middleware(req: NextRequest) {
-  const signup = "/signup/";
+  const signup = "/signup";
   const apisignup = "/api/signup";
   const account = "/account";
   const login = "/login";
@@ -13,8 +13,8 @@ export async function middleware(req: NextRequest) {
   });
   response.headers.getSetCookie();
   const supabase = createServerClient(
-    process.env.SUPABASE_URL!,
-    process.env.SUPABASE_API_KEY!,
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
       cookies: {
         get(name: string) {
